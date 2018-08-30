@@ -1,5 +1,3 @@
-# ChainX
-
 <!-- vim-markdown-toc GFM -->
 
 * [启动节点](#启动节点)
@@ -8,21 +6,15 @@
 * [http API](#http-api)
     * [chain](#chain)
         * [`chain_getHead`](#chain_gethead)
-            * [Example](#example)
         * [`chain_getHeader`](#chain_getheader)
-            * [Example](#example-1)
         * [`chain_newHead`](#chain_newhead)
     * [state](#state)
     * [system](#system)
         * [`system_name`](#system_name)
-            * [Example](#example-2)
         * [`system_version`](#system_version)
-            * [Example](#example-3)
         * [`system_chain`](#system_chain)
-            * [Example](#example-4)
     * [author](#author)
         * [`author_extrinsicUpdate`](#author_extrinsicupdate)
-            * [Example](#example-5)
 
 <!-- vim-markdown-toc -->
 
