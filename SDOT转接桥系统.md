@@ -1,5 +1,15 @@
 ## SDOT转接桥系统
 
-ChainX默认集成了第一期500万枚DOT投资者的名单，依据的以太坊合约地址为[0xb59f67a8bff5d8cd03f6ac17265c550ed8f33907](https://etherscan.io/token/0xb59f67a8bff5d8cd03f6ac17265c550ed8f33907)，一共包含3049个投资人的Ethereum地址和DOT余额。
+ChainX默认集成了第一期500万枚DOT投资者的名单，依据的以太坊合约地址为[0xb59f67a8bff5d8cd03f6ac17265c550ed8f33907](https://etherscan.io/token/0xb59f67a8bff5d8cd03f6ac17265c550ed8f33907)，
 
-#### 交易接口：提交交易
+#### 启动配置
+
+余额列表：3049个投资人的Ethereum地址和DOT余额。
+InputData格式：`用户ChainX地址` 或 `用户ChainX地址@节点名称`
+
+#### 交易接口：提交交易 birdge_sdot/push_tx
+
+参数：Ethereum地址、交易原文、签名
+判断：任何人都可以提交，签名需正确，交易原文的InputData格式满足要求。
+
+如果该Ethereum用户还未领取，则发放对应余额列表中的SDOT给该用户，如果存在节点名称，则记录该节点为用户的充值渠道。
