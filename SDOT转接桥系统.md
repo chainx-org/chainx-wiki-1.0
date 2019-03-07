@@ -5,7 +5,7 @@ ChainX默认集成了第一期500万枚DOT投资者的名单，依据的以太�
 #### 启动配置
 
 * 余额列表：3049个投资人的Ethereum地址和DOT余额。
-* InputData格式：`用户ChainX地址` 或 `用户ChainX地址@节点名称`
+* 跨链备注的载体是：交易中的InputData字段。
 
 #### 交易接口：提交交易 birdge_sdot/push_tx
 
