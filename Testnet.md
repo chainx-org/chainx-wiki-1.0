@@ -22,7 +22,7 @@
     ./chainx --name=监控台名称 --base-path=数据存放路径 --chain=local --pruning archive 
     ```
 
-    待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址为 https://telemetry.polkadot.io/#/ChainX%20V0.9.6 。
+    待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址为 https://stats.chainx.org/#/ChainX%20V0.9.6 。
 
 8. 在投票选举页，点击更新节点，填写:
 
