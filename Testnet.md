@@ -15,6 +15,9 @@
 7. 启动节点。
 
     ```bash
+    # 如果之前运行过老版本的节点，请先删除老数据
+    rm -rf 数据存放路径
+
     # 启动验证人节点
     ./chainx --key=账户私钥 --validator-name=节点名称 --name=监控台名称 --base-path=数据存放路径 --validator --chain=local --pruning archive
 
