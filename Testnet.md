@@ -1,4 +1,4 @@
-## ChainX v0.9.6 公开测试网
+## ChainX v0.9.7 公开测试网
 
 1. 访问在线钱包 [wallet.chainx.org](https://wallet.chainx.org)。
 
@@ -10,7 +10,7 @@
 
 5. 在投票选举页的候选节点里，可以看到你的节点处于 **退选** 状态。
 
-6. 在 https://github.com/chainx-org/ChainX/releases/tag/v0.9.6 下载 v0.9.6 测试网 ChainX 二进制 `chainx`, 目前仅支持 Ubuntu 16.04+ 或 macOS。
+6. 在 https://github.com/chainx-org/ChainX/releases/tag/v0.9.7 下载 v0.9.7 测试网 ChainX 二进制 `chainx`, 目前仅支持 Ubuntu 16.04+ 或 macOS。
 
 7. 启动节点。
 
@@ -19,13 +19,16 @@
     rm -rf 数据存放路径
 
     # 启动验证人节点
-    ./chainx --key=账户私钥 --validator-name=节点名称 --name=监控台名称 --base-path=数据存放路径 --validator --chain=local --pruning archive
+    ./chainx --key=账户私钥 --validator-name=节点名称 --name=监控台名称 --base-path=数据存放路径 --validator --chain=local --pruning archive --block-construction-execution=native --other-execution=native
 
     # 启动同步节点
-    ./chainx --name=监控台名称 --base-path=数据存放路径 --chain=local --pruning archive 
+    ./chainx --name=监控台名称 --base-path=数据存放路径 --chain=local --pruning archive --block-construction-execution=native --other-execution=native
     ```
 
-    待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址为 https://telemetry.polkadot.io/#/ChainX%20V0.9.6 。
+    待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
+
+    - https://telemetry.polkadot.io/#/ChainX%20V0.9.7
+    - https://stats.chainx.org/#/ChainX%20V0.9.7
 
 8. 在投票选举页，点击更新节点，填写:
 
@@ -40,6 +43,7 @@
 
 ## CHANGELOG
 
+- ~v0.9.6~
 - ~v0.9.5~
 - ~v0.9.4~
 - ~v0.9.3~
