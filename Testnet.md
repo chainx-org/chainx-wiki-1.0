@@ -66,6 +66,8 @@ DOT 所有者和测试用户使用 **支持 Data** 的以太坊钱包，向任�
 - 0x0628dae391a37ccb6ccae7e6b6495c2622d69cda
 - 0x39c702b9263a42775ee1a6d6a11e00aa6a91f66b
 - 0x5ba3750a16b1f63b2265a571bf8920e218f077a9
+- 0x56a1949524b2f306cec3ab404d1ecae935cac85c (0.9.7还未加入)
+- 0xf5f6ce57493cf0da3b5fddcd05c09813d37b73e5 (0.9.7还未加入)
 
 PS: 目前 **支持 Data** 的钱包有: imToken、Parity、MyEtherWallet、Jaxx、MyCrypto、Trust、Bitpie、Coinomi 等。
 
