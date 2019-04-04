@@ -1,6 +1,6 @@
 ## ChainX v0.9.7 公开测试网
 
-1. 访问在线钱包 [wallet.chainx.org](https://wallet.chainx.org)。
+1. 访问在线钱包 [wallet.chainx.org](https://wallet.chainx.org) 和 浏览器[scan.chainx.org](https://scan.chainx.org) 。
 
 2. 点击创建账户，生成节点账户，**账户地址**形如 `5HbT8...S9yg`，导出**账户私钥**形如 `0x30530...c95aee43`。
 
