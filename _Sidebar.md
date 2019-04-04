@@ -10,7 +10,7 @@
 
 ### 节点运营
 - [Testnet](Testnet)
-- [节点部署](节点部署)
+- [DOT测试币](DOT测试币)
 
 ### 开发文档
 - [JS-SDK](JS-SDK)
