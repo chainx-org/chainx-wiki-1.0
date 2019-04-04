@@ -47,6 +47,28 @@ const Chainx = require('chainx.js').default;
 })();
 ```
 
+## Chainx.js
+
+目前只接受 websocket 的方式，调用 rpc。使用前需要等待程序初始化完成：
+
+```js
+const chainx = new Chainx('wss://w1.chainx.org.cn/ws');
+
+chainx.isRpcReady().then(() => {
+  // ...
+});
+
+// 监听事件
+chainx.on('disconnected', () => {}) // websocket 链接断开
+chainx.on('error', () => {}) // 发生一个错误
+chainx.on('connected', () => {}) // websocket 已连接
+chainx.on('ready', () => {}) // 初始化完成
+```
+
+
+
+
+
 ## 类型定义
 
 几乎所有 api 函数的参数都对应一个类型定义。此时只要传入参数能被解析，即是合法的。例如：`accountId` 有很多种表现形式：
@@ -109,6 +131,19 @@ const Chainx = require('chainx.js').default;
 
 - [`Compact`](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/codec/Compact.js) ：该类型通常与其它类型复合组成一个新的类型，此时内部数据编码是被压缩过的。如 `Compact.with(Nonce)`，将会压缩 `Nonce`的编码。
 
+## Account 模块
+
+通过`chainx.account.from(seed | privateKey | seed | mnemonic)` 可以生成一个 account 对象。
+
+```js
+const alice = chainx.account.from('0x....')
+alice.address() // bs58 地址
+alice.publicKey() // 公钥 0x...
+alice.privateKey() // 私钥 0x...
+```
+
+
+
 ## 交易函数
 
 我们需要有几个步骤，来完成一次完整的交易。首先确定我们需要调用的 Method，如下列所示。以下 api 均返回一个 [SubmittableExtrinsic](https://github.com/chainx-org/chainx.js/blob/master/packages/chainx/src/SubmittableExtrinsic.js) 对象，它继承于 [Extrinsic](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Extrinsic.js) 。注意所有涉及到金额的部分，均是以最小的精度为单位。不存在小数。
@@ -170,13 +205,11 @@ const Chainx = require('chainx.js').default;
     // 交易完成
     "status": "Finalised"
   }
-  
+
     **/
     console.log(result);
   })
   ```
-
-- 
 
 
 
