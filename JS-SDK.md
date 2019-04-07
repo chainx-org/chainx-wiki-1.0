@@ -25,7 +25,7 @@ const Chainx = require('chainx.js').default;
   await chainx.isRpcReady();
 
   // 查询某个账户的资产情况
-  const bobAssets = await chainx.asset.getAssets('5DtoAAhWgWSthkcj7JfDcF2fGKEWg91QmgMx37D6tFBAc6Qg');
+  const bobAssets = await chainx.asset.getAssetsByAccount('5DtoAAhWgWSthkcj7JfDcF2fGKEWg91QmgMx37D6tFBAc6Qg', 0, 10);
 
   console.log('bobAssets:', JSON.stringify(bobAssets));
 
