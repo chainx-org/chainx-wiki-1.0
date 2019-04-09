@@ -36,9 +36,11 @@ const Chainx = require('chainx.js').default;
   // 查看 method 哈希
   console.log(extrinsic.method.toHex());
 
-  // 签名并发送交易
-  extrinsic.signAndSend('<账户私钥>', (error, response) => {
-    if (response.status === 'Finalised') {
+  // 签名并发送交易，0x0000000000000000000000000000000000000000000000000000000000000000 是用于签名的私钥
+  extrinsic.signAndSend('0x0000000000000000000000000000000000000000000000000000000000000000', (error, response) => {
+    if (error) {
+      console.log(error);
+    } else if (response.status === 'Finalized') {
       if (response.result === 'ExtrinsicSuccess') {
         console.log('交易成功');
       }
