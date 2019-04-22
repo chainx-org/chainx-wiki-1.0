@@ -1,4 +1,7 @@
+[[[https://raw.githubusercontent.com/chainx-org/chainx-logo/master/assets/ChainXlogo001.png|alt=ChainX home]]](Home)
+
 ### 全链业务逻辑
+
 - [账户系统](账户系统)
 - [资产系统](资产系统)
 - [Bitcoin 转接桥](Bitcoin-转接桥)
@@ -9,10 +12,12 @@
 - [币币交易](币币交易)
 
 ### 开发文档
+
 - [JS-SDK](JS-SDK)
 - [RPC](RPC)
 
 ### 测试网
+
 - [加入测试网](Testnet)
 - [DOT测试币](DOT测试币)
-- [创世节点大赛](权益大赛)
+- [创世节点大赛](创世节点大赛)
