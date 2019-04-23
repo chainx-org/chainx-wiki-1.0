@@ -1,11 +1,24 @@
 ## ChainX v0.9.8 公开测试网已结束测试
-ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停止v0.9.8的进程，并删除所有数据
-* 若启动时指定了`-d`或`--base-path`指定了目录，则将这个目录完全删除即可
-* 若启动时没有指定路径，则删除：
-    * linux(ubuntu): `${HOME}/.local/share`目录下的`ChainX`文件夹
-    * Mac OS:  `${HOME}/Library/Application\ Support/`目录下的`ChainX`文件夹
 
-## ChainX v0.9.8 公开测试网
+ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停止v0.9.8的进程，并删除所有数据
+
+* 若启动时指定了`-d`或`--base-path`指定了目录，则将这个目录完全删除即可
+
+* 若启动时没有指定路径，则删除：
+
+    * Linux(ubuntu):
+
+        ```bash
+        $ rm -rf ${HOME}/.local/share/ChainX
+        ```
+
+    * macOS:
+
+        ```bash
+        $ rm -rf ${HOME}/Library/Application\ Support/ChainX
+        ```
+
+## ChainX v0.9.9 公开测试网
 
 1. 访问在线钱包 [wallet.chainx.org](https://wallet.chainx.org) 和 浏览器[scan.chainx.org](https://scan.chainx.org) 。
 
@@ -17,7 +30,7 @@ ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停
 
 5. 在投票选举页的候选节点里，可以看到你的节点处于 **退选** 状态。
 
-6. 在 https://github.com/chainx-org/ChainX/releases/tag/v0.9.8 下载 v0.9.8 测试网 ChainX 二进制 `chainx`, 目前仅支持 Ubuntu 16.04+ 或 macOS。
+6. 在 https://github.com/chainx-org/ChainX/releases/tag/v0.9.9 下载 v0.9.9 测试网 ChainX 二进制 `chainx`, 目前仅支持 Ubuntu 16.04+ 或 macOS。
 
 7. 启动节点。
 
@@ -26,16 +39,20 @@ ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停
     rm -rf 数据存放路径
 
     # 启动验证人节点
-    ./chainx --key=账户私钥 --validator-name=节点名称 --name=监控台名称 --base-path=数据存放路径 --validator --chain=local --pruning archive --block-construction-execution=native --other-execution=native
+    ./chainx --key=账户私钥 --validator-name=节点名称 --name=监控台名称 --base-path=数据存放路径 --validator --chain=local --pruning archive --block-construction-execution=NativeElseWasm --other-execution=NativeElseWasm --syncing-execution=NativeElseWasm
 
     # 启动同步节点
-    ./chainx --name=监控台名称 --base-path=数据存放路径 --chain=local --pruning archive --block-construction-execution=native --other-execution=native
+    ./chainx --name=监控台名称 --base-path=数据存放路径 --chain=local --pruning archive --block-construction-execution=NativeElseWasm --other-execution=NativeElseWasm --syncing-execution=NativeElseWasm
     ```
+
+    - `--key`: 指定验证人节点的出块私钥
+    - `--name`: 这里的 name 指的是在 telemetry 显示的名字，并非节点注册时指定的 name。
+    - `--validator-name`: validator-name 填的是节点注册时指定的 name， 必须和 `--key` 相匹配。
 
     待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
 
-    - https://telemetry.polkadot.io/#/ChainX%20V0.9.8
-    - https://stats.chainx.org/#/ChainX%20V0.9.8
+    - https://telemetry.polkadot.io/#/ChainX%20V0.9.9
+    - https://stats.chainx.org/#/ChainX%20V0.9.9
 
 8. 在投票选举页，点击更新节点，填写:
 
@@ -49,7 +66,9 @@ ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停
 10. 如果由于节点部署不当等导致的节点掉线，系统会逐步惩罚节点奖池，漏一个块的罚金是出一个块奖励的 3 倍，罚金从节点奖池扣除。如果奖池被惩罚至0，会自动强制退选，节点需检查部署情况后，再次更新节点至参选状态，等待下一轮换届。
 
 ## ChainX v0.9.9 信托测试
-ChainX v0.9.9 将会进行信托相关功能的测试。当前ChainX上只有Bitcoin部分需要信托功能，因此本次测试只针对Bitcoin信托
+
+ChainX v0.9.9 将会进行信托相关功能的测试。当前ChainX上只有Bitcoin部分需要信托功能，因此本次测试只针对Bitcoin信托:
+
 > ”信托“为ChainX上托管对应链的代币的角色，因此”信托“实际上跨链代币的托管者。因此”信托“的参与者必须经过严格的KYC进行验证并公布自己的节点信息，且在验证节点中排名靠前，以保证充足的利益绑定关系防止作恶。
 >
 > ”信托“一定周期后会进行更换，每一轮更换后的”信托“称为一届信托节点（Session）
