@@ -9,13 +9,13 @@ ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停
     * Linux(ubuntu):
 
         ```bash
-        $ rm -rf ${HOME}/.local/share/ChainX
+        $ rm -rf $HOME/.local/share/ChainX
         ```
 
     * macOS:
 
         ```bash
-        $ rm -rf ${HOME}/Library/Application\ Support/ChainX
+        $ rm -rf $HOME/Library/Application\ Support/ChainX
         ```
 
 ## ChainX v0.9.9 公开测试网
