@@ -1,3 +1,10 @@
+## ChainX v0.9.8 公开测试网已结束测试
+ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停止v0.9.8的进程，并删除所有数据
+* 若启动时指定了`-d`或`--base-path`指定了目录，则将这个目录完全删除即可
+* 若启动时没有指定路径，则删除：
+    * linux(ubuntu): `${HOME}/.local/share`目录下的`ChainX`文件夹
+    * Mac OS:  `${HOME}/Library/Application\ Support/`目录下的`ChainX`文件夹
+
 ## ChainX v0.9.8 公开测试网
 
 1. 访问在线钱包 [wallet.chainx.org](https://wallet.chainx.org) 和 浏览器[scan.chainx.org](https://scan.chainx.org) 。
