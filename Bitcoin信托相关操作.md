@@ -22,7 +22,7 @@
 
 因此首先定义如下两个概念：
 
-1. **ChainX的多签提现**：当用户提现时，需要有一个信托根据用户的提现**自己组装多签提现的原文**，并通过ChainX的交易发送到ChainX链上，其他信托获取链上的多签提现原文并使用自己的私钥进行签名，然后再通过ChainX的交易发送到链上，直至达成满足条件的签名，之后Bitcoin的Relay会自动将这笔交易广播到Bitcoin网络，无需节点广播交易****
+1. **ChainX的多签提现**：当用户提现时，需要有一个信托根据用户的提现**自己组装多签提现的原文**，并通过ChainX的交易发送到ChainX链上，其他信托获取链上的多签提现原文并使用自己的私钥进行签名，然后再通过ChainX的交易发送到链上，直至达成满足条件的签名，之后**Bitcoin的Relay会自动将这笔交易广播到Bitcoin网络，无需节点广播交易**
 2. **链外多签转账**：与ChainX的处理流程无关，用于冷热地址互转，测试下一届多签地址有效性等等。**由于目前市面上几乎没有开源的多签钱包，因此信托需要准备自己的多签工具。**（ChainX仅准备一个简单的工具[chainx-multisig-verify-script](https://github.com/chainx-org/chainx-multisig-verify-script)以供参考与测试）
 
 这个提现过程请注意以下本质：
@@ -38,7 +38,56 @@
 
 #### ChainX 提现流程描述（用于节点使用sdk编写）
 
-// 待补充
+Bitcoin 提现流程如下
+
+![](https://github.com/chainx-org/images/blob/master/bitcoin_withdrawal.png)
+
+1. 用户申请提现：
+
+   * 用户申请提现后，在ChainX链上会生成一个**唯一**的提现申请序列号，叫做`withdrawal_id`
+
+2. 信托处理
+
+   信托通过rpc接口`chainx.asset.getWithdrawTx(chain)`转入`Bitcoin`监听链上的`WithdrawalProposal`是否存在：
+
+   1. 不存在：
+
+      * **任意一个**信托通过rpc接口`chainx.asset.getWithdrawalList(chain, page_index, page_size)`传入`Bitcoin`获取当前的用户提现列表
+      * 信托根据用户提现列表的相应信息组件提现**多签待签原文**，组件方式如下：
+        * 通过rpc接口`chainx.asset.getMinimalWithdrawalValueByToken(token)`，填写参数`BTC`（注意不是Bitcoin，因为这个是针对币不是针对链）获取当前ChainX上对用户提现Bitcoin收取的手续费`fee`
+        * **挑选**这次可以提现的用户提现记录（最多有一个上限，防止Output过大，当前最大不超过100），获取用户提现的`value`与提现地址`addr`，组建提现交易的`Outputs`，
+          * 用户提现的`output`：**`Output`中的的value为`value - fee`**(value是用户提现记录中的值，fee是向用户手续的提现手续费，也就是最后到用户账上的钱为他申请的值扣除手续费)。
+          * 找零的`output`：组件这笔交易后，根据交易长度，获取当前Bitcoin网络中的手续费率，**调整稍微高**一些后作为矿工费，余下作为找零`Output`中的value。（**注意：由于用户提现本来就扣除了一笔手续费，因此组建Output后，手续费是十分充裕的。由于ChainX每1小时才能提起一笔提现交易，那么一笔交易的output会很多，因此为了能尽快打包，我们建议组建交易的信托多拿一些手续费出来付给Bitcoin矿工。剩余的手续费绝对足够信托**）
+        * 从**Bitcoin全节点**或一些**公开可信任的服务**根据当前的多签地址获取合适的UTXO，与上文中的`outputs`共同组成**多签待签原文**
+      * 信托调用sdk将`chainx.asset.createWithdrawTx(withdrawalIdList, tx)`，将构造**多签待签原文**的用户提现的提现的`withdrawal_id`列表与多签待签原文作为参数传入
+      * 若发送成功，则链上就会存在`WithdrawalProposal`，且`sig_state`为`UnFinish`
+
+   2.  存在：
+
+      检查`signStatus`的值
+
+      1. 如果`signStatus`为`false`，即`WithdrawalProposal`中的`state`为`UnFinish`
+
+         1. **所有信托**根据`getWithdrawTx`返回值，进行检查
+         2. 其中`tx`即为**多签待签原文（或其他信托已签名过的交易）**，信托在这个tx的基础上使用自己的Bitcoin多签工具对这笔tx继续签署自己的信息
+         3. 信托通过`chainx.asset.signWithdrawTx(tx)`将自己签名后的原文发送到链上（注意发送前先检查链上的原文是否有更新（或订阅发现更新），防止没有对最新的tx进行签署）
+         4. 若``chainx.asset.signWithdrawTx()`不填写任何参数，**代表当前的信托对这笔提现投出反对**
+            * 手续费觉得不合理
+            * 提现列表的output觉得不合理
+            * ...
+
+      2. 若`signStatues`为`true`
+
+         1. 信托不可进行任何操作，等待这笔tx被relay提交上Bitcoin即可
+
+            1. 正常情况下这笔交易会正常上链，并被ChainX所识别，若这笔交易完全正常合法，则在ChainX上被确认后（1个小时），会自动清空ChainX链上的`WithdrawalProposal`存储，此时这笔提现流程执行结束，可重新进入信托提现处理流程。
+
+            2. 非正常情况：
+
+               1. 等待长时间未上链，此时唯一原因为创建这笔多签提现的手续费不足或交易非法，
+               2. 上链了，但是在确认是认为这笔提现非法
+
+               此时只能“议会”接入，移除链上的`WithdrawalProposal`并修复相应记录，之后才可重新进入信托提现处理流程。信托节点只能处于等待，无法进行其他操作。
 
 信托节点可通过sdk编写相应的处理方式，根据自己拟定的策略自动化处理，如：
 
