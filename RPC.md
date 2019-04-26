@@ -511,7 +511,7 @@ chainx.stake.getPseduNominationRecords('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7
 
 ### chainx.stake.getTrusteeInfoByAccount([who](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Address.js))
 
-用户投票信息
+获取该用户的信托信息（已注册信托后会显示）
 
 ### 参数
 
