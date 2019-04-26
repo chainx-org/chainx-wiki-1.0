@@ -57,12 +57,17 @@ Bitcoin 提现流程如下
         * 通过rpc接口`chainx.asset.getMinimalWithdrawalValueByToken(token)`，填写参数`BTC`（注意不是Bitcoin，因为这个是针对币不是针对链）获取当前ChainX上对用户提现Bitcoin收取的手续费`fee`
         * **挑选**这次可以提现的用户提现记录（最多有一个上限，防止Output过大，当前最大不超过100），获取用户提现的`value`与提现地址`addr`，组建提现交易的`Outputs`，
           * 用户提现的`output`：**`Output`中的的value为`value - fee`**(value是用户提现记录中的值，fee是向用户手续的提现手续费，也就是最后到用户账上的钱为他申请的值扣除手续费)。
-          * 找零的`output`：组件这笔交易后，根据交易长度，获取当前Bitcoin网络中的手续费率，**调整稍微高**一些后作为矿工费，余下作为找零`Output`中的value。（**注意：由于用户提现本来就扣除了一笔手续费，因此组建Output后，手续费是十分充裕的。由于ChainX每1小时才能提起一笔提现交易，那么一笔交易的output会很多，因此为了能尽快打包，我们建议组建交易的信托多拿一些手续费出来付给Bitcoin矿工。剩余的手续费绝对足够信托**）
+
+          * 找零的`output`：组件这笔交易后，根据交易长度，获取当前Bitcoin网络中的手续费率，**调整稍微高**一些后作为矿工费，余下作为找零`Output`中的value。
+
+            **注意：由于用户提现本来就扣除了一笔手续费，因此组建Output后，手续费是十分充裕的。由于ChainX每1小时才能提起一笔提现交易，那么一笔交易的output会很多，因此为了能尽快打包，我们强烈建议组建交易的信托多拿一些手续费出来付给Bitcoin矿工。**
+
+            例如：一段时间内有3个用户提现，3个用户都扣除手续费，总共` 3 × fee`，然后组建一笔多签提现交易提出来，可能实际上付给矿工的只有`1 fee`，那么最后实际上会留下`2fee`在多签地址里。因此在多签地址中的钱会累积的越来越多，手续费不会出现短缺的现象。
         * 从**Bitcoin全节点**或一些**公开可信任的服务**根据当前的多签地址获取合适的UTXO，与上文中的`outputs`共同组成**多签待签原文**
       * 信托调用sdk将`chainx.asset.createWithdrawTx(withdrawalIdList, tx)`，将构造**多签待签原文**的用户提现的提现的`withdrawal_id`列表与多签待签原文作为参数传入
       * 若发送成功，则链上就会存在`WithdrawalProposal`，且`sig_state`为`UnFinish`
 
-   2.  存在：
+   2. 存在：
 
       检查`signStatus`的值
 
