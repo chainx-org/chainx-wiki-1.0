@@ -58,7 +58,7 @@ const subscription = chainx.chain.subscribeNewHead().subscribe(result => {
 **/
 ```
 
-###
+## #
 
 ### chainx.asset.getAssetsByAccount([who](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Address.js), [page_index](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/U32.js), [page_size](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/U32.js))
 
@@ -371,7 +371,24 @@ chainx.asset.verifyAddressValidity("BTC", "2N8tR484JD32i1DY2FnRPLwBVaNuXSfzoAv",
 **/
 ```
 
-###
+### chainx.asset.getMinimalWithdrawalValueByToken([token](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Token.js))
+
+chainx 链上提现的最小值，一般为用户提现扣除的手续费
+
+### 参数
+
+- token: 币种名
+
+### 例子
+
+```js
+chainx.asset.getMinimalWithdrawalValueByToken("BTC")
+/**
+40000
+**/
+```
+
+
 
 ### chainx.stake.getNominationRecords([who](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Address.js))
 
