@@ -67,6 +67,9 @@ chainx.on('connected', () => {}) // websocket 已连接
 chainx.on('ready', () => {}) // 初始化完成
 ```
 
+初始化过程会自动会从链上获取网络版本。这奖影响到显示的账号地址的格式。请注意，这是异步的，未初始化完成前，默认是测试网络。
+也可以通过 `chainx.account.setNet('mainnet')` 或 `chainx.account.setNet('testnet')`，手动指定网络版本。 
+
 ## 类型定义
 
 几乎所有 api 函数的参数都对应一个类型定义。此时只要传入参数能被解析，即是合法的。例如：`accountId` 有很多种表现形式：
