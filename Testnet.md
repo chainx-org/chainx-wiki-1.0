@@ -54,6 +54,20 @@ ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停
     - https://telemetry.polkadot.io/#/ChainX%20V0.9.9
     - https://stats.chainx.org/#/ChainX%20V0.9.9
 
+7.1 在后台启动节点
+    在7中启动节点的方式若退出启动的shell时会导致进程退出，因此需要在后台启动进程
+    ```
+    nohup ./chainx <在7中的命令> >chainx.log 2>&1 &
+    ```   
+    之后在启动的目录下会生成`chainx.log`日志文件。若一直持续运行日志过大，可以对设置`crontab`的定时任务对日志进行切分，可参考`[日志切分](https://blog.csdn.net/shawnhu007/article/details/50971084)`编写脚本
+
+7.2 chainx v0.9.9 启动问题
+    由于v0.9.9版本刚启动时存在一些失误，因此当前新加入的节点只能使用`chainx-v0.9.9-x86_64-<...>-p2p-hotfix.tgz`进行启动，然后观察类似日志：
+    ```bash
+    2019-05-03 15:32:31.067 INFO Imported #416771 (0xefa3…faf7)
+    ```
+    当`#`后面的值**达到200000（20万）以上**时，将节点停下来(kill -2)，然后使用`chainx-v0.9.9-x86_64-<...>-upgrade.tgz`中的执行文件继续启动
+
 8. 在投票选举页，点击更新节点，填写:
 
     - 出块地址(**账户地址**)
