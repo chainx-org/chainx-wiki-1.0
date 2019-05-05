@@ -1,5 +1,33 @@
 ## Bitcoin信托相关操作
 
+### Overview
+
+Bitcoin信托的主要职责有2个：
+
+* 对于Bitcoin而言：根据当前届Bitcoin信托在链上注册的公钥信息**生成并控制一个热多签地址及一个冷多签地址**
+
+  * 进行 Bitcoin 多签流程：
+
+    * ChainX的多签提现：使用ChainX钱包，或根据该多签流程使用sdk编写自己的工具
+    * 链外多签转账：使用ChainX准备的工具[chainx-multisig-verify-script](https://github.com/chainx-org/chainx-multisig-verify-script)，强烈建议节点设计符合自己需求的Bitcoin多签工具
+
+  * Bitcoin多签地址的特殊性：
+
+    * 由于Bitcoin脚本的限制，实际上一个多签地址对应着一个`redeemScript`，在执行多签流程时需要提供该地址对应的`redeemScript`才可进行签署，例如：
+
+    ```json
+    {
+          "address": "2N24ytjE3MtkMpYWo8LrTfnkbpyQQQQQQQQ", 
+          "redeemScript": "0x532102a79800dfed17ad4c78c52797adafasdfasd69421080f42d27790ee2103eceasdfasdfasda3e62ef6b2f6ad9774489e9aff1c8bc684d87dfdasfasdf2dd162e8d8614a4afbb8e2eb14eddf4036042b35asdfasdfd8ac4d3e055eae7551427487e281e3efba618bdd395f2f54ae"
+    }
+    ```
+
+    * `redeemScript`在生成多签地址时同时生成，ChainX链上记录了热冷多签地址对应的`redeemScript`，可通过相应的rpc接口得到。
+
+* 对于ChainX而言：ChainX将针对当前届的信托生成一个对应的ChainX多签地址，用于控制Bitcoin信托比如设置Bitcoin提现手续费，Bitcoin信托换届等功能
+
+  * 进行ChainX多签流程，参考[多签模块](多签模块)，使用ChainX提供的`multisig-tool`工具
+
 ### 设置Bitcoin信托节点
 
 1. 要想成为信托节点首先需要注册成验证节点，然后再设置信托。如果已经是验证节点可以跳过此步。
@@ -18,7 +46,7 @@
 
 ### 信托节点处理提现申请
 
-**节点处理提现本质上是使用ChainX钱包的信托部分或信托自己组建了一个多签提现，该多签提现称为“待签原文”，将该原文在其他信托节点之间转移并签名后，成为能够执行的多签提现交易，并广播到链上**
+**节点处理提现本质上是使用ChainX钱包的信托部分或信托自己组建了一个Bitcoin多签提现，该多签提现称为“待签原文”，将该原文在其他信托节点之间转移并签名后，成为能够执行的多签提现交易，并广播到链上**
 
 因此首先定义如下两个概念：
 
