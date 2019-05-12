@@ -225,7 +225,7 @@ Bitcoin的交易结构体如下：
 
 2. inputs_len
 
-   由于当前ChainX提现采用的是`P2SH`的多签形式（后续会升级为隔离见证形势，交易长度会缩减许多），因此当前inputs_len的长度计算如下：
+   由于当前ChainX提现采用的是`P2SH`的多签形式（后续会升级为隔离见证形式，交易长度会缩减许多），因此当前inputs_len的长度计算如下：
 
    redeemscript:
 
@@ -276,6 +276,8 @@ Bitcoin的交易结构体如下：
    ```bash
    inputs_len=4+1+input_count*(32+4+2+1+72*n+1+1+script_len+4) = 5 + input_count(45 + 72*n + script_len)
    ```
+
+   由于Bitcoin边长数字的原因，所以最后计算的结果会和上面的`inputs_len`有一点差距，可能偏差一个2-4字节左右，不过这个偏差影响不大，可直接把这个值当作推荐值。
 
 3. 综上
 
