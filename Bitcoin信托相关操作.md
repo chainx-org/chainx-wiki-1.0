@@ -199,7 +199,7 @@ Bitcoin的交易结构体如下：
    一般情况下用户申请提现就是提现到一个Bitcoin地址上（ChainX只允许用户申请提现到地址，不允许提现到公钥），因此在现行网络中，一般为用户提现组建`pubkeyhash`的output。因此所有outputs一般为：
 
    ```bash
-   01 // ouput 的数量，边长，一般为 1 Bytes
+   01 // ouput 的数量，变长，一般为 1 Bytes
    // output loop start
    // start ouput 1
    0000000000000000    // 输出的币值，UINT64，8个 Bytes。
@@ -227,9 +227,7 @@ Bitcoin的交易结构体如下：
 
    由于当前ChainX提现采用的是`P2SH`的多签形式（后续会升级为隔离见证形式，交易长度会缩减许多），因此当前inputs_len的长度计算如下：
 
-   redeemscript:
-
-   例如一个2/3的多签：
+   首先需要知道redeemscript的长度，例如一个2/3的多签，redeemscript的长度为：
 
    ```
    52 (OP_2)
@@ -246,7 +244,7 @@ Bitcoin的交易结构体如下：
    script_len = 1 + (1+33) * m + 2 = 34m + 3 (Bytes)
    ```
 
-   tx的所有input的组成为：
+   已知redeemscript长度后，又因为tx的所有input的组成如下：
 
    ```
    01000000 <版本号> // 4 Bytes
@@ -277,7 +275,7 @@ Bitcoin的交易结构体如下：
    inputs_len=4+1+input_count*(32+4+2+1+72*n+1+1+script_len+4) = 5 + input_count(45 + 72*n + script_len)
    ```
 
-   由于Bitcoin边长数字的原因，所以最后计算的结果会和上面的`inputs_len`有一点差距，可能偏差一个2-4字节左右，不过这个偏差影响不大，可直接把这个值当作推荐值。
+   由于Bitcoin变长数字的原因，所以最后计算的结果会和上面的`inputs_len`有一点差距，可能偏差1-4字节左右，不过这个偏差影响不大，可直接把这个值当作推荐值。
 
 3. 综上
 
