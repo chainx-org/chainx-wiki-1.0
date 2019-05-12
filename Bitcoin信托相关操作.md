@@ -174,6 +174,8 @@ Bitcoin 提现流程如下
 
 ##### 估计多签待签原文签名后的交易长度
 
+该部分更详细内容可参考： [链接](https://www.soroushjp.com/2014/12/20/bitcoin-multisig-the-hard-way-understanding-raw-multisignature-bitcoin-transactions/)
+
 首先定义以下符号：
 
 * 当前待签原文处理的用户提现数目`withdrawal_count`
