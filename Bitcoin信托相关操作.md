@@ -251,12 +251,12 @@ Bitcoin的交易结构体如下：
    01 <input的变长> // 一般 1 Bytes
    // loop start
    // start input 1 
-   14f1c37104d98b0ab575ac85e3f95acc6466b47a060c2d04d530521e62a8d2ca  // prev tx hash, 32 Bytes
+   14f1c37104d98b0ab575ac85e3f95acc646647a060c2d04d530521e62a8d2ca  // prev tx hash, 32 Bytes
    00000000 // prev tx 中的out的index 4 Bytes
    <后续所有字节的长度> // 一般看做2 Bytes
    00 <OP_0>
-   <签名1> // 连上长度一般为 72 Bytes
-   <签名2> // 72 Bytes
+   <签名1> // 连上长度一般为 73 Bytes (签名长度平均为72，加上长度标示1)
+   <签名2> // 73 Bytes
    ...
    4c <OP_PUSHDATA1>
    xx <redeemscrip 长度>// 一般1-2字节
@@ -272,10 +272,10 @@ Bitcoin的交易结构体如下：
    因此
 
    ```bash
-   inputs_len=4+1+input_count*(32+4+2+1+72*n+1+1+script_len+4) = 5 + input_count(45 + 72*n + script_len)
+   inputs_len=4+1+input_count*(32+4+2+1+73*n+1+1+script_len+4) = 5 + input_count(45 + 72*n + script_len)
    ```
 
-   由于Bitcoin变长数字的原因，所以最后计算的结果会和上面的`inputs_len`有一点差距，可能偏差1-4字节左右，不过这个偏差影响不大，可直接把这个值当作推荐值。
+   由于Bitcoin变长数字及签名长度的原因，所以最后计算的结果会和上面的`inputs_len`有一点差距，可能偏差1-8字节左右，不过这个偏差影响不大，可直接把这个值当作推荐值。
 
 3. 综上
 
@@ -283,7 +283,7 @@ Bitcoin的交易结构体如下：
 
    ```bash
    tx_len= 4 + 4 + 1 + 34 * (withdrawal_count + 1) + 5 + input_count(45 + 72*n + script_len)
-         = input_count * (48 + 72 * n + 34 * m ) + 34 * (withdrawal_count + 1) + 14
+         = input_count * (48 + 73 * n + 34 * m ) + 34 * (withdrawal_count + 1) + 14
    ```
 
 ##### 获取比特币交易费费率并计算手续费值
