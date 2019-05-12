@@ -168,6 +168,139 @@ Bitcoin 提现流程如下
 
    3. 以上创建和签名之前，节点可以点击“复制待签原文”，并将原文decode，检查output的构建以及交易费的设置是否正确，若不正确，需要节点投出“否决”代表自己否定这笔提现交易。原文decode可通过该链接 [https://live.blockcypher.com/btc/decodetx/](https://live.blockcypher.com/btc/decodetx/)
 
+#### Bitcoin 构建多签待签原文的手续费计算
+
+由于Bitcoin的手续费实际上是按交易的字节长度手续，每字节给出的手续费高就有限打包。因此计算手续费的时候首先需要计算多签待签原文**预计在签名后**的长度`tx_len`，之后从Bitcoin全节点或者其他公开服务获取当前最优的Bitcoin每字节费用的费率`fee_rate`，与交易长度相乘后获取费用`fee=tx_len*fee_rate`
+
+##### 估计多签待签原文签名后的交易长度
+
+首先定义以下符号：
+
+* 当前待签原文处理的用户提现数目`withdrawal_count`
+* 当前信托的总数`m`
+* 当前待签原文需要的签名个数`n` (一般情况下为 `n=(2/3)*m` 向上取整)
+* 当前待签原文input的个数`input_count`，由构建交易者灵活指定
+
+Bitcoin的交易结构体如下：
+
+| 字段         | 数据类型 | 字段大小 | 字段描述                         |
+| ------------ | -------- | -------- | -------------------------------- |
+| version      | uint32_t | 4        | 交易数据结构的版本号             |
+| tx_in count  | var_int  | 1+       | 输入交易的数量                   |
+| tx_in        | tx_in[]  | 41+      | 输入交易的数组，每个输入>=41字节 |
+| tx_out count | var_int  | 1+       | 输出地址的数量                   |
+| tx_out       | tx_out[] | 9+       | 输入地址的数组，每个输入>=9字节  |
+| lock_time    | uint32_t | 4        |                                  |
+
+因此`tx_len=4 + 4 + inputs_len + output_len`
+
+1. outputs_len
+
+   一般情况下用户申请提现就是提现到一个Bitcoin地址上（ChainX只允许用户申请提现到地址，不允许提现到公钥），因此在现行网络中，一般为用户提现组建`pubkeyhash`的output。因此所有outputs一般为：
+
+   ```bash
+   01 // ouput 的数量，边长，一般为 1 Bytes
+   // output loop start
+   // start ouput 1
+   0000000000000000    // 输出的币值，UINT64，8个 Bytes。
+   19                  // 输出目的地址字节数, 0x19 = 25 Bytes，由一些操作码与数值构成
+   // 目标地址
+   // 0x76 -> OP_DUP(stack ops)
+   // 0xa9 -> OP_HASH160(crypto)
+   // 0x14 -> 长度，0x14 = 20 Bytes
+   76 a9 14 
+   <20字节的字串> // 地址的HASH160值，20 Bytes
+   88 ac // 0x88 -> OP_EQUALVERIFY(bit logic), 0xac -> OP_CHECKSIG(crypto)
+   // end ouput 1
+   // output loop end
+   ```
+
+   因此一个output的长度为`output_len=8+1+3+20+2=34 Bytes`
+
+   由于一般情况下一个用户申请对应着多签原文的一个output，还需要一个额外的output用于找零，因此`outputs_len`的总共长度即为：
+
+   ```
+   outputs_len = 1 + 34 * (withdrawal_count + 1) (Bytes)
+   ```
+
+2. inputs_len
+
+   由于当前ChainX提现采用的是`P2SH`的多签形式（后续会升级为隔离见证形势，交易长度会缩减许多），因此当前inputs_len的长度计算如下：
+
+   redeemscript:
+
+   例如一个2/3的多签：
+
+   ```
+   52 (OP_2)
+   21 <33字节公钥> PUSHDATA(33)
+   21 <33字节公钥>
+   21 <33字节公钥>
+   53 (OP_3)
+   ae (OP_CHECKMULTISIG)
+   ```
+
+   由于n/m的多签对应于使用 `OP_1+n-1`与 `OP_1+m-1`并不会改变OP操作符的长度，因此实际上n/m的多签的redeemscript的长度为：
+
+   ```bash
+   script_len = 1 + (1+33) * m + 2 = 34m + 3 (Bytes)
+   ```
+
+   tx的所有input的组成为：
+
+   ```
+   01000000 <版本号> // 4 Bytes
+   01 <input的变长> // 一般 1 Bytes
+   // loop start
+   // start input 1 
+   14f1c37104d98b0ab575ac85e3f95acc6466b47a060c2d04d530521e62a8d2ca  // prev tx hash, 32 Bytes
+   00000000 // prev tx 中的out的index 4 Bytes
+   <后续所有字节的长度> // 一般看做2 Bytes
+   00 <OP_0>
+   <签名1> // 连上长度一般为 72 Bytes
+   <签名2> // 72 Bytes
+   ...
+   4c <OP_PUSHDATA1>
+   xx <redeemscrip 长度>// 一般1-2字节
+   script_len
+   ffffffff // sequence，0xffffffff = 4294967295， UINT32, 4字节
+   // end input 2
+   // start input 2
+   ... <同上>
+   // end input2
+   // loop end
+   ```
+
+   因此
+
+   ```bash
+   inputs_len=4+1+input_count*(32+4+2+1+72*n+1+1+script_len+4) = 5 + input_count(45 + 72*n + script_len)
+   ```
+
+3. 综上
+
+   综上，由公式`tx_len=4 + 4 + inputs_len + output_len`带入可得
+
+   ```bash
+   tx_len= 4 + 4 + 1 + 34 * (withdrawal_count + 1) + 5 + input_count(45 + 72*n + script_len)
+         = input_count * (48 + 72 * n + 34 * m ) + 34 * (withdrawal_count + 1) + 14
+   ```
+
+##### 获取比特币交易费费率并计算手续费值
+
+获取途径有2种
+
+1. 从全节点接口获取
+2. 从公开服务获取
+
+注意一般获取的单位可能为 BTC/KB，因此要适合单位的调整
+
+```
+fee = rate * tx_len
+```
+
+由于上文描述过手续费比较充裕，所以在计算出这个手续费的值后可以上浮一定数额（推荐10%-20%）以让矿工优先打包。
+
 ### Bitcoin信托换届的Bitcoin模拟多签地址测试方式
 
 在已经决策好下一届信托列表后，首先要进行地址有效性的测试。由于Bitcoin的特殊性，因此采用在链上生成Bitcoin模拟多签地址，并在链下使用其他开源工具使用相同参数生成，进行地址对比，来保证地址生成的正确性。
