@@ -110,6 +110,7 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
         - `name`: 在 telemetry 显示的节点名
         - `validator-name`: 注册节点时使用的名称
         - `base-path`: 数据存放路径，注意与启动节点步骤1中的相对应
+        - `keystore-path`: 启动节点步骤1中指定的keystore路径
         - `keystore-password`: 启动节点步骤1中输入的 password
         - `validator`: 如果设置为 `true`, 则启动验证节点，否则为同步节点。
 
