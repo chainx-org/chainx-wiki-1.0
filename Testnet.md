@@ -82,17 +82,17 @@ chainx当前已经提供了
 
     - `FLAGS` 命令：对应于在`json`中value为`true/false`的配置。如：
 
-    ```json
+    ```bash
     {
-        "validator": true, // 代表 `./chainx --validator`
+        "validator": true, # 代表 `./chainx --validator`
     }
     ```
 
     - `OPTIONS`命令：对应于在`json`中其他配置，如：
 
-    ```json
+    ```bash
     {
-        "base-path": "<ChainX数据路径>", // 代表 `./chainx --base-path=<ChainX数据路径>`
+        "base-path": "<ChainX数据路径>", # 代表 `./chainx --base-path=<ChainX数据路径>`
     }
     ```
 
@@ -113,22 +113,22 @@ chainx当前已经提供了
 
 对于同步节点的启动，我们推荐以下配置：
 
-```json
+```bash
 {
-    "log": "info,runtime=info", // 日志等级配置，若不需要runtime的打印可以配置为 "log": "info,runtime=warn", 
-    "name": "<Your-Node-Name>", // 在 监控台 中显示的名称
-    "port": 20222, // 节点的p2p端口
-    "ws-port": 8087, // 节点的websocket 端口
-    "rpc-port": 8086, // 节点的rpc
-    "rpc-external": true, // true 代表该rpc端口开放给外部访问，建议只能提供服务同步节点开启，验证节点及不提供服务的同步节点建议关闭
-    "ws-external": true, // true 代表该rpc端口开放给外部访问，建议只能提供服务同步节点开启，验证节点及不提供服务的同步节点建议关闭
-    "base-path": "<Your-DB-Path>", // chainx 数据路径
+    "log": "info,runtime=info", # 日志等级配置，若不需要runtime的打印可以配置为 "log": "info,runtime=warn", 
+    "name": "<Your-Node-Name>", # 在 监控台 中显示的名称
+    "port": 20222, # 节点的p2p端口
+    "ws-port": 8087, # 节点的websocket 端口
+    "rpc-port": 8086, # 节点的rpc
+    "rpc-external": true, # true 代表该rpc端口开放给外部访问，建议只能提供服务同步节点开启，验证节点及不提供服务的同步节点建议关闭
+    "ws-external": true, # true 代表该rpc端口开放给外部访问，建议只能提供服务同步节点开启，验证节点及不提供服务的同步节点建议关闭
+    "base-path": "<Your-DB-Path>", # chainx 数据路径
     "other-execution": "NativeElseWasm",
     "syncing-execution": "NativeElseWasm",
     "block-construction-execution": "NativeElseWasm",
     "importing-execution": "NativeElseWasm",
     "bootnodes": [
-        // 填写引导节点，ChainX已经在节点内配置设置好了一些引导节点
+        # 填写引导节点，ChainX已经在节点内配置设置好了一些引导节点
     ]
 }
 ```
@@ -218,11 +218,11 @@ ChainX强烈建议验证者公钥与出块地址公钥不相同，并建议验�
 
       下载下来的文件中内容如下：
 
-      ```json
+      ```bash
       {
-          "validator": true, // 验证者节点必须为 true
-          "rpc-external": false, // 验证者节点建议关闭对外的rpc端口
-          "ws-external": false,// 验证者节点建议关闭对外的ws端口
+          "validator": true, # 验证者节点必须为 true
+          "rpc-external": false, # 验证者节点建议关闭对外的rpc端口
+          "ws-external": false, # 验证者节点建议关闭对外的ws端口
           "log": "info,runtime=info",
           "port": 20222,
           "ws-port": 8087,
@@ -232,9 +232,9 @@ ChainX强烈建议验证者公钥与出块地址公钥不相同，并建议验�
           "block-construction-execution": "NativeElseWasm",
           "bootnodes": [],
           "name": "Your-Node-Name",
-          "validator-name": "Your-Validator-Name", // 注册节点时使用的名称
+          "validator-name": "Your-Validator-Name", # 注册节点时使用的名称
           "base-path": "<步骤1中指定的数据存放路径>",
-          "keystore-path": "<步骤1中指定的keystore路径>"
+          "keystore-path": "<步骤1中指定的keystore路径>",
           "keystore-password": "<步骤1中生成的keystore时使用的命令>"
       }
       ```
