@@ -66,7 +66,7 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
 ![image](https://user-images.githubusercontent.com/8850248/57748969-bfa4b200-770e-11e9-843f-c841f3b887e6.png)
 
-   更新出块地址完成后，验证出块地址与生成的节点公钥是否匹配：首先进入区块链浏览器的验证节点详情页面，点击出块地址, 然后会看到该地址对应的公钥，检查是否为上一步生成的节点公钥相一致。如果一致，则正确，否则出块地址不正确。
+   更新出块地址完成后，验证出块地址与生成的节点公钥是否匹配：首先进入区块链浏览器的节点详情页面，点击出块地址, 然后会看到该地址对应的公钥，检查是否为上一步生成的节点公钥相一致。如果一致，则正确，否则出块地址不正确。
 
 ![image](https://user-images.githubusercontent.com/8850248/57750530-38a70800-7715-11e9-969a-a7277739be6f.png)
 
@@ -132,12 +132,12 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
       $ nohup ./chainx --config=$(pwd)/config.json > chainx.log 2>&1 &
       ```
 
-     待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
+      待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
 
-     - https://telemetry.polkadot.io/#/ChainX%20V0.9.10
-     - https://stats.chainx.org/#/ChainX%20V0.9.10
+      - https://telemetry.polkadot.io/#/ChainX%20V0.9.10
+      - https://stats.chainx.org/#/ChainX%20V0.9.10
 
-     其他节点运维相关见：[ChainX 节点运维](devops)
+      其他节点运维相关见：[ChainX 节点运维](devops)
 
 9. 确认节点成功运行后，在投票选举页，点击更新节点，使节点进入参选状态:
 
