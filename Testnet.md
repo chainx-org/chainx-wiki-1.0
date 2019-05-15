@@ -141,8 +141,14 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
          # 注意最后的 -i 参数
          $ screen -L -S chainx0.9.10 ./chainx --config=<ConfigPath/chainx.conf> -i 
          ```
+         启动后会要求输入 keystore 的密码:
+         
+         ```bash
+         Password:
+         Repeat again:
+         ```bash
 
-         启动后按一下命名可退出screen
+         启动后按以下命名可退出screen
 
          ```bash
          Ctrl-A-D
