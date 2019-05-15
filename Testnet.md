@@ -1,6 +1,6 @@
-## ChainX v0.9.8 公开测试网已结束测试
+## ChainX v0.9.9 公开测试网已结束测试
 
-ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停止v0.9.8的进程，并删除所有数据
+ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停止v0.9.9的进程，并删除所有数据
 
 * 若启动时指定了`-d`或`--base-path`指定了目录，则将这个目录完全删除即可
 
@@ -18,21 +18,45 @@ ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停
         $ rm -rf $HOME/Library/Application\ Support/ChainX
         ```
 
-## ChainX v0.9.9 公开测试网
+## ChainX v0.9.10 公开测试网
 
 1. 访问在线钱包 [wallet.chainx.org](https://wallet.chainx.org) 和 浏览器[scan.chainx.org](https://scan.chainx.org) 。
 
 2. 点击创建账户，生成节点账户，**账户地址**形如 `5HbT8...S9yg`，导出**账户私钥**形如 `0x30530...c95aee43`。
 
-3. 首先在资产页领取 1 个 PCX 测试币，以便能够发起交易，进行注册，更新节点等操作。
+3. ~首先在资产页领取 1 个 PCX 测试币，以便能够发起交易，进行注册，更新节点等操作~。 添加群秘微信 469305052 进群领取测试币。
 
 4. 在投票选举页，点击注册节点，设置 **节点名称**，比如 NodeABC。
 
 5. 在投票选举页的候选节点里，可以看到你的节点处于 **退选** 状态。
 
-6. 在 https://github.com/chainx-org/ChainX/releases/tag/v0.9.9 下载 v0.9.9 测试网 ChainX 二进制 `chainx`, 目前仅支持 Ubuntu 16.04+ 或 macOS。
+6. 在 https://github.com/chainx-org/ChainX/releases/tag/v0.9.10 下载 v0.9.10 测试网 ChainX 二进制 `chainx`, 目前仅支持 Ubuntu 16.04+ 或 macOS。
 
 7. 启动节点。
+
+    1. 生成节点 keystore
+
+    ```bash
+    # 输入密码后即可断开节点
+    $ ./chainx --keystore-path=<keystore路径> -i --base-path=<数据存放路径>
+    Password:
+    Repeat again:
+    ......
+    2019-05-15 11:26:50.510 INFO Roles: FULL
+    ######### 下行打印即为节点生成的 keystore 信息
+    2019-05-15 11:26:50.514 INFO Generated a new keypair for keystore: 593a11d6d5930ab2e68fa5d07082ba0102fc7740eee38b79b2793d7d34a2442a (5E5hNNEi...)
+    ......
+    2019-05-15 11:26:50.610 INFO [runtime|xrml_xdex_spot] [add_trading_pair] currency_pair: CurrencyPair: SDOT/PCX, point_precision: 4, tick_precision: 2, price: 100000, online: true
+    ########## 看到下行打印后即可使用 <Ctrl-C> 断开节点
+    2019-05-15 11:26:50.624 INFO Initializing Genesis block/state (state: 0x9499…b6c3, header-hash: 0xdb82…e55d)
+    ....
+    ```
+
+    上述命令会在指定的 <keystore存放路径> 生成一个文件名为节点公钥的文件，形如: d41bf5ce34ec4503e633ed0d003356e111186954ce6143d0cfeb6d0a3e51e662。
+
+    注意要保存好 `keystore-path`, `base-path`, 和输入的 password, 启动节点时需要用到这些信息。
+
+    2. 
 
     ```bash
     # 如果之前运行过老版本的节点，请先删除老数据
@@ -51,8 +75,8 @@ ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停
 
     待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
 
-    - https://telemetry.polkadot.io/#/ChainX%20V0.9.9
-    - https://stats.chainx.org/#/ChainX%20V0.9.9
+    - https://telemetry.polkadot.io/#/ChainX%20V0.9.10
+    - https://stats.chainx.org/#/ChainX%20V0.9.10
   
     其他：
 
@@ -66,17 +90,17 @@ ChainX v0.9.8 公开测试网已结束测试，请参与这次测试的节点停
 
     之后在启动的目录下会生成`chainx.log`日志文件。若一直持续运行日志过大，可以对设置`crontab`的定时任务对日志进行切分，可参考[日志切分](https://blog.csdn.net/shawnhu007/article/details/50971084)编写脚本。
 
-    2. chainx v0.9.9 启动问题
+    2. chainx v0.9.10 启动问题
 
-    由于v0.9.9版本刚启动时存在一些失误，因此当前新加入的节点只能使用`chainx-v0.9.9-x86_64-<...>-p2p-hotfix.tgz`进行启动，然后观察类似日志：
+    由于v0.9.10版本刚启动时存在一些失误，因此当前新加入的节点只能使用`chainx-v0.9.10-x86_64-<...>-p2p-hotfix.tgz`进行启动，然后观察类似日志：
 
     ```bash
     2019-05-03 15:32:31.067 INFO Imported #416771 (0xefa3…faf7)
     ```
 
-    ~当`#`后面的值 **达到200000（20万）以上** 时，将节点停下来(kill -2)，然后使用`chainx-v0.9.9-x86_64-<...>-upgrade.tgz`中的执行文件继续启动即可。~
+    ~当`#`后面的值 **达到200000（20万）以上** 时，将节点停下来(kill -2)，然后使用`chainx-v0.9.10-x86_64-<...>-upgrade.tgz`中的执行文件继续启动即可。~
 
-    当`#`后面的值 **达到200000（20万）以上** 时，将节点停下来(kill -2)，然后使用`chainx-v0.9.9-x86_64-<...>-grandpa-hotfix.tgz`中的执行文件继续启动即可。
+    当`#`后面的值 **达到200000（20万）以上** 时，将节点停下来(kill -2)，然后使用`chainx-v0.9.10-x86_64-<...>-grandpa-hotfix.tgz`中的执行文件继续启动即可。
 
 8. 在投票选举页，点击更新节点，填写:
 
@@ -112,6 +136,7 @@ ChainX v0.9.9 将会进行信托相关功能的测试。当前ChainX上只有Bit
 
 ## CHANGELOG
 
+- ~v0.9.9~
 - ~v0.9.8~
 - ~v0.9.7~
 - ~v0.9.6~
