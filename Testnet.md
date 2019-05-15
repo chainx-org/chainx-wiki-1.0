@@ -58,19 +58,19 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
     - 该节点出块公钥粘贴到浏览器 https://scan.chainx.org 搜索框获得该公钥对应的地址，该地址将用于下一步更新出块地址。
 
-      ![image](https://user-images.githubusercontent.com/8850248/57749106-4fe2f700-770f-11e9-93e1-50921b6b769c.png)
+![image](https://user-images.githubusercontent.com/8850248/57749106-4fe2f700-770f-11e9-93e1-50921b6b769c.png)
 
     2. 更新出块地址
 
-      在投票选举页，点击更新节点，在出块地址填写上一步得到的地址：
+   在投票选举页，点击更新节点，在出块地址填写上一步得到的地址：
 
-        ![image](https://user-images.githubusercontent.com/8850248/57748969-bfa4b200-770e-11e9-843f-c841f3b887e6.png)
+![image](https://user-images.githubusercontent.com/8850248/57748969-bfa4b200-770e-11e9-843f-c841f3b887e6.png)
 
-        更新出块地址完成后，验证出块地址与生成的节点公钥是否匹配：首先进入区块链浏览器的验证节点详情页面，点击出块地址, 然后会看到该地址对应的公钥，检查是否为上一步生成的节点公钥相一致。如果一致，则正确，否则出块地址不正确。
+   更新出块地址完成后，验证出块地址与生成的节点公钥是否匹配：首先进入区块链浏览器的验证节点详情页面，点击出块地址, 然后会看到该地址对应的公钥，检查是否为上一步生成的节点公钥相一致。如果一致，则正确，否则出块地址不正确。
 
-        ![image](https://user-images.githubusercontent.com/8850248/57750530-38a70800-7715-11e9-969a-a7277739be6f.png)
+![image](https://user-images.githubusercontent.com/8850248/57750530-38a70800-7715-11e9-969a-a7277739be6f.png)
 
-    3. 准备节点启动配置文件
+  3. 准备节点启动配置文件
 
        ```bash
        # 如果之前运行过老版本的节点，请先删除老数据
