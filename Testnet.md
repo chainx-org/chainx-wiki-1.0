@@ -97,10 +97,12 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
        比如将JSON配置模板下载到与 chainx 二进制同级目录下， 文件名为 `config.json`。
 
-       ```
+       ```bash
+       $ curl https://git.io/fjlZU -o config.json
+       $ ls
         ├── chainx
-        ├── config.json
-        └── chainx.md5
+        ├── chainx.md5 
+        └── config.json
        ```
 
     3. 在配置文件中更新实际的节点信息
