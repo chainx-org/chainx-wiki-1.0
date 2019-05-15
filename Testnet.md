@@ -58,6 +58,8 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
     - 该节点出块公钥粘贴到浏览器 https://scan.chainx.org 搜索框获得该公钥对应的地址，该地址将用于下一步更新出块地址。
 
+      ![image](https://user-images.githubusercontent.com/8850248/57749106-4fe2f700-770f-11e9-93e1-50921b6b769c.png)
+
     2. 更新出块地址
 
         用上一步得到的地址更新出块地址：
