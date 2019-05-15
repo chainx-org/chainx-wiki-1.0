@@ -56,53 +56,114 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
     注意要保存好 `keystore-path`, `base-path`, 和输入的 password, 启动节点时需要用到这些信息。
 
-    2. 
+    2. 启动节点
 
-    ```bash
-    # 如果之前运行过老版本的节点，请先删除老数据
-    rm -rf 数据存放路径
+       ```bash
+       # 如果之前运行过老版本的节点，请先删除老数据
+       rm -rf 数据存放路径
+       ```
 
-    # 启动验证人节点
-    ./chainx --key=账户私钥 --validator-name=节点名称 --name=监控台名称 --base-path=数据存放路径 --validator --chain=local --pruning archive --block-construction-execution=NativeElseWasm --other-execution=NativeElseWasm --syncing-execution=NativeElseWasm
+       首先需要准备好json的配置文件(可从链接...获取):
 
-    # 启动同步节点
-    ./chainx --name=监控台名称 --base-path=数据存放路径 --chain=local --pruning archive --block-construction-execution=NativeElseWasm --other-execution=NativeElseWasm --syncing-execution=NativeElseWasm
-    ```
+       ```json
+       {
+           "validator": true,
+           "rpc-external": false,
+           "ws-external": false,
+           "log": "info,runtime=info",
+           "port": 20222,
+           "ws-port": 8087,
+           "rpc-port": 8086,
+           "other-execution": "NativeElseWasm",
+           "syncing-execution": "NativeElseWasm",
+           "block-construction-execution": "NativeElseWasm",
+           "bootnodes": [],
+           "name": "Your-Node-Name",
+           "validator-name": "Your-Validator-Name",
+           "base-path": "<1中指定的数据存放路径>",
+           "keystore-path": "<1中指定的keystore路径>"
+       }
+       ```
 
-    - `--key`: 指定验证人节点的出块私钥
-    - `--name`: 这里的 name 指的是在 telemetry 显示的名字，并非节点注册时指定的 name。
-    - `--validator-name`: validator-name 填的是节点注册时指定的 name， 必须和 `--key` 相匹配。
+       将配置文件保存在某处,后文称为`ConfigPath`,假设命名为 `chainx.conf`
+
+       启动节点:
+
+       1. 启动的密码配置于配置文件中
+
+          在刚才的json中添加一行
+
+          ```json
+          {
+              ...
+              "keystore-password": "<密码>"
+          }
+          ```
+
+          之后可执行一下命名即可启动节点:
+
+          ```bash
+          $ ./chainx --config <ConfigPath/chainx.conf>
+          ```
+
+          若需要放置后台运行,可执行
+
+          ```bash
+          $ nohup ./chainx --config <ConfigPath/chainx.conf> > chainx.log 2>&1 &
+          ```
+
+       2. 使用交互式输入密码
+
+          由于交互无法放置在后台,因此若想在后台启动,并且使用交互式输入密码,需要安装一些工具
+
+          1. 安装 `screen`
+
+             以 Ubuntu为例
+
+             ```bash
+             $ sudo apt install screen
+             ```
+
+          2. 使用screen托管启动节点
+
+             ```bash
+             # 注意最后的 -i 参数
+             $ screen -L -S chainx0.9.10 ./chainx --config=<ConfigPath/chainx.conf> -i 
+             ```
+
+             启动后按一下命名可退出screen
+
+             ```bash
+             Ctrl-A-D
+             ```
+
+             此时在当前路径下会出现对应的日志文件
+
+             若想attach到screen中,可以执行:
+
+             ```bash
+             # 列出screen
+             $ screen -ls
+             $ screen -r <上面 ls 出现的screen>
+             ```
+
+             即可进入screen中
+
+             若需要停止节点,进入screen按 `Ctrl-C` 即可退出
 
     待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
 
     - https://telemetry.polkadot.io/#/ChainX%20V0.9.10
     - https://stats.chainx.org/#/ChainX%20V0.9.10
-  
+      
+
     其他：
 
-    1. 在后台启动节点
+    1. 日志分割
 
-    在步骤 7 中启动节点的方式若退出启动的 shell 时会导致进程退出，因此需要在后台启动进程：
+    若一直持续运行日志过大，可以对设置`crontab`的定时任务对日志进行切分，可参考[日志切分](https://blog.csdn.net/shawnhu007/article/details/50971084)编写脚本,或使用`logrotate`等工具
 
-    ```bash
-    nohup ./chainx <在步骤 7 中的启动命令> >chainx.log 2>&1 &
-    ```   
-
-    之后在启动的目录下会生成`chainx.log`日志文件。若一直持续运行日志过大，可以对设置`crontab`的定时任务对日志进行切分，可参考[日志切分](https://blog.csdn.net/shawnhu007/article/details/50971084)编写脚本。
-
-    2. chainx v0.9.10 启动问题
-
-    由于v0.9.10版本刚启动时存在一些失误，因此当前新加入的节点只能使用`chainx-v0.9.10-x86_64-<...>-p2p-hotfix.tgz`进行启动，然后观察类似日志：
-
-    ```bash
-    2019-05-03 15:32:31.067 INFO Imported #416771 (0xefa3…faf7)
-    ```
-
-    ~当`#`后面的值 **达到200000（20万）以上** 时，将节点停下来(kill -2)，然后使用`chainx-v0.9.10-x86_64-<...>-upgrade.tgz`中的执行文件继续启动即可。~
-
-    当`#`后面的值 **达到200000（20万）以上** 时，将节点停下来(kill -2)，然后使用`chainx-v0.9.10-x86_64-<...>-grandpa-hotfix.tgz`中的执行文件继续启动即可。
-
-8. 在投票选举页，点击更新节点，填写:
+    2. 在投票选举页，点击更新节点，填写:
 
     - 出块地址(**账户地址**)
     - 网址
@@ -113,9 +174,9 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
 10. 如果由于节点部署不当等导致的节点掉线，系统会逐步惩罚节点奖池，漏一个块的罚金是出一个块奖励的 3 倍，罚金从节点奖池扣除。如果奖池被惩罚至0，会自动强制退选，节点需检查部署情况后，再次更新节点至参选状态，等待下一轮换届。
 
-## ChainX v0.9.9 信托测试
+## ChainX v0.9.10 信托测试
 
-ChainX v0.9.9 将会进行信托相关功能的测试。当前ChainX上只有Bitcoin部分需要信托功能，因此本次测试只针对Bitcoin信托:
+ChainX v0.9.10 将会进行信托相关功能的测试。当前ChainX上只有Bitcoin部分需要信托功能，因此本次测试只针对Bitcoin信托:
 
 > ”信托“为ChainX上托管对应链的代币的角色，因此”信托“实际上跨链代币的托管者。因此”信托“的参与者必须经过严格的KYC进行验证并公布自己的节点信息，且在验证节点中排名靠前，以保证充足的利益绑定关系防止作恶。
 >
@@ -130,9 +191,7 @@ ChainX v0.9.9 将会进行信托相关功能的测试。当前ChainX上只有Bit
 > * 节点身份已知，且背后有较大利益关系背书（如公司，名望等）
 > * 其他有效筛选条件
 
-**本次信托测试预计2019年4月26日下午3点（北京时间）进行第一届信托切换（第0届信托为ChainX），由ChainX指定第一届信托参与者，条件如以上介绍。**
-
-成为信托候选的相关文档：（后续更新）
+**本次信托测试时间之后放出**
 
 ## CHANGELOG
 
