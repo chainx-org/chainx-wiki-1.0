@@ -34,7 +34,7 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
 7. 启动节点。
 
-    1. 生成节点 keystore
+   1. 生成节点 keystore
 
     ```bash
     # 输入密码后即可断开节点
@@ -60,7 +60,7 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
 ![image](https://user-images.githubusercontent.com/8850248/57749106-4fe2f700-770f-11e9-93e1-50921b6b769c.png)
 
-    2. 更新出块地址
+   2. 更新出块地址
 
    在投票选举页，点击更新节点，在出块地址填写上一步得到的地址：
 
@@ -109,7 +109,7 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
         └── config.json
        ```
 
-    3. 在配置文件中更新实际的节点信息
+   4. 在配置文件中更新实际的节点信息
 
         - `name`: 在 telemetry 显示的节点名
         - `validator-name`: 注册节点时使用的名称
@@ -120,7 +120,7 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
         其他参数可在配置文件自行修改。
 
-    4. 通过配置文件启动节点
+   5. 通过配置文件启动节点
 
       ```bash
       $ ./chainx --config=$(pwd)/config.json
@@ -132,12 +132,12 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
       $ nohup ./chainx --config=$(pwd)/config.json > chainx.log 2>&1 &
       ```
 
-    待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
+     待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
 
-    - https://telemetry.polkadot.io/#/ChainX%20V0.9.10
-    - https://stats.chainx.org/#/ChainX%20V0.9.10
+     - https://telemetry.polkadot.io/#/ChainX%20V0.9.10
+     - https://stats.chainx.org/#/ChainX%20V0.9.10
 
-    其他节点运维相关见：[ChainX 节点运维](devops)
+     其他节点运维相关见：[ChainX 节点运维](devops)
 
 9. 确认节点成功运行后，在投票选举页，点击更新节点，使节点进入参选状态:
 
