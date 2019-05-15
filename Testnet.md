@@ -65,14 +65,14 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
     注意要保存好 `keystore-path`, `base-path`, 和输入的 password, 启动节点时需要用到这些信息。
 
-    2. 启动节点
+    2. 准备节点启动配置文件
 
        ```bash
        # 如果之前运行过老版本的节点，请先删除老数据
        rm -rf 数据存放路径
        ```
 
-       首先需要准备好json的配置文件(可从链接...获取):
+       首先需要准备好 JSON 的配置文件, [下载配置文件模板](https://gist.github.com/liuchengxu/3b3ed4ce027e39fc89b5a5a6c289bfaf):
 
        ```json
        {
@@ -89,82 +89,42 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
            "bootnodes": [],
            "name": "Your-Node-Name",
            "validator-name": "Your-Validator-Name",
-           "base-path": "<1中指定的数据存放路径>",
-           "keystore-path": "<1中指定的keystore路径>"
+           "base-path": "<启动节点步骤1中指定的数据存放路径>",
+           "keystore-path": "<启动节点步骤1中指定的keystore路径>"
        }
        ```
 
-       将配置文件保存在某处,后文称为`ConfigPath`,假设命名为 `chainx.conf`
+       比如将JSON配置模板下载到与 chainx 二进制同级目录下， 文件名为 `config.json`。
 
-       启动节点:
+       ```
+        ├── chainx
+        ├── config.json
+        └── chainx.md5
+       ```
 
-       1. 启动的密码配置于配置文件中
+    3. 在配置文件中更新实际的节点信息
 
-          在刚才的json中添加一行
+    - `name`: 在 telemetry 显示的节点名
+    - `validator-name`: 注册节点时使用的名称
+    - `base-path`: 数据存放路径，注意与启动节点步骤1中的相对应
+    - `keystore-password`: 启动节点步骤1中输入的 password
 
-          ```json
-          {
-              ...
-              "keystore-password": "<密码>"
-          }
-          ```
+    4. 通过配置文件启动节点
 
-          之后可执行以下命名即可启动节点:
+      ```bash
+      $ ./chainx --config=$(pwd)/config.json
+      ```
 
-          ```bash
-          $ ./chainx --config <ConfigPath/chainx.conf>
-          ```
+      若需要放置后台运行,可执行
 
-          若需要放置后台运行,可执行
-
-          ```bash
-          $ nohup ./chainx --config <ConfigPath/chainx.conf> > chainx.log 2>&1 &
-          ```
-
-       2. 使用交互式输入密码
-
-          由于交互无法放置在后台,因此若想在后台启动,并且使用交互式输入密码,需要安装一些工具
-
-          1. 安装 `screen`
-
-             以 Ubuntu为例
-
-             ```bash
-             $ sudo apt install screen
-             ```
-
-          2. 使用screen托管启动节点
-
-             ```bash
-             # 注意最后的 -i 参数
-             $ screen -L -S chainx0.9.10 ./chainx --config=<ConfigPath/chainx.conf> -i 
-             ```
-
-             启动后按以下命名可退出screen
-
-             ```bash
-             Ctrl-A-D
-             ```
-
-             此时在当前路径下会出现对应的日志文件
-
-             若想attach到screen中,可以执行:
-
-             ```bash
-             # 列出screen
-             $ screen -ls
-             $ screen -r <上面 ls 出现的screen>
-             ```
-
-             即可进入screen中
-
-             若需要停止节点,进入screen按 `Ctrl-C` 即可退出
+      ```bash
+      $ nohup ./chainx --config=$(pwd)/config.json > chainx.log 2>&1 &
+      ```
 
     待节点部署完毕，并在监控台等待自己的节点同步到最新，监控台地址:
 
     - https://telemetry.polkadot.io/#/ChainX%20V0.9.10
     - https://stats.chainx.org/#/ChainX%20V0.9.10
-      
 
     其他：
 
@@ -172,7 +132,47 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
     若一直持续运行日志过大，可以对设置`crontab`的定时任务对日志进行切分，可参考[日志切分](https://blog.csdn.net/shawnhu007/article/details/50971084)编写脚本,或使用`logrotate`等工具
 
-    2. 在投票选举页，点击更新节点，填写:
+    2. 使用交互式输入密码
+
+      由于交互无法放置在后台,因此若想在后台启动,并且使用交互式输入密码,需要安装一些工具
+
+      1. 安装 `screen`
+
+         以 Ubuntu为例
+
+         ```bash
+         $ sudo apt install screen
+         ```
+
+      2. 使用screen托管启动节点
+
+         ```bash
+         # 注意最后的 -i 参数
+         $ screen -L -S chainx0.9.10 ./chainx --config=<ConfigPath/chainx.conf> -i 
+         ```
+
+         启动后按一下命名可退出screen
+
+         ```bash
+         Ctrl-A-D
+         ```
+
+         此时在当前路径下会出现对应的日志文件
+
+         若想attach到screen中,可以执行:
+
+         ```bash
+         # 列出screen
+         $ screen -ls
+         $ screen -r <上面 ls 出现的screen>
+         ```
+
+         即可进入screen中
+
+         若需要停止节点,进入screen按 `Ctrl-C` 即可退出
+
+
+8. 在投票选举页，点击更新节点，填写:
 
     - 出块地址(**账户地址**)
     - 网址
