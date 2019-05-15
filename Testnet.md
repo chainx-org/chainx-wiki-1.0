@@ -52,11 +52,19 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
     ....
     ```
 
-    上述命令会在指定的 <keystore存放路径> 生成一个文件名为节点公钥的文件，形如: d41bf5ce34ec4503e633ed0d003356e111186954ce6143d0cfeb6d0a3e51e662。
+    上述命令会在指定的 <keystore存放路径> 生成一个文件名为**节点出块地址公钥**的文件，形如: d41bf5ce34ec4503e633ed0d003356e111186954ce6143d0cfeb6d0a3e51e662。
 
-    注意要保存好 `keystore-path`, `base-path`, 和输入的 password, 启动节点时需要用到这些信息。
+    - 注意要保存好 `keystore-path`, `base-path`, 和输入的 password, 启动节点时需要用到这些信息。
 
-    2. 准备节点启动配置文件
+    - 该节点出块公钥粘贴到浏览器 https://scan.chainx.org 搜索框获得该公钥对应的地址，该地址将用于下一步更新出块地址。
+
+    2. 更新出块地址
+
+        用上一步得到的地址更新出块地址：
+
+        ![image](https://user-images.githubusercontent.com/8850248/57748969-bfa4b200-770e-11e9-843f-c841f3b887e6.png)
+
+    3. 准备节点启动配置文件
 
        ```bash
        # 如果之前运行过老版本的节点，请先删除老数据
@@ -95,10 +103,13 @@ ChainX v0.9.9 公开测试网已结束测试，请参与这次测试的节点停
 
     3. 在配置文件中更新实际的节点信息
 
-    - `name`: 在 telemetry 显示的节点名
-    - `validator-name`: 注册节点时使用的名称
-    - `base-path`: 数据存放路径，注意与启动节点步骤1中的相对应
-    - `keystore-password`: 启动节点步骤1中输入的 password
+        - `name`: 在 telemetry 显示的节点名
+        - `validator-name`: 注册节点时使用的名称
+        - `base-path`: 数据存放路径，注意与启动节点步骤1中的相对应
+        - `keystore-password`: 启动节点步骤1中输入的 password
+        - `validator`: 如果设置为 `true`, 则启动验证节点，否则为同步节点。
+
+        其他参数可在配置文件自行修改。
 
     4. 通过配置文件启动节点
 
