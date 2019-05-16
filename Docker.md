@@ -2,26 +2,26 @@
 
 ### 1. 生成节点 keystore
 
-    该步骤目的是生成节点出块地址。
+该步骤目的是生成节点出块地址。
 
-    ```bash
-    $ docker run -it --rm -v $(pwd)/data:/data -v $(pwd)/keystore:/keystore chainxorg/chainx:v0.9.10 chainx -i --keystore-path=/keystore --base-path=/data
-    Password:
-    Repeat again:
-    ...
-    ##### 输入密码完成可使用 <Ctrl-C> 退出
-    ```
+```bash
+$ docker run -it --rm -v $(pwd)/data:/data -v $(pwd)/keystore:/keystore chainxorg/chainx:v0.9.10 chainx -i --keystore-path=/keystore --base-path=/data
+Password:
+Repeat again:
+...
+##### 输入密码完成可使用 <Ctrl-C> 退出
+```
 
-    - 上述命令会提示输入一个密码，该密码即为节点 keystore 的密码。
+- 上述命令会提示输入一个密码，该密码即为节点 keystore 的密码。
 
-    - 输入密码完成后，会当前目录下生成了一个名为 `keystore` 的文件夹，文件夹下有一个文件名为节点公钥的文件，该公钥即为我们要使用的节点出块地址对应的公钥。
+- 输入密码完成后，会当前目录下生成了一个名为 `keystore` 的文件夹，文件夹下有一个文件名为节点公钥的文件，该公钥即为我们要使用的节点出块地址对应的公钥。
 
-    ```bash
-    $ ls keystore
-    f1a10ac84641d72074f89c8b4dcaa10ab2a8e982921a81c292f2839f9bf6080f
-    ```
+```bash
+$ ls keystore
+f1a10ac84641d72074f89c8b4dcaa10ab2a8e982921a81c292f2839f9bf6080f
+```
 
-    将该公钥粘贴到浏览器，可以看到节点公钥所对应的地址。
+将该公钥粘贴到浏览器，可以看到节点公钥所对应的地址。
 
 ### 2. 启动同步节点
 
