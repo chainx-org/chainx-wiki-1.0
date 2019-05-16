@@ -1,5 +1,7 @@
 ## 使用 Docker 运行 ChainX 节点
 
+ChainX v0.9.10 测试网使用镜像: `chainxorg/chainx:v0.9.10`.
+
 ### 1. 生成节点 keystore
 
 该步骤目的是生成节点出块地址。
