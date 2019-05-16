@@ -54,7 +54,7 @@ f1a10ac84641d72074f89c8b4dcaa10ab2a8e982921a81c292f2839f9bf6080f
 启动同步节点 Docker：
 
 ```bash
-$ docker run -d -it --restart always --name chainx -p 8087:8087 -p 8086:8086 -p 20222:20222 -v $(pwd)/data:/data -v $(pwd)/keystore:/keystore -v $(pwd)/config.json:/config.json chainxorg/chainx:v0.9.10 chainx --config=/config.json
+$ docker run -d --restart always --name chainx -p 8087:8087 -p 8086:8086 -p 20222:20222 -v $(pwd)/data:/data -v $(pwd)/keystore:/keystore -v $(pwd)/config.json:/config.json chainxorg/chainx:v0.9.10 chainx --config=/config.json
 ```
 
 查看 Docker 日志：
