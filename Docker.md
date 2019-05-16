@@ -1,6 +1,6 @@
 ## 使用 Docker 运行 ChainX 节点
 
-ChainX v0.9.10 测试网使用镜像: `chainxorg/chainx:v0.9.10`.
+ChainX v0.9.10 测试网使用镜像: [chainxorg/chainx:v0.9.10](https://hub.docker.com/r/chainxorg/chainx/tags).
 
 ### 1. 生成节点 keystore
 
