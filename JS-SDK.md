@@ -19,7 +19,7 @@ const Chainx = require('chainx.js').default;
 
 (async () => {
   // 目前只支持 websocket 链接
-  const chainx = new Chainx('wss://w1.chainx.org.cn/ws');
+  const chainx = new Chainx('wss://w1.chainx.org/ws');
 
   // 等待异步的初始化
   await chainx.isRpcReady();
