@@ -12,6 +12,7 @@
 - [Bitcoin 转接桥](Bitcoin-转接桥)
 - [信托](信托)
 - [Bitcoin信托操作指南](Bitcoin信托相关操作)
+- [FAQ](FAQ)
 
 ### 开发文档
 
