@@ -59,7 +59,7 @@ chainx当前已经提供了
 
    在 https://github.com/chainx-org/ChainX/releases/tag/v0.9.10 下载 v0.9.10 测试网 ChainX 二进制 `chainx`，目前仅支持 Ubuntu 16.04+ 或 macOS。
 
-   v0.9.10 我们已经进行了一次链上升级，目前的最新版本是: chainx-v0.9.10-x86_64-<....>-onchain-upgrade.tgz, 请直接下载最新的 onchain-upgrade 版本。
+   v0.9.10 我们已经进行了两次链上升级，目前的最新版本是: chainx-v0.9.10-x86_64-<....>-onchain-upgrade-20190518.tgz, 请直接下载最新的 onchain-upgrade-20190518 版本。
 
 
 3. 准备启动配置文件或启动命令：
