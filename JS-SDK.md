@@ -49,6 +49,56 @@ const Chainx = require('chainx.js').default;
 })();
 ```
 
+
+离线签名
+
+```javascript
+const Chainx = require('chainx.js').default;
+const nacl = require('tweetnacl');
+
+function ed25519Sign(message, privateKey) {
+  // 使用 ed25519 算法进行签名。
+  return nacl.sign.detached(message, nacl.sign.keyPair.fromSeed(privateKey).secretKey);
+}
+
+(async () => {
+  // 目前只支持 websocket 链接
+  const chainx = new Chainx('wss://w1.chainx.org/ws');
+
+  // 等待异步的初始化
+  await chainx.isRpcReady();
+
+  // 签名账户的 32 位私钥
+  const privateKey = Buffer.from('5858582020202020202020202020202020202020202020202020202020202020', 'hex');
+  // 签名账户的公钥
+  const address = '5CjVPmj6Bm3TVUwfY5ph3PE2daxPHp1G3YZQnrXc8GDjstwT';
+
+  // 投票提息
+  const extrinsic = chainx.stake.voteClaim(address);
+
+  // 获取该账户交易次数
+  const nonce = await extrinsic.getNonce(address);
+
+  // 获取待签原文
+  // 可传入参数： extrinsic.encodeMessage(address, { nonce, acceleration = 1, blockHash = genesisHash, era = '0x00' })
+  const encoded = extrinsic.encodeMessage(address, { nonce, acceleration: 10 });
+
+  // 离线签名
+  const signature = ed25519Sign(encoded, privateKey);
+
+  // 注入签名
+  extrinsic.appendSignature(signature);
+
+  // 发送到链上的数据
+  // console.log(extrinsic.toHex())
+
+  // 发送交易
+  extrinsic.send((error, result) => {
+    console.log(error, result);
+  });
+})();
+```
+
 ## Chainx.js
 
 目前只接受 websocket 的方式，调用 rpc。使用前需要等待程序初始化完成：
@@ -68,7 +118,7 @@ chainx.on('ready', () => {}) // 初始化完成
 ```
 
 初始化过程会自动会从链上获取网络版本。这将会影响到显示的账号地址的格式。请注意，这是异步的，未初始化完成前，默认是测试网络。
-也可以通过 `chainx.account.setNet('mainnet')` 或 `chainx.account.setNet('testnet')`，手动指定网络版本。 
+也可以通过 `chainx.account.setNet('mainnet')` 或 `chainx.account.setNet('testnet')`，手动指定网络版本。
 
 ## 类型定义
 
@@ -150,6 +200,8 @@ alice.privateKey() // 私钥 0x...
 我们需要有几个步骤，来完成一次完整的交易。首先确定我们需要调用的 Method，如下列所示。以下 api 均返回一个 [SubmittableExtrinsic](https://github.com/chainx-org/chainx.js/blob/master/packages/chainx/src/SubmittableExtrinsic.js) 对象，它继承于 [Extrinsic](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Extrinsic.js) 。注意所有涉及到金额的部分，均是以最小的精度为单位。不存在小数。
 
 [SubmittableExtrinsic](https://github.com/chainx-org/chainx.js/blob/master/packages/chainx/src/SubmittableExtrinsic.js) 存在几个比较重要的方法：
+
+- `encodeMessage(address, { nonce, acceleration = 1, blockHash = genesisHash, era = '0x00' })`: 获取编码后的代签原文。其中 `address`，是用于签名的账户的地址，nonce 指该地址的当前交易数，acceleration 指加速倍率。
 
 - `sign(account, { nonce, acceleration, blockHash })`：使用 account 签名该交易，其中 nonce 指该账户当前交易数。acceleration 指加速倍率，倍率越高手续费被扣的越多，同时交易也越快。blockHash 默认为当前链的初始哈希。
 
@@ -259,7 +311,7 @@ chainx.trustee.signWithdrawTx('0x......');
 chainx.trustee.setupBitcoinTrustee('111'， '0x......', '0x......');
 ```
 
-### 
+###
 
 ### chainx.asset.transfer([dest](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/AccountId.js), [token](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/AccountId.js), [value](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Balance.js), [memo](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Balance.js))
 
