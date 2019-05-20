@@ -214,6 +214,53 @@ alice.privateKey() // 私钥 0x...
 
 
 
+### chainx.trustee.createWithdrawTx([withdrawalIdList](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/codec/Vector.js), [tx](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Bytes.js))
+
+提交构造的提现交易原文
+
+#### 参数
+
+- `withdrawalIdList`：提现ID列表
+- `tx`：构造的待签原文
+
+#### 例子：
+
+```javascript
+chainx.trustee.createWithdrawTx([1, 2], '0x......');
+```
+
+### chainx.trustee.signWithdrawTx([tx?](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Bytes.js))
+
+提交签名后的交易原文
+
+#### 参数
+
+- `tx`：签名后的交易原文
+
+#### 例子：
+
+```javascript
+chainx.trustee.signWithdrawTx('0x......');
+```
+
+### chainx.trustee.setupBitcoinTrustee([about](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Text.js), [hotEntity](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/H264.js), [coldEntity](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/H264.js))
+
+设置比特币信托地址
+
+#### 参数
+
+- `tx`：签名后的交易原文
+- ` hotEntity`：热地址
+- `coldEntity`：冷地址
+
+#### 例子：
+
+```javascript
+chainx.trustee.setupBitcoinTrustee('111'， '0x......', '0x......');
+```
+
+### 
+
 ### chainx.asset.transfer([dest](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/AccountId.js), [token](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/AccountId.js), [value](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Balance.js), [memo](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Balance.js))
 
 转账
@@ -246,35 +293,6 @@ chainx.asset.transfer('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 'PCX',
 
 ```javascript
 chainx.asset.withdraw('BTC', 100, '5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', '提现');
-```
-
-### chainx.asset.createWithdrawTx([withdrawalIdList](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/codec/Vector.js), [tx](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Bytes.js))
-
-提交构造的提现交易原文
-
-#### 参数
-
-- `withdrawalIdList`：提现ID列表
-- `tx`：构造的待签原文
-
-#### 例子：
-
-```javascript
-chainx.asset.createWithdrawTx([1, 2], '0x......');
-```
-
-### chainx.asset.signWithdrawTx([tx?](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Bytes.js))
-
-提交签名后的交易原文
-
-#### 参数
-
-- `tx`：签名后的交易原文
-
-#### 例子：
-
-```javascript
-chainx.asset.signWithdrawTx('0x......');
 ```
 
 ### chainx.trade.putOrder([pair_index](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/TradingPairIndex.js), [order_type](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/OrderType.js), [order_direction](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/OrderDirection.js), [amount](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Balance.js), [price](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Price.js))
