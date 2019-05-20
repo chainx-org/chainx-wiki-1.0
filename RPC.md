@@ -58,7 +58,77 @@ const subscription = chainx.chain.subscribeNewHead().subscribe(result => {
 **/
 ```
 
-## #
+### chainx.trustee.getTrusteeSessionInfo([chain](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Chain.js))
+
+分局链返回当前的信托相关信息
+
+### 参数
+
+- chain: Chain, 链ID
+
+### 例子
+
+```js
+chainx.trustee.verifyAddressValidity("BTC", "2N8tR484JD32i1DY2FnRPLwBVaNuXSfzoAv", "")
+/**
+{
+  "coldEntity": "2N24ytjE3MtkMpYWo8LrTfnkbpyaJGyQbCA", // 冷信托地址
+  "hotEntity": "2N1CPZyyoKj1wFz2Fy4gEHpSCVxx44GtyoY", // 热信托地址
+  "sessionNumber": 0, // 当前信托届数，每换届一次就会增加1
+  "trusteeList": [
+    // 当前这条链的信托节点账户列表
+    "0x471af9e69d41ee06426940fd302454662742405cb9dcc5bc68ceb7bec979e5e4",
+    "0x806a491666670aa087e04770c025d64b2ecebfd91a74efdc4f4329642de32365",
+    "0x1cf70f57bf2a2036661819501164458bd6d94642d81b5e8f1d9bdad93bad49bb",
+    "0x09a6acd8a6f4394c6ba8b5ea93ae0d473880823f357dd3fdfd5ff4ccf1fcad99"
+  ]
+}
+**/
+```
+
+### chainx.trustee.getTrusteeInfoByAccount([who](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Address.js))
+
+获取该用户的信托信息（已注册信托后会显示）
+
+### 参数
+
+- `who`: AccountId 账户
+
+### 例子
+
+```js
+chainx.trustee.getTrusteeInfoByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ')
+/**
+[
+  {
+    "chain": "Bitcoin", // 链 ID
+    "coldEntity": "02a79800dfed17ad4c78c52797aa3449925692bc8c83de469421080f42d27790ee", // 冷公钥/地址
+    "hotEntity": "03f72c448a0e59f48d4adef86cba7b278214cece8e56ef32ba1d179e0a8129bdba" // 热公钥/地址
+  }
+]
+**/
+```
+
+### chainx.trustee.getWithdrawTx([chain](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Chain.js))
+
+获取提现交易
+
+### 参数
+
+- chain: Chain, 链ID
+
+### 例子
+
+```js
+chainx.trustee.getWithdrawTx('Bitcoin')
+/**
+{
+  "redeemScript": "532103f72c448a0e59f48d4adef86cba7b278214cece8e56ef32ba1d179e0a8129bdba210306117a360e5dbe10e1938a047949c25a86c0b0e08a0a7c1e611b97de6b2917dd210311252930af8ba766b9c7a6580d8dc4bbf9b0befd17a8ef7fabac275bba77ae40210227e54b65612152485a812b8856e92f41f64788858466cc4d8df674939a5538c354ae", //redeem_script
+  "signStatus": false, //签名状态： false 未签名完成， true 签名完成
+  "tx": "0100000001283fe241ec9528a48e6ce79b1ede9aabb59dbe38edeee013a28744c31d3db7860000000000ffffffff0288130000000000001976a914a5155d5636db0a9b8314460812f5105d84a5ae3d88acf0d200000000000017a9145737c1979343920ceea40e7c7d68b264b0effa3e8700000000" //交易原文
+}
+**/
+```
 
 ### chainx.asset.getAssetsByAccount([who](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Address.js), [page_index](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/U32.js), [page_size](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/U32.js))
 
@@ -303,27 +373,6 @@ chainx.asset.getAddressByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXq
 **/
 ```
 
-### chainx.asset.getWithdrawTx([chain](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Chain.js))
-
-获取提现交易
-
-### 参数
-
-- chain: Chain, 链ID
-
-### 例子
-
-```js
-chainx.asset.getWithdrawTx('Bitcoin')
-/**
-{
-  "redeemScript": "532103f72c448a0e59f48d4adef86cba7b278214cece8e56ef32ba1d179e0a8129bdba210306117a360e5dbe10e1938a047949c25a86c0b0e08a0a7c1e611b97de6b2917dd210311252930af8ba766b9c7a6580d8dc4bbf9b0befd17a8ef7fabac275bba77ae40210227e54b65612152485a812b8856e92f41f64788858466cc4d8df674939a5538c354ae", //redeem_script
-  "signStatus": false, //签名状态： false 未签名完成， true 签名完成
-  "tx": "0100000001283fe241ec9528a48e6ce79b1ede9aabb59dbe38edeee013a28744c31d3db7860000000000ffffffff0288130000000000001976a914a5155d5636db0a9b8314460812f5105d84a5ae3d88acf0d200000000000017a9145737c1979343920ceea40e7c7d68b264b0effa3e8700000000" //交易原文
-}
-**/
-```
-
 ### chainx.asset.verifyAddressValidity([token](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Text.js), [addr](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Text.js), [memo](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Memo.js))
 
 验证提现地址正确性
@@ -340,34 +389,6 @@ chainx.asset.getWithdrawTx('Bitcoin')
 chainx.asset.verifyAddressValidity("BTC", "2N8tR484JD32i1DY2FnRPLwBVaNuXSfzoAv", "")
 /**
 true // 返回 true 代表地址校验正确，false代表错误
-**/
-```
-
-### chainx.asset.getTrusteeSessionInfo([chain](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Chain.js))
-
-分局链返回当前的信托相关信息
-
-### 参数
-
-- chain: Chain, 链ID
-
-### 例子
-
-```js
-chainx.asset.verifyAddressValidity("BTC", "2N8tR484JD32i1DY2FnRPLwBVaNuXSfzoAv", "")
-/**
-{
-  "coldEntity": "2N24ytjE3MtkMpYWo8LrTfnkbpyaJGyQbCA", // 冷信托地址
-  "hotEntity": "2N1CPZyyoKj1wFz2Fy4gEHpSCVxx44GtyoY", // 热信托地址
-  "sessionNumber": 0, // 当前信托届数，每换届一次就会增加1
-  "trusteeList": [
-    // 当前这条链的信托节点账户列表
-    "0x471af9e69d41ee06426940fd302454662742405cb9dcc5bc68ceb7bec979e5e4",
-    "0x806a491666670aa087e04770c025d64b2ecebfd91a74efdc4f4329642de32365",
-    "0x1cf70f57bf2a2036661819501164458bd6d94642d81b5e8f1d9bdad93bad49bb",
-    "0x09a6acd8a6f4394c6ba8b5ea93ae0d473880823f357dd3fdfd5ff4ccf1fcad99"
-  ]
-}
 **/
 ```
 
@@ -506,29 +527,6 @@ chainx.stake.getPseduNominationRecords('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7
   }
 ]
 
-**/
-```
-
-### chainx.stake.getTrusteeInfoByAccount([who](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Address.js))
-
-获取该用户的信托信息（已注册信托后会显示）
-
-### 参数
-
-- `who`: AccountId 账户
-
-### 例子
-
-```js
-chainx.stake.getTrusteeInfoByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ')
-/**
-[
-  {
-    "chain": "Bitcoin", // 链 ID
-    "coldEntity": "02a79800dfed17ad4c78c52797aa3449925692bc8c83de469421080f42d27790ee", // 冷公钥/地址
-    "hotEntity": "03f72c448a0e59f48d4adef86cba7b278214cece8e56ef32ba1d179e0a8129bdba" // 热公钥/地址
-  }
-]
 **/
 ```
 
