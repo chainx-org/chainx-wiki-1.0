@@ -454,7 +454,7 @@ chainx.stake.getNominationRecords('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgX
 ### 例子
 
 ```js
-chainx.stake.getNominationRecords()
+chainx.stake.getIntentions()
 /**
 [
   {
