@@ -56,7 +56,10 @@ const Chainx = require('chainx.js').default;
 const Chainx = require('chainx.js').default;
 const nacl = require('tweetnacl');
 
-function ed25519Sign(message, privateKey) {
+// 签名过程
+async function ed25519Sign(message) {
+  // 签名账户的 32 位私钥
+  const privateKey = Buffer.from('5858582020202020202020202020202020202020202020202020202020202020', 'hex');
   // 使用 ed25519 算法进行签名。
   return nacl.sign.detached(message, nacl.sign.keyPair.fromSeed(privateKey).secretKey);
 }
@@ -68,8 +71,6 @@ function ed25519Sign(message, privateKey) {
   // 等待异步的初始化
   await chainx.isRpcReady();
 
-  // 签名账户的 32 位私钥
-  const privateKey = Buffer.from('5858582020202020202020202020202020202020202020202020202020202020', 'hex');
   // 签名账户的公钥
   const address = '5CjVPmj6Bm3TVUwfY5ph3PE2daxPHp1G3YZQnrXc8GDjstwT';
 
@@ -84,7 +85,7 @@ function ed25519Sign(message, privateKey) {
   const encoded = extrinsic.encodeMessage(address, { nonce, acceleration: 10 });
 
   // 离线签名
-  const signature = ed25519Sign(encoded, privateKey);
+  const signature = await ed25519Sign(encoded);
 
   // 注入签名
   extrinsic.appendSignature(signature);
