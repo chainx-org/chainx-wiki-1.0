@@ -116,6 +116,9 @@ chainx.on('disconnected', () => {}) // websocket 链接断开
 chainx.on('error', () => {}) // 发生一个错误
 chainx.on('connected', () => {}) // websocket 已连接
 chainx.on('ready', () => {}) // 初始化完成
+
+// 操作 websocket 对象，断开 websocket 连接
+chainx.provider.websocket.close()
 ```
 
 初始化过程会自动会从链上获取网络版本。这将会影响到显示的账号地址的格式。请注意，这是异步的，未初始化完成前，默认是测试网络。
