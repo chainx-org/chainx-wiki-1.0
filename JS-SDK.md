@@ -1147,23 +1147,6 @@ chainx.stake.getNextKeyFor('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ')
 **/
 ```
 
-### chainx.stake.getTokenDiscount()
-
-获取虚拟挖矿的折扣
-
-### 参数
-
-无
-
-### 例子
-
-```js
-chainx.stake.getNextKeyFor()
-/**
-10
-**/
-```
-
 ### chainx.trade.getTradingPairs()
 
 交易对列表
