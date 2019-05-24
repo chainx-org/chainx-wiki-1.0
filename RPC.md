@@ -111,7 +111,7 @@ chainx.trustee.getTrusteeInfoByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7
 
 ### chainx.trustee.getWithdrawTx([chain](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Chain.js))
 
-获取提现交易
+获取对应链的提现交易，已经与这个交易相关的ChainX申请提现的用户提现记录id列表（用于信托获取对应链上正在处理中的多签提现交易，如对于BTC而言，该接口返回信托需要进行签署的比特币提现待签原文以及相关信息）
 
 ### 参数
 
@@ -123,9 +123,18 @@ chainx.trustee.getTrusteeInfoByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7
 chainx.trustee.getWithdrawTx('Bitcoin')
 /**
 {
-  "redeemScript": "532103f72c448a0e59f48d4adef86cba7b278214cece8e56ef32ba1d179e0a8129bdba210306117a360e5dbe10e1938a047949c25a86c0b0e08a0a7c1e611b97de6b2917dd210311252930af8ba766b9c7a6580d8dc4bbf9b0befd17a8ef7fabac275bba77ae40210227e54b65612152485a812b8856e92f41f64788858466cc4d8df674939a5538c354ae", //redeem_script
   "signStatus": false, //签名状态： false 未签名完成， true 签名完成
-  "tx": "0100000001283fe241ec9528a48e6ce79b1ede9aabb59dbe38edeee013a28744c31d3db7860000000000ffffffff0288130000000000001976a914a5155d5636db0a9b8314460812f5105d84a5ae3d88acf0d200000000000017a9145737c1979343920ceea40e7c7d68b264b0effa3e8700000000" //交易原文
+  "tx": "0100000001283fe241ec9528a48e6ce79b1ede9aabb59dbe38edeee013a28744c31d3db7860000000000ffffffff0288130000000000001976a914a5155d5636db0a9b8314460812f5105d84a5ae3d88acf0d200000000000017a9145737c1979343920ceea40e7c7d68b264b0effa3e8700000000", //比特币提现的交易原文
+  // 这笔交易对应的ChainX用户提现记录的id列表，与`getWithdrawalList`的返回值结合后可以获取用户提现申请的详细记录，用于签署者去验证是否与原文相对应
+  "withdrawalIdList": [
+  	1,2,3 ... 
+  ],
+  // 当前已做出的行动信托列表（包含签名确认或者否决），未做出行动的不在列表内，信托详细信息可以从`getTrusteeSessionInfo`获取
+  “trusteeList”: [ 
+  	["0x..........", true], // 已签名
+  	["0x..........", false], // 已否决
+  	["0x..........", true], // 已签名
+  ]
 }
 **/
 ```
@@ -392,9 +401,9 @@ true // 返回 true 代表地址校验正确，false代表错误
 **/
 ```
 
-### chainx.asset.getMinimalWithdrawalValueByToken([token](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Token.js))
+### chainx.asset.getWithdrawalLimitByToken([token](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Token.js))
 
-chainx 链上提现的最小值，一般为用户提现扣除的手续费
+chainx 链上与提现金额相关的限制，如提现的最小值与用户提现扣除的手续费
 
 ### 参数
 
@@ -403,13 +412,14 @@ chainx 链上提现的最小值，一般为用户提现扣除的手续费
 ### 例子
 
 ```js
-chainx.asset.getMinimalWithdrawalValueByToken("BTC")
+chainx.asset.getWithdrawalLimitByToken("BTC")
 /**
-40000
+{
+	minimalWithdrawal: 150000,
+	fee: 100000
+}
 **/
 ```
-
-
 
 ### chainx.stake.getNominationRecords([who](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Address.js))
 

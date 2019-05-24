@@ -82,23 +82,34 @@ Bitcoin 提现流程如下
 
 2. 信托处理
 
+   `fee`用户提现手续费，通过rpc接口`chainx.asset.getWithdrawalLimitByToken(token)`可获取
+
    信托通过rpc接口`chainx.asset.getWithdrawTx(chain)`转入`Bitcoin`监听链上的`WithdrawalProposal`是否存在：
 
    1. 不存在：
 
-      * **任意一个**信托通过rpc接口`chainx.asset.getWithdrawalList(chain, page_index, page_size)`传入`Bitcoin`获取当前的用户提现列表
+      * **任意一个**信托通过rpc接口
+
+        * `chainx.asset.getWithdrawalList(chain, page_index, page_size)`传入`Bitcoin`获取当前的用户提现列表
+        * `chainx.trustee.getTrusteeSessionInfo(chain)`传入`Bitcoin`获取当前Bitcoin信托的**热地址**已经对应的`redeemScript`
+
       * 信托根据用户提现列表的相应信息组件提现**多签待签原文**，组件方式如下：
-        * 通过rpc接口`chainx.asset.getMinimalWithdrawalValueByToken(token)`，填写参数`BTC`（注意不是Bitcoin，因为这个是针对币不是针对链）获取当前ChainX上对用户提现Bitcoin收取的手续费`fee`
+        * 通过rpc接口`chainx.asset.getWithdrawalList(token)`，填写参数`BTC`（注意不是Bitcoin，因为这个是针对币不是针对链）获取当前ChainX上对用户提现Bitcoin收取的手续费`fee`
         * **挑选**这次可以提现的用户提现记录（最多有一个上限，防止Output过大，当前最大不超过100），获取用户提现的`value`与提现地址`addr`，组建提现交易的`Outputs`，
-          * 用户提现的`output`：**`Output`中的的value为`value - fee`**(value是用户提现记录中的值，fee是向用户手续的提现手续费，也就是最后到用户账上的钱为他申请的值扣除手续费)。
-
-          * 找零的`output`：组件这笔交易后，根据交易长度，获取当前Bitcoin网络中的手续费率，**调整稍微高**一些后作为矿工费，余下作为找零`Output`中的value。
-
-            **注意**：由于用户提现本来就扣除了一笔手续费，因此组建Output后，手续费是十分充裕的。由于ChainX每1小时才能提起一笔提现交易，那么一笔交易的output会很多，因此为了能尽快打包，我们强烈建议组建交易的信托多拿一些手续费出来付给Bitcoin矿工。 手续费的大小可参考目前公开的Bitcoin手续费比例，调高5-10倍后，根据当前的待签原文的长度计算应付的手续费。
-
+          
+      * 用户提现的`output`：**`Output`中的的value为`value - fee`**(value是用户提现记录中的值，fee是向用户手续的提现手续费，也就是最后到用户账上的钱为他申请的值扣除手续费)。
+          
+      * 找零的`output`：组件这笔交易后，根据交易长度，获取当前Bitcoin网络中的手续费率，**调整稍微高**一些后作为矿工费，余下作为找零`Output`中的value。
+          
+        **注意**：由于用户提现本来就扣除了一笔手续费，因此组建Output后，手续费是十分充裕的。由于ChainX每1小时才能提起一笔提现交易，那么一笔交易的output会很多，因此为了能尽快打包，我们强烈建议组建交易的信托多拿一些手续费出来付给Bitcoin矿工。 手续费的大小可参考目前公开的Bitcoin手续费比例，调高5-10倍后，根据当前的待签原文的长度计算应付的手续费。
+          
             例如：一段时间内有3个用户提现，3个用户都扣除手续费，总共` 3 × fee`，然后组建一笔多签提现交易提出来，可能实际上付给矿工的只有`1 fee`，那么最后实际上会留下`2fee`在多签地址里。因此在多签地址中的钱会累积的越来越多，手续费不会出现短缺的现象。
         * 从**Bitcoin全节点**或一些**公开可信任的服务**根据当前的多签地址获取合适的UTXO，与上文中的`outputs`共同组成**多签待签原文**
+        
       * 信托调用sdk将`chainx.asset.createWithdrawTx(withdrawalIdList, tx)`，将构造**多签待签原文**的用户提现的提现的`withdrawal_id`列表与多签待签原文作为参数传入
+
+        * 当前`createWithdrawTx`已经支持提交没有任何签名的待签原文或**有一个**签名的待签原文（也就是发送者可以将`signWithdrawTx`和`createWithdrawTx`合并一起，减少手续费）
+
       * 若发送成功，则链上就会存在`WithdrawalProposal`，且`sig_state`为`UnFinish`
 
    2. 存在：
@@ -108,24 +119,29 @@ Bitcoin 提现流程如下
       1. 如果`signStatus`为`false`，即`WithdrawalProposal`中的`state`为`UnFinish`
 
          1. **所有信托**根据`getWithdrawTx`返回值，进行检查
+            1. `withdrawalIdList`可以获取这笔提现原文对应的用户申请提现id列表，结合`chainx.asset.getWithdrawalList(chain, page_index, page_size)`可获取用户提现的具体相应信息，然后结合`tx`的`out`中的信息（“地址”，“提现金额”）进行检查。
+            2. **注意！**`out`中的值为用户申请提现的金额 （从`getWithdrawalList`获取）减去`fee`，由于Out是由其他信托从`createWithdrawTx`创建的，因此当前准备发送`signWithdrawTx`的信托有义务对这笔交易进行验证是否合理。
+            3. `trusteeList`列举出当前已经做出行动的信托（true为进行了确认，false为否决了这个提现），根据`chainx.trustee.getTrusteeSessionInfo(chain)`可获取谁做出了行动，谁未做出行动。
          2. 其中`tx`即为**多签待签原文（或其他信托已签名过的交易）**，信托在这个tx的基础上使用自己的Bitcoin多签工具对这笔tx继续签署自己的信息
-         3. 信托通过`chainx.asset.signWithdrawTx(tx)`将自己签名后的原文发送到链上（注意发送前先检查链上的原文是否有更新（或订阅发现更新），防止没有对最新的tx进行签署）
-         4. 若``chainx.asset.signWithdrawTx()`不填写任何参数，**代表当前的信托对这笔提现投出反对**
+            1. **强烈建议**对这笔tx进行`decode`并检查其组装的tx是否合理，若认为不合理请投反对
+         3. 信托通过`chainx.asset.signWithdrawTx(tx)`将自己签名后的原文发送到链上（注意发送前先检查链上的原文是否有更新（或订阅发现更新），防止没有对最新的tx进行签署），这笔发送**代表当前信托对这笔提现透出确认**
+      4. 若``chainx.asset.signWithdrawTx()`不填写任何参数，**代表当前的信托对这笔提现投出反对**
             * 手续费觉得不合理
-            * 提现列表的output觉得不合理
-            * ...
-
-      2. 若`signStatues`为`true`
-
-         1. 信托不可进行任何操作，等待这笔tx被relay提交上Bitcoin即可
-
+         * 提现列表的output觉得不合理
+            * 提现out与用户提现列表不对应（账号，数额）
+         * ...
+      
+   2. 若`signStatues`为`true`
+      
+      1. 信托不可进行任何操作，等待这笔tx被relay提交上Bitcoin即可
+      
             1. 正常情况下这笔交易会正常上链，并被ChainX所识别，若这笔交易完全正常合法，则在ChainX上被确认后（1个小时），会自动清空ChainX链上的`WithdrawalProposal`存储，此时这笔提现流程执行结束，可重新进入信托提现处理流程。
 
             2. 非正常情况：
-
+      
                1. 等待长时间未上链，此时唯一原因为创建这笔多签提现的手续费不足或交易非法，
                2. 上链了，但是在确认是认为这笔提现非法
-
+      
                此时只能“议会”接入，移除链上的`WithdrawalProposal`并修复相应记录，之后才可重新进入信托提现处理流程。信托节点只能处于等待，无法进行其他操作。
 
 3. 其他注意事项

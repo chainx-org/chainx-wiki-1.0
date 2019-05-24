@@ -272,12 +272,15 @@ alice.privateKey() // 私钥 0x...
 
 ### chainx.trustee.createWithdrawTx([withdrawalIdList](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/codec/Vector.js), [tx](https://github.com/chainx-org/chainx.js/blob/master/packages/types/src/Bytes.js))
 
-提交构造的提现交易原文
+提交构造的提现交易原文，原文`tx`支持两种情况：
+
+1. 没有任何签名的待签原文，后续可以继续调用`signWithdrawTx`进行自己的签名
+2. **对应于这个发送者（一定是信托）**签署过的待签，也就是将`signWithdrawTx`的过程合并在了这里，提现交易的提起者可以同时对这笔提现交易签名，调用`createWithdrawTx`发送ChainX，之后就不需要再调用`signWithdrawTx`进行签名
 
 #### 参数
 
 - `withdrawalIdList`：提现ID列表
-- `tx`：构造的待签原文
+- `tx`：构造的待签原文（可以是没有签名的原文与**有一个**签名的原文，多个签名的不允许）
 
 #### 例子：
 
