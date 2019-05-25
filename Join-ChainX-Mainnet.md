@@ -75,7 +75,7 @@ OPTIONS:
    ......
 ```
 
-help 中出现的所有命令均可在配置文件中进行配置，我们目前提供了 `json` 的配置文件格式。`chainx` 程序可选参数分为 `[FLAGS]` 和 `[OPTIONS]` 各部分, 示例如下:
+help 中出现的所有命令均可在配置文件中进行配置，我们目前提供了 `json` 的配置文件格式。`chainx` 程序可选参数分为 `[FLAGS]` 和 `[OPTIONS]` 两部分, 示例如下:
 
 - `FLAGS`。`true` 表示启用该FLAG, `false` 表示不启用该FLAG, 如：
 
@@ -90,8 +90,8 @@ help 中出现的所有命令均可在配置文件中进行配置，我们目前
 
 ```jsonc
 {
-    // 等价于在命令行传入 --base-path=<ChainX数据路径>, `./chainx --base-path=<ChainX数据路径>`
-    "base-path": "<ChainX数据路径>",
+    // 等价于在命令行传入 --base-path=<ChainX数据路径>, `./chainx --base-path=<ChainX数据存放路径>`
+    "base-path": "<ChainX数据存放路径>",
 }
 ```
 
@@ -125,13 +125,13 @@ $ curl https://git.io/fjlZU -o config.json
 ```jsonc
 {
     "log": "info,runtime=info",    // 日志等级配置，若不需要runtime的打印可以配置为 "log": "info,runtime=warn",
-    "name": "<Your-Node-Name>",    // 在 监控台 中显示的名称
-    "port": 20222,                 // 节点的p2p端口
-    "ws-port": 8087,               // 节点的websocket 端口
-    "rpc-port": 8086,              // 节点的rpc
-    "rpc-external": true,          // true 代表该rpc端口开放给外部访问，建议只能提供服务同步节点开启，验证节点及不提供服务的同步节点建议关闭
-    "ws-external": true,           // true 代表该rpc端口开放给外部访问，建议只能提供服务同步节点开启，验证节点及不提供服务的同步节点建议关闭
-    "base-path": "<Your-DB-Path>", // chainx 数据路径
+    "name": "<Your-Node-Name>",    // 在监控台 https://stats.chainx.org 中显示的名称
+    "port": 20222,                 // 节点的 p2p 端口
+    "ws-port": 8087,               // 节点的 Websocket 端口
+    "rpc-port": 8086,              // 节点的 RPC 端口
+    "rpc-external": true,          // true 代表该RPC端口开放给外部访问，建议只能提供服务同步节点开启，验证节点及不提供服务的同步节点建议关闭
+    "ws-external": true,           // true 代表该RPC端口开放给外部访问，建议只能提供服务同步节点开启，验证节点及不提供服务的同步节点建议关闭
+    "base-path": "<Your-DB-Path>", // chainx 数据存放路径
     "other-execution": "NativeElseWasm",
     "syncing-execution": "NativeElseWasm",
     "block-construction-execution": "NativeElseWasm",
@@ -169,7 +169,7 @@ nohup ./chainx --config=$(pwd)/config.json > chainx.log 2>&1 &
 
 ##### 2. 生成出块公钥
 
-如果还不了解节点账户公钥和出块公钥，请点击这里。以下内容均认为读者已经了解了账户公钥和出块公钥的区别。
+如果还不了解节点账户公钥和出块公钥的区别，请[点击这里](https://github.com/chainx-org/ChainX/wiki/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5#%E8%8A%82%E7%82%B9%E8%B4%A6%E6%88%B7%E5%85%AC%E9%92%A5%E5%92%8C%E5%87%BA%E5%9D%97%E5%85%AC%E9%92%A5)。以下内容均认为读者已经了解了账户公钥和出块公钥的区别。
 
 ChainX 建议使用 `chainx` 执行文件通过以下命令生成 `keystore`，即生成出块地址公钥（session_key）：
 
