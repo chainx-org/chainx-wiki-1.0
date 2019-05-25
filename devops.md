@@ -24,7 +24,7 @@
 
      ```bash
      # 注意最后的 -i 参数
-     $ screen -L -S chainx0.9.10 ./chainx --config=<ConfigPath/chainx.conf> -i 
+     $ screen -L -S chainx ./chainx --config=<ConfigPath/chainx.conf> -i 
      ```
 
      启动后按一下命名可退出screen
