@@ -1,4 +1,4 @@
-:tada::tada: [>>>> 加入ChainX主网](Join-ChainX-Mainnet) :tada::tada:
+:tada::tada: [>>>> 加入ChainX主网 <<<<](Join-ChainX-Mainnet) :tada::tada:
 
 - [账户系统](账户系统)
 - [资产系统](资产系统)
