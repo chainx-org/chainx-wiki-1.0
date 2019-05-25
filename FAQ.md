@@ -59,6 +59,6 @@ ChainX的模型和其他公链不太一样的地方在于。ChainX节点奖励�
 
 ## 为什么我的待领利息会减少
 
-用户的待领利息是动态实时计算的，计算规则详情见: [投票选举](https://github.com/chainx-org/ChainX/wiki/%E6%8A%95%E7%A5%A8%E9%80%89%E4%B8%BE#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5).
+用户的待领利息是动态实时计算的，计算规则详情见: [投票选举](https://github.com/chainx-org/ChainX/wiki/%E6%8A%95%E7%A5%A8%E9%80%89%E4%B8%BE#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5)，社区也有相关的资产挖矿介绍文章，[点击阅读](https://mp.weixin.qq.com/s/fAkOqonEhitqbbY2xjY5yw).
 
 当出现有人进行大额投票或者大额充值时，就会出现降低你在奖池的占比，也就是待领利息被稀释的情况。
