@@ -227,7 +227,7 @@ Repeat again:
   "validator-name": "Your-Validator-Name", // 注册节点时使用的名称
   "base-path": "<步骤1中指定的数据存放路径>",
   "keystore-path": "<步骤1中指定的keystore路径>",
-  "keystore-password": "<步骤1中生成的keystore时使用的命令>"
+  "keystore-password": "<步骤1中生成的keystore时使用的密码>"
 }
 ```
 
