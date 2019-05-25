@@ -206,7 +206,7 @@ Repeat again:
 -  `base-path`
 - 输入的 `password`,
 
-该节点出块地址公钥（session_key）粘贴到浏览器 https://scan.chainx.org 搜索框获得该公钥对应的地址，该地址将用于更新出块地址。
+（可选）将该节点出块地址公钥（session_key）粘贴到浏览器 https://scan.chainx.org 搜索框获得该公钥对应的地址，该地址将用于更新出块地址。
 
  ![image](https://user-images.githubusercontent.com/8850248/57749106-4fe2f700-770f-11e9-93e1-50921b6b769c.png)
 
@@ -267,7 +267,7 @@ nohup ./chainx --config=$(pwd)/config.json > chainx.log 2>&1 &
 
 ###### 如何更新出块地址
 
-在钱包投票选举页，点击更新节点，在出块地址处填写第一步中得到的出块地址公钥(session_key):
+在钱包投票选举页，点击更新节点，在出块地址处填写第一步中得到的出块地址公钥(session_key)，注意这里既可以直接填写公钥，也可以填写从（可选）步骤中获取的地址:
 
 ![image](https://user-images.githubusercontent.com/8850248/57748969-bfa4b200-770e-11e9-843f-c841f3b887e6.png)
 
