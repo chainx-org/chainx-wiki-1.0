@@ -18,3 +18,7 @@
 
 - [JS-SDK](JS-SDK)
 - [RPC](RPC)
+
+### 加入主网
+
+- [Join ChainX Mainnet](Join-ChainX-Mainnet)
