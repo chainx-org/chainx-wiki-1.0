@@ -10,7 +10,7 @@ Anyone who participated in the Polkadot ICO in 2017 can map the current untransf
 
 ![image](https://user-images.githubusercontent.com/8850248/58405691-9d118200-809a-11e9-9f17-733b8a3f2194.png)
 
-3. Then you'll see a popup prompting you to choose a optional channel which is some intention in ChainX. 10% cross-chain deposit/mapping reward will be issued to your channel. If you choose to skip, the council will receive this 10% reward instead.
+3. Then you'll see a popup prompting you to choose an optional channel which is some intention in ChainX. 10% cross-chain mapping reward will be issued to your channel. If you choose to skip, the council will receive this 10% reward instead.
 
 ![image](https://user-images.githubusercontent.com/8850248/58405800-d9dd7900-809a-11e9-9cef-0906b3ed197a.png)
 
