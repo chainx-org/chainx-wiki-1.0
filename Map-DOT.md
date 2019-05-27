@@ -26,6 +26,6 @@ Anyone who participated in the Polkadot ICO in 2017 can map the current untransf
 
     - find someone to send you a few PCX.
 
-    - deposit BTC. The PCX earned by the deposits mining during the BTC confirmation period will be issued your ChainX account automatically.
+    - deposit BTC. The PCX earned by the deposits mining during the BTC confirmation period will be issued to your ChainX account automatically.
 
 ![image](https://user-images.githubusercontent.com/8850248/58409413-92f38180-80a2-11e9-9014-8448033d1da0.png)
