@@ -1,6 +1,6 @@
 ## Map DOT to SDOT on ChainX
 
-Anyone who participated in the Polkadot ICO in 2017 can map the current untransferrable DOT to SDOT on ChainX in 1:1, enjoying the benefits of deposits mining in ChainX permanently. [View the list of all qualified ETH addresses](https://etherscan.io/token/tokenholderchart/0xb59f67a8bff5d8cd03f6ac17265c550ed8f33907). The mapped SDOT can participate in the assets mining of ChainX until Polkadot's launch. After that, all SDOT will be destoried accordingly.This is sort of airdrop for the DOT investors.
+Anyone who participated in the Polkadot ICO in 2017 can map the current untransferrable DOT to SDOT on ChainX in 1:1, enjoying the benefits of deposits mining in ChainX permanently. [View the list of all qualified ETH addresses](https://etherscan.io/token/tokenholderchart/0xb59f67a8bff5d8cd03f6ac17265c550ed8f33907). The mapped SDOT can participate in the assets mining of ChainX until Polkadot's launch. After that, all SDOT will be destoried accordingly. It's sort of airdrop for the DOT investors actually.
 
 1. Create a ChainX account if you don't have one at https://wallet.chainx.org.
 
