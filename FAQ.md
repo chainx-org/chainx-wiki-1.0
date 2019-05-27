@@ -111,7 +111,9 @@ btc_addr2 -> chainx_addr1 <-> channel2(渠道2) # 第二次充值使用新的 bt
 btc_addr1 -> chainx_addr1 <-> channel3(渠道3) # 第三次充值使用 btc_addr1 与 channel3 建立新的关联关系，这个关联关系替换了第一次充值建立的关联关系，后续用户再次领取粉红时，使用channel3发放验证者的推广奖励
 ```
 
-验证者节点可以通过rpc接口 [RPC#chainx_getaddressbyaccount](RPC#chainx_getaddressbyaccount) 获取当前用户绑定地址的状况。
+（对于Bitcoin的关联而言，关联关系的建立只和**第一笔充值交易中的第一个input**相关联，对于SDOT而言，则与发送映射SDOT的eth公钥地址相关联，且这个关系将会在将来用于ETH的关联关系中）
+
+验证者节点可以通过rpc接口 [RPC#chainx_getaddressbyaccount](RPC#chainx_getaddressbyaccount) （对应于 js sdk 为 [JS-SDK#chainxassetgetaddressbyaccountwho-chain](JS-SDK#chainxassetgetaddressbyaccountwho-chain)）获取当前用户绑定地址的状况。
 
 该返回值为一个列表
 
