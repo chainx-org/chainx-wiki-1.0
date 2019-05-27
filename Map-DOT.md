@@ -14,7 +14,7 @@ Anyone who participated in the Polkadot ICO in 2017 can map the current untransf
 
 ![image](https://user-images.githubusercontent.com/8850248/58405800-d9dd7900-809a-11e9-9cef-0906b3ed197a.png)
 
-4. You need to send a transaction from the address with DOT token to any ETH address(yourself is recommended) with any value(0 is recommended), filling the following information in the Data field:
+4. You need to send a transaction from the address with DOT token to any ETH address(**yourself is recommended**) with any value(**0 is recommended**), filling the following information in the `Data` field:
 
 ![image](https://user-images.githubusercontent.com/8850248/58406864-25912200-809d-11e9-885e-4193e9f3b2a3.png)
 
