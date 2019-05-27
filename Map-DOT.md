@@ -21,3 +21,11 @@ Anyone who participated in the Polkadot ICO in 2017 can map the current untransf
 5. Copy and paste the transaction ID(Txid/TxHash) you sent in the last step bellow. SDOT will be issued to your mapped ChainX address immediately once the transaction signature is validated successfully.
 
 ![image](https://user-images.githubusercontent.com/8850248/58407634-d3e99700-809e-11e9-8cbc-5c5bf644fe35.png)
+
+6. Now your mapped SDOT is able to earn PCX! However, you're still having an issue: how to get the transaction fee of claiming the reward? There are two ways:
+
+    - find someone to send you a few PCX.
+
+    - deposit BTC. The PCX earned by the deposits mining during the BTC confirmation period will be issued your ChainX account automatically 
+
+![image](https://user-images.githubusercontent.com/8850248/58409413-92f38180-80a2-11e9-9014-8448033d1da0.png)
