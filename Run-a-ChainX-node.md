@@ -84,13 +84,13 @@ Ensure you have saved these information:
 
 ### 2. Modify `config.json` to enable validator mode
 
-Add `validator` and `validator-name`
+Now, you need to add `validator` and `validator-name` options to run as a validator node.
 
 ```jsonc
 {
   "validator": true,                       // true for validator mode
-  "name": "Your-Node-Name",                // any nickname displayed at https://stats.chainx.org/#/ChainX and https://telemetry.polkadot.io/#list/ChainX
   "validator-name": "Your-Validator-Name", // name when registering your node
+  "name": "Your-Node-Name",                // any nickname displayed at https://stats.chainx.org/#/ChainX and https://telemetry.polkadot.io/#list/ChainX
   "rpc-external": false, // false is recommended for validator node
   "ws-external": false, // false is recommended for validator node
   "log": "info,runtime=info",
