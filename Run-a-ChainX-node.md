@@ -57,7 +57,7 @@ Before running a validator node, you ought to make sure the syncing node is full
 Every validator has two keys:
 
 - `validator_key`: key of your node account.
-- `session_key`: key for block authoring, you can update 
+- `session_key`: key for block authoring, you can update it as you wish.
 
 To generate a `session_key` by creating a keystore interactively:
 
