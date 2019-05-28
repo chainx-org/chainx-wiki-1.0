@@ -89,10 +89,10 @@ Now, you need to add `validator` and `validator-name` options to run as a valida
 ```jsonc
 {
   "validator": true,                       // true for validator mode
-  "validator-name": "Your-Validator-Name", // name when registering your node
+  "validator-name": "Your-Validator-Name", // name used when registering your node in https://wallet.chainx.org
   "name": "Your-Node-Name",                // any nickname displayed at https://stats.chainx.org/#/ChainX and https://telemetry.polkadot.io/#list/ChainX
-  "rpc-external": false, // false is recommended for validator node
-  "ws-external": false, // false is recommended for validator node
+  "rpc-external": false,                   // false is recommended for validator node
+  "ws-external": false,                    // false is recommended for validator node
   "log": "info,runtime=info",
   "port": 20222,
   "ws-port": 8087,
@@ -102,8 +102,8 @@ Now, you need to add `validator` and `validator-name` options to run as a valida
   "block-construction-execution": "NativeElseWasm",
   "base-path": "<DB-path in the last step>",
   "keystore-path": "<keystore-path in the last step>",
-  "keystore-password": "<password you inputed in the latest step>"
-  "bootnodes": [],
+  "keystore-password": "<password you inputed in the latest step>",
+  "bootnodes": []
 }
 ```
 
