@@ -46,3 +46,79 @@
      即可进入screen中
 
      若需要停止节点,进入screen按 `Ctrl-C` 即可退出
+
+### 3. 监控节点是否正常出块/同步
+
+节点可以编写脚本监控自己的出块是否正常，主要接口都可以从[RPC](RPC)文档中获得说明
+
+1. 获取当前自己节点的最高块高`chain_getHeader`
+2. 获取自己相连的**其他节点**的块高`system_peers`
+3. 从官方钱包中提供的rpc接口获取当前的块高
+
+因此监控脚本可以根据2，3获取到的数据，去衡量1中获取的块高是否正常。
+
+请节点根据自己情况设计自己的监控脚本。
+
+
+
+目前由于substrate p2p 不够完善的原因，会导致部分节点**有可能在运行过程中出现网络分区**，因此当监控脚本发现自己无法同步区块时可以做出以下操作： 
+
+1. 将自己的p2p的连接上线提升，通过在启动参数中设置`in-peers`及`out-peers` 设置连接数上限，带宽允许的情况下设置为40以上为好
+
+   ```bash
+   {
+   	"in-peers": 40,
+   	"out-peers": 40,
+   }
+   ```
+
+2. 若出现网络分区，可以停止节点，然后删除数据目录下的`networks` 目录，如启动时指定的数据路径是`<DB_ROOT>`，那么`networks`目录在`<DB_ROOT>/chains/chainx_mainnet` 路径下。
+
+3. 若出现网络分区，除了删除`networks`，可以尝试在启动参数的`bootnodes`中配置如下种子节点：
+
+   ```bash
+   {
+   	"bootnodes": [
+   		"/ip4/47.96.134.203/tcp/20222/p2p/QmNzDfC4qTC9B5r8W7XxAR4n3qSF7SqgF6FsNGEWCL4foY",
+   		"/ip4/47.110.252.22/tcp/20222/p2p/Qmcwx277eRTNmeK2iTLrGDHqRwYW8FxL8ppwRXM3SnbUvS",
+   		"/ip4/47.96.97.52/tcp/20222/p2p/QmXABmmDgTT75o2UVCKS8iaYh75zPL5by3iSfS8msSWwEo",
+   		"/ip4/47.110.14.60/tcp/20222/p2p/QmR2Jdd4V93yzTDyX5gKQ7PE4M2KsbK3vjC8RvXCnzqHU6",
+   		"/ip4/47.110.14.60/tcp/30333/p2p/QmfDqzUo64DDDeinmWDif2umjgJpKyunYkKC81XNZ9Cwzt"，
+   		"/ip4/47.96.146.181/tcp/20222/p2p/QmY8BWCfTVeutMi9i2Rn92kr31BWn8gEdYFwS8MSzYaAM6"
+   	]
+   }
+   ```
+
+   同时我们也欢迎节点给我们提供种子节点！
+
+   方式：rpc接口`system_networkState`
+
+   * 其中
+
+     ```bash
+     {
+         peerId: "xxxxxxxxxxxxxxxxxxxxxxxx",
+         listenedAddresses: [
+         "/ip4/172.16.35.147/tcp/20222",
+         "/ip4/127.0.0.1/tcp/20222"
+         ],
+         externalAddresses: [
+         "/ip4/<ip>/tcp/20222",  # ipv4
+         "/ip6/<ip>/tcp/20222" # ipv6
+         ]
+     	...
+     }
+     ```
+
+   * `peerId` 代表节点的网络标示（存储于`networks`文件夹中），`externalAddresses`代表对外监听的ip和端口
+
+   * 因此种子节点由 `externalAddresses`与`peerId`构成，为：
+
+     ```bash
+     seed = <externalAddresses(ipv4部分)>/p2p/<peerId>
+     # e.g.
+     seed = /ip4/172.16.176.18/tcp/20222/p2p/QmRaP225FNXoyB7WE8twinY8B6dVJXyGsmEYFA1Fc54rw1
+     ```
+
+     
+
