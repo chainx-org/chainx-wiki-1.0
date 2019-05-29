@@ -119,6 +119,10 @@
      # e.g.
      seed = /ip4/172.16.176.18/tcp/20222/p2p/QmRaP225FNXoyB7WE8twinY8B6dVJXyGsmEYFA1Fc54rw1
      ```
+   
+   另一方面若节点若使用`system_networkState`中发现自己和种子节点的连接为`enable=false`，那么大概率种子节点已经满了，无法再连接上，由于目前substrate libp2p不够稳定的问题，有可能出现网络分区。
+   
+   有能力的节点可以通过 [https://telemetry.polkadot.io/#/ChainX ](https://telemetry.polkadot.io/#/ChainX )获取到一些其他节点的网络信息，制定网络拓扑，找出和种子节点连接最近的节点，并**将他们的连接信息制作成种子节点**加入自己的种子列表当中，这样可以减少被网络分区的概率！
 
 ### 4. 节点退选，连接，云服务商，vps选择等问题
 
