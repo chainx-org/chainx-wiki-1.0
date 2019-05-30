@@ -60,7 +60,7 @@ const nacl = require('tweetnacl');
 async function ed25519Sign(message) {
   // 签名账户的 32 位私钥
   const privateKey = Buffer.from('5858582020202020202020202020202020202020202020202020202020202020', 'hex');
-  // 使用 ed25519 算法进行签名。
+  // 使用 ed25519 算法进行签名。tweetnacl 这个签名用的是 64 位secretKey，实际上等于 privateKey + publicKey。通过这个方法nacl.sign.keyPair.fromSeed，可以从 privateKey 获取到 secretKey。
   return nacl.sign.detached(message, nacl.sign.keyPair.fromSeed(privateKey).secretKey);
 }
 
