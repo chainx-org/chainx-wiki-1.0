@@ -145,3 +145,192 @@
 * 关于防止退选问题，更详细请查阅[FAQ#漏块](FAQ#漏块)，[FAQ#检查漏块的可能方式](FAQ#检查漏块的可能方式)，[FAQ#节点防止退选的方法](FAQ#节点防止退选的方法)
 * 关于阿里云香港
   * 目前ChainX有一些服务放于阿里云（国际）香港上，但是至今已出现了**多次网络访问出现短暂性异常**的情况，因此建议使用阿里云（国际）香港的节点引起警惕
+
+### 5. 数据运行中出错
+
+由于substrate底层可能存在一定的bug，目前已知substrate会在某些特定情况下出现以下崩溃（`panic`）问题
+
+```bash
+# ...
+  30: start_thread (0x7f0e3a4686da)
+  31: __clone (0x7f0e39f7988e)
+  32: <unknown> (0x0)
+# 注意这里的关键字 "state already discarded"，关键字 state
+Thread 'main-tokio-1' panicked at 'called `Result::unwrap()` on an `Err` value: UnknownBlock("State already discarded for Number(261843)")', src/libcore/result.rs:999
+```
+
+或者出现
+
+```bash
+# ...
+  51: start_thread (0x7fba817f56b9)
+  52: clone (0x7fba8131541c)
+  53: <unknown> (0x0)
+# 注意这里的关键字 "Trie lookup error, Invalid state root" , 关键字 state
+Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runtime: "Trie lookup error: Invalid state root: 0xf8eb2f38dc9b10a06f7ec6f798a85cd33c763d7cf1ecfbff63e3bf9a8ee8cdc4"', src/libcore/result.rs:999
+```
+
+目前已知这类错误应该**只会发生在验证者节点**上，原因是由于在验证者在出块的同时，收到相同高度的分叉区块，重组区块时可能在substrate内部诱发了一些隐藏问题，导致节点读取不到一个已经废弃的状态根或数据，导致`panic`
+
+目前这个问题只能等待substrate修复，无其他可行方案，见issue: [https://github.com/paritytech/substrate/issues/2637](https://github.com/paritytech/substrate/issues/2637)。
+
+解决方案：
+
+1. 首先先尝试重新启动节点，目前已有案例重启节点能够恢复节点的运行。
+
+2. 若重启节点后仍然`panic`，那么该份数据已经无法恢复。只能**重新开始同步**或**使用已有数据恢复**
+
+   1. 为应对这种情况，ChainX目前计划每隔一周（每周五晚上）备份一次数据镜像并提供下载，节点可通过以下命令下载最近的数据镜像
+
+      ```bash
+      wget 114.55.243.192/db_no_archive.tar.gz
+      # 或者命令
+      wget 114.55.243.192/db_archive.tar.gz
+      ```
+
+   2. 其中 `db_no_archive.tar.gz`数据镜像代表使用**默认的裁剪模式**启动的数据（即不添加`"purning":"archive"`），请注意，若使用此数据，配置文件中**一定不能**添加`"purning":"archive"`！
+
+   3. 其中`db_archive.tar.gz`数据镜像代表使用**存档模式**启动的数据（即在配置中添加`"purning":"archive"`），请注意，若使用此数据，配置文件中**一定要添加**`"purning":"archive"`！（ChainX**比较推荐**节点目前使用该模式启动节点）
+
+### 6. 本机数据备份
+
+由于ChainX项目处于早期，可能存在目前不可知的因素导致数据错误，由于当出现数据错误时，会导致节点无法出块，受到惩罚，因此ChainX**建议**配置足够（cpu，存储空间）的节点，在跑验证者节点的那台机器上同时运行一个备份数据节点，当验证者节点的数据出现异常且无法恢复时，可以直接使用备份数据启动验证者节点！
+
+该备份节点可以通过本机内网与验证者相连的方式同步数据，不对外进行访问
+
+1. 运行本机备份数据且不占用外部带宽的方式：
+
+   假设验证者节点位于`<validator>/`路径下，相应的目录组织如下：
+
+   ```bash
+   <validator>/
+   -- chainx
+   -- config.json
+   -- keystore/
+   -- database/ # config.json 中的 "base-path" 字段指向的目录
+   -----------/chains/chainx_mainnet/
+   ---------------------------------/db  # 该目录为ChainX数据目录
+   ---------------------------------/network  # 该目录记录了 ChainX节点 在p2p网络中的 peerId
+   ```
+
+   那么首先可以仿照验证者的配置，建立备份节点的路径`<backup>/`如下：
+
+   ```bash
+   <backup>/
+   -- chainx
+   -- config_bak.json
+   ```
+
+2. 通过rpc接口[RPC#system_networkstate](RPC#system_networkstate)查阅验证者的p2p网络的peerId
+
+   ```bash
+   # 例如可以使用如下命令获取网络情况
+   curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"id":100, "jsonrpc":"2.0", "method":"system_networkState", "params":[]}' 127.0.0.1:8086
+   ```
+
+   该rpc将会返回
+
+   ```bash
+         
+   {
+       "jsonrpc":"2.0",
+       "result":{
+           # ...
+           "listenedAddresses":[
+               "/ip4/172.16.62.73/tcp/40333",
+               "/ip4/127.0.0.1/tcp/40333"
+           ],
+           "notConnectedPeers":Object{...},
+           "peerId":"QmRSeJH46AbP53ibLULqTaQSoVyVHQwUqz8EsRapbYKAqR",
+           # ...
+   }
+   ```
+
+   其中
+
+   -  `listenedAddresses`ip可以查阅到其监听内网ip及端口
+
+   - `peerId`为验证者在p2p网络中的公钥
+
+   - 根据 `listenedAddresses`与`peerId`可以组件种子节点：
+
+     ```bash
+     # listenedAddresses中的内网（如 127开头，172开头等等）+ "p2p" + peerId
+     # 如：
+     /ip4/127.0.0.1/tcp/40333/p2p/QmRSeJH46AbP53ibLULqTaQSoVyVHQwUqz8EsRapbYKAqR
+     ```
+
+3. 配置备份数据的配置文件如下：
+
+   配置`<backup>/config_bak.json`如下：
+
+   ```bash
+   {
+     "validator": false, # 该字段一定要为false
+     "log": "error", # 建议提升error等级，减少日志的打印
+     "port": 30333 # 建议修改成和 validator中不一样的端口，如 30300
+     "ws-port": 8187, # 建议修改成和 validator中不一样的端口，如 8187
+     "rpc-port": 8186,# 建议修改成和 validator中不一样的端口，如 8186
+     "other-execution": "NativeElseWasm", # 不变
+     "syncing-execution": "NativeElseWasm",
+     "block-construction-execution": "NativeElseWasm",
+     "name": "Your-Node-Name", # 在节点浏览器中显示的节点名，建议换一个与validator不同的名字，或者使用`"no-telemetry": true`，该参数会让该节点不发送信息给节点浏览器
+     "base-path": "<backup>/database", # 备份数据的路径
+     "in-peers": 1, # 关键！in-peers 与 out-peers 一定要设置成1
+     "out-peers": 1, 
+     "purning":true, # 可选，启用存档模式，若不使用存档模式启动，则不需要这一行
+     "bootnodes": [
+     	# 在2中查询到的本机验证者种子节点，需要用双引号括起来
+     	"/ip4/127.0.0.1/tcp/40333/p2p/QmRSeJH46AbP53ibLULqTaQSoVyVHQwUqz8EsRapbYKAqR"
+     ],
+   }
+   ```
+
+   其中 ：
+
+   - `"in-peers"`和`"out-peers" ` 的值一定要设置为1
+   - `"bootnodes"`的值为在第2步查询到的节点
+   - 对于`"purning":true` 是否开启存档模式，ChainX目前**建议**备份节点开启存档模式，请注意若验证者没有开存档模式，而备份节点开了，那么之后若出现异常时，需要使用备份节点的数据替换验证者节点的数据时，验证节点**一定**要加上`"purning":true` ，否则会出现更多的数据异常！
+   - 其他参数请查阅`./chainx --help` 进行自己节点需要的配置
+
+4. 启动备份节点
+
+   1. 正常启动备份节点，等待数据同步（不需要停止验证者节点，但是需要同步一段时间）
+
+   2. 若目前验证者节点没有出现过任何异常，可以将验证者的数据直接拷贝给备份节点，让备份节点从验证者的数据直接启动（需要停止节点，但可以很快启动备份节点）
+
+      操作方法：以**将验证者节点停止**下来，进入`<validator>/database/chains/chainx_mainnet/`目录，将db压缩
+
+      ```bash
+      tar -czf db.tar.gz db/
+      ```
+
+      压缩结束后，**可重新启动验证者节点**，并将压缩包移动到备份节点的数据目录下, 并解压：
+
+      ```bash
+      mv <validator>/database/chains/chainx_mainnet/db.tar.gz <backup>/database/chains/chainx_mainnet/
+      cd <backup>/database/chains/chainx_mainnet/
+      tar -xzf db.tar.gz
+      ```
+
+      之后可以使用`<backup>/config_bak.json`配置文件直接使用该数据启动
+
+5. 验证者节点数据异常后的操作方法
+
+   验证者数据若出现异常，则可使用同步节点的数据启动！
+
+   1. 首先必须将验证者节点与备份节点都停止下来
+   2. 重新启动验证者：
+      1. 切换配置，在备份数据上直接启动
+         1. 将验证者的配置文件`<validator>/config.json`拷贝到`<backup>`下
+         2. （可选，推荐这样做）将`<validator>/database/chains/chainx_mainnet/networks`目录也拷贝到`<backup>/database/chains/chainx_mainnet/`目录下
+         3. 修改`<backup>/config.json`中的`"base-path"`字段指向`<backup>/databash`目录
+         4. （**重要！**）检查`<backup>/config.json`中的`“keystore-path”`是否指向原来的keystone路径`"<validator>/keystore"`
+         5. （**重要！**）检查`<backup>/config.json`中的`"validator":true` 字段一定要设置为`true`且`"validator-name":xxx`字段一定填写正确
+         6. 重新启动验证者
+      2. **或**采用数据拷贝（移动）启动
+         1. 删除`<validator>/database/chains/chainx_mainnet/db`
+         2. 将备份数据目录下的`<backup>/database/chains/chainx_mainnet/db`压缩并拷贝到`<validator>/database/chains/chainx_mainnet/`目录下
+         3. **或者**直接将`<backup>/database/chains/chainx_mainnet/db` mv 到 `<validator>/database/chains/chainx_mainnet/`目录下
+         4. 重新启动验证者
+   3. 根据需要重新启动同步数据节点
