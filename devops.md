@@ -188,9 +188,9 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
       wget 114.55.243.192/db_archive.tar.gz
       ```
 
-   2. 其中 `db_no_archive.tar.gz`数据镜像代表使用**默认的裁剪模式**启动的数据（即不添加`"purning":"archive"`），请注意，若使用此数据，配置文件中**一定不能**添加`"purning":"archive"`！
+   2. 其中 `db_no_archive.tar.gz`数据镜像代表使用**默认的裁剪模式**启动的数据（即不添加`"pruning":"archive"`），请注意，若使用此数据，配置文件中**一定不能**添加`"pruning":"archive"`！
 
-   3. 其中`db_archive.tar.gz`数据镜像代表使用**存档模式**启动的数据（即在配置中添加`"purning":"archive"`），请注意，若使用此数据，配置文件中**一定要添加**`"purning":"archive"`！（ChainX**比较推荐**节点目前使用该模式启动节点）
+   3. 其中`db_archive.tar.gz`数据镜像代表使用**存档模式**启动的数据（即在配置中添加`"pruning":"archive"`），请注意，若使用此数据，配置文件中**一定要添加**`"pruning":"archive"`！（ChainX**比较推荐**节点目前使用该模式启动节点）
 
 ### 6. 本机数据备份
 
@@ -278,7 +278,7 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
      "base-path": "<backup>/database", # 备份数据的路径
      "in-peers": 1, # 关键！in-peers 与 out-peers 一定要设置成1
      "out-peers": 1, 
-     "purning":true, # 可选，启用存档模式，若不使用存档模式启动，则不需要这一行
+     "pruning": true, # 可选，启用存档模式，若不使用存档模式启动，则不需要这一行
      "bootnodes": [
      	# 在2中查询到的本机验证者种子节点，需要用双引号括起来
      	"/ip4/127.0.0.1/tcp/40333/p2p/QmRSeJH46AbP53ibLULqTaQSoVyVHQwUqz8EsRapbYKAqR"
@@ -290,7 +290,7 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 
    - `"in-peers"`和`"out-peers" ` 的值一定要设置为1
    - `"bootnodes"`的值为在第2步查询到的节点
-   - 对于`"purning":true` 是否开启存档模式，ChainX目前**建议**备份节点开启存档模式，请注意若验证者没有开存档模式，而备份节点开了，那么之后若出现异常时，需要使用备份节点的数据替换验证者节点的数据时，验证节点**一定**要加上`"purning":true` ，否则会出现更多的数据异常！
+   - 对于`"pruning":true` 是否开启存档模式，ChainX目前**建议**备份节点开启存档模式，请注意若验证者没有开存档模式，而备份节点开了，那么之后若出现异常时，需要使用备份节点的数据替换验证者节点的数据时，验证节点**一定**要加上`"pruning":true` ，否则会出现更多的数据异常！
    - 其他参数请查阅`./chainx --help` 进行自己节点需要的配置
 
 4. 启动备份节点
