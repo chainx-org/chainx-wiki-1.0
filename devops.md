@@ -1,53 +1,66 @@
-## 推荐机器配置
+
+# 节点运维
+<!-- TOC GFM -->
+
+* [1. 推荐机器配置](#1-推荐机器配置)
+* [2. 日志分割](#2-日志分割)
+* [3. 使用交互式输入密码](#3-使用交互式输入密码)
+* [4. 监控节点是否正常出块/同步](#4-监控节点是否正常出块同步)
+* [5. 节点退选，连接，云服务商，vps选择等问题](#5-节点退选连接云服务商vps选择等问题)
+* [6. 数据运行中出错](#6-数据运行中出错)
+* [7. 本机数据备份](#7-本机数据备份)
+
+<!-- /TOC -->
+
+
+## 1. 推荐机器配置
 
 以阿里云为例，ChainX 主网推荐配置不低于: CPU 4 核, 内存 4 G, 带宽 10M，服务器费用支出每个月不到 1 K。
 
-## 节点运维
-
-### 1. 日志分割
+## 2. 日志分割
 
 若一直持续运行日志过大，可以对设置`crontab`的定时任务对日志进行切分，可参考[日志切分](https://blog.csdn.net/shawnhu007/article/details/50971084)编写脚本,或使用`logrotate`等工具
 
-### 2. 使用交互式输入密码
+## 3. 使用交互式输入密码
 
-  由于交互无法放置在后台,因此若想在后台启动,并且使用交互式输入密码,需要安装一些工具
+由于交互无法放置在后台,因此若想在后台启动,并且使用交互式输入密码,需要安装一些工具
 
-  1. 安装 `screen`
+1. 安装 `screen`
 
-     以 Ubuntu为例
+ 以 Ubuntu为例
 
-     ```bash
-     $ sudo apt install screen
-     ```
+ ```bash
+ $ sudo apt install screen
+ ```
 
-  2. 使用screen托管启动节点
+2. 使用screen托管启动节点
 
-     ```bash
-     # 注意最后的 -i 参数
-     $ screen -L -S chainx ./chainx --config=<ConfigPath/chainx.conf> -i 
-     ```
+ ```bash
+ # 注意最后的 -i 参数
+ $ screen -L -S chainx ./chainx --config=<ConfigPath/chainx.conf> -i 
+ ```
 
-     启动后按一下命名可退出screen
+ 启动后按一下命名可退出screen
 
-     ```bash
-     Ctrl-A-D
-     ```
+ ```bash
+ Ctrl-A-D
+ ```
 
-     此时在当前路径下会出现对应的日志文件
+ 此时在当前路径下会出现对应的日志文件
 
-     若想attach到screen中,可以执行:
+ 若想attach到screen中,可以执行:
 
-     ```bash
-     # 列出screen
-     $ screen -ls
-     $ screen -r <上面 ls 出现的screen>
-     ```
+ ```bash
+ # 列出screen
+ $ screen -ls
+ $ screen -r <上面 ls 出现的screen>
+ ```
 
-     即可进入screen中
+ 即可进入screen中
 
-     若需要停止节点,进入screen按 `Ctrl-C` 即可退出
+ 若需要停止节点,进入screen按 `Ctrl-C` 即可退出
 
-### 3. 监控节点是否正常出块/同步
+## 4. 监控节点是否正常出块/同步
 
 节点可以编写脚本监控自己的出块是否正常，主要接口都可以从[RPC](RPC)文档中获得说明
 
@@ -65,7 +78,7 @@
 
 通过在启动的参数配置文件中设置`in-peers`及`out-peers` 设置连接数上限，带宽允许的情况下设置为40以上为好
 
-```bash
+```json
 {
 	"in-peers": 40,
 	"out-peers": 40,
@@ -140,13 +153,13 @@
 
    有能力的节点可以通获取到一些其他节点的网络信息，制定网络拓扑，找出和种子节点连接最近的节点，并**将他们的连接信息制作成种子节点**加入自己的种子列表当中，这样可以减少被网络分区的概率！
 
-### 4. 节点退选，连接，云服务商，vps选择等问题
+## 5. 节点退选，连接，云服务商，vps选择等问题
 
 * 关于防止退选问题，更详细请查阅[FAQ#漏块](FAQ#漏块)，[FAQ#检查漏块的可能方式](FAQ#检查漏块的可能方式)，[FAQ#节点防止退选的方法](FAQ#节点防止退选的方法)
 * 关于阿里云香港
   * 目前ChainX有一些服务放于阿里云（国际）香港上，但是至今已出现了**多次网络访问出现短暂性异常**的情况，因此建议使用阿里云（国际）香港的节点引起警惕
 
-### 5. 数据运行中出错
+## 6. 数据运行中出错
 
 由于substrate底层可能存在一定的bug，目前已知substrate会在某些特定情况下出现以下崩溃（`panic`）问题
 
@@ -192,7 +205,7 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 
    3. 其中`db_archive.tar.gz`数据镜像代表使用**存档模式**启动的数据（即在配置中添加`"pruning":"archive"`），请注意，若使用此数据，配置文件中**一定要添加**`"pruning":"archive"`！（ChainX**比较推荐**节点目前使用该模式启动节点）
 
-### 6. 本机数据备份
+## 7. 本机数据备份
 
 由于ChainX项目处于早期，可能存在目前不可知的因素导致数据错误，由于当出现数据错误时，会导致节点无法出块，受到惩罚，因此ChainX**建议**配置足够（cpu，存储空间）的节点，在跑验证者节点的那台机器上同时运行一个备份数据节点，当验证者节点的数据出现异常且无法恢复时，可以直接使用备份数据启动验证者节点！
 
@@ -204,21 +217,22 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 
    ```bash
    <validator>/
-   -- chainx
-   -- config.json
-   -- keystore/
-   -- database/ # config.json 中的 "base-path" 字段指向的目录
-   -----------/chains/chainx_mainnet/
-   ---------------------------------/db  # 该目录为ChainX数据目录
-   ---------------------------------/network  # 该目录记录了 ChainX节点 在p2p网络中的 peerId
+        ├── chainx
+        ├── config.json
+        ├── keystore/
+        ├── database/            # config.json 中的 "base-path" 字段指向的目录
+        │   └── chains/
+        │       └── chainx_mainnet/
+        │           ├── db       # 该目录为ChainX数据目录
+        │           └── network  # 该目录记录了 ChainX节点 在p2p网络中的 peerId
    ```
 
    那么首先可以仿照验证者的配置，建立备份节点的路径`<backup>/`如下：
 
    ```bash
    <backup>/
-   -- chainx
-   -- config_bak.json
+        ├── chainx
+        └── config_bak.json
    ```
 
 2. 通过rpc接口[RPC#system_networkstate](RPC#system_networkstate)查阅验证者的p2p网络的peerId
@@ -230,8 +244,7 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 
    该rpc将会返回
 
-   ```bash
-         
+   ```jsonc
    {
        "jsonrpc":"2.0",
        "result":{
@@ -248,7 +261,7 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 
    其中
 
-   -  `listenedAddresses`ip可以查阅到其监听内网ip及端口
+   - `listenedAddresses`ip可以查阅到其监听内网ip及端口
 
    - `peerId`为验证者在p2p网络中的公钥
 
@@ -264,23 +277,23 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 
    配置`<backup>/config_bak.json`如下：
 
-   ```bash
+   ```jsonc
    {
-     "validator": false, # 该字段一定要为false
-     "log": "error", # 建议提升error等级，减少日志的打印
-     "port": 30333 # 建议修改成和 validator中不一样的端口，如 30300
-     "ws-port": 8187, # 建议修改成和 validator中不一样的端口，如 8187
-     "rpc-port": 8186,# 建议修改成和 validator中不一样的端口，如 8186
-     "other-execution": "NativeElseWasm", # 不变
+     "validator": false,  // 该字段一定要为false
+     "log": "error",      // 建议提升error等级，减少日志的打印
+     "port": 30333        // 建议修改成和 validator中不一样的端口，如 30300
+     "ws-port": 8187,     // 建议修改成和 validator中不一样的端口，如 8187
+     "rpc-port": 8186,    // 建议修改成和 validator中不一样的端口，如 8186
+     "other-execution": "NativeElseWasm", // 不变
      "syncing-execution": "NativeElseWasm",
      "block-construction-execution": "NativeElseWasm",
-     "name": "Your-Node-Name", # 在节点浏览器中显示的节点名，建议换一个与validator不同的名字，或者使用`"no-telemetry": true`，该参数会让该节点不发送信息给节点浏览器
-     "base-path": "<backup>/database", # 备份数据的路径
-     "in-peers": 1, # 关键！in-peers 与 out-peers 一定要设置成1
+     "name": "Your-Node-Name",         // 在节点浏览器中显示的节点名，建议换一个与validator不同的名字，或者使用`"no-telemetry": true`，该参数会让该节点不发送信息给节点浏览器
+     "base-path": "<backup>/database", // 备份数据的路径
+     "in-peers": 1, // 关键！in-peers 与 out-peers 一定要设置成1
      "out-peers": 1, 
-     "pruning": "archive", # 可选，启用存档模式，若不使用存档模式启动，则不需要这一行
+     "pruning": "archive", // 可选，启用存档模式，若不使用存档模式启动，则不需要这一行
      "bootnodes": [
-     	# 在2中查询到的本机验证者种子节点，需要用双引号括起来
+     	// 在2中查询到的本机验证者种子节点，需要用双引号括起来
      	"/ip4/127.0.0.1/tcp/40333/p2p/QmRSeJH46AbP53ibLULqTaQSoVyVHQwUqz8EsRapbYKAqR"
      ],
    }
