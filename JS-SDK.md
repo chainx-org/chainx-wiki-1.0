@@ -101,7 +101,7 @@ async function ed25519Sign(message) {
 ```
 
 获取某个块下的所有转账交易
-```
+```javascript
 const { ApiBase, HttpProvider } = require('chainx.js');
 
 (async () => {
