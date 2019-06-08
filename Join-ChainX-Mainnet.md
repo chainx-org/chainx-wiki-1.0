@@ -140,6 +140,7 @@ $ curl https://git.io/fjlZU -o config.json
     "syncing-execution": "NativeElseWasm",
     "block-construction-execution": "NativeElseWasm",
     "importing-execution": "NativeElseWasm",
+    "pruning": "archive",  // 目前强烈建议加上该配置，以存档模式启动
     "bootnodes": [
         // 填写引导节点，ChainX已经内置了一些种子节点，一般无需填写
     ]
@@ -236,6 +237,7 @@ Repeat again:
   "other-execution": "NativeElseWasm",
   "syncing-execution": "NativeElseWasm",
   "block-construction-execution": "NativeElseWasm",
+  "pruning": "archive",  // 目前强烈建议加上该配置，以存档模式启动
   "bootnodes": [],
   "name": "Your-Node-Name",             // 在节点浏览器中显示的节点名
   "validator-name": "Your-Validator-Name", // 注册节点时使用的名称
