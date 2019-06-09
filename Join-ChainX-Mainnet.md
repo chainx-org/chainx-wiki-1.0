@@ -117,7 +117,7 @@ $ ls
 我们推荐使用 `json` 配置文件的方式启动节点, [下载配置文件模板](https://gist.github.com/liuchengxu/3b3ed4ce027e39fc89b5a5a6c289bfaf)，可通过以下方式下载:
 
 ```bash
-$ curl https://git.io/fjlZU -o config.json
+$ curl https://gist.githubusercontent.com/liuchengxu/3b3ed4ce027e39fc89b5a5a6c289bfaf/raw/e51272a85e653c31763e97c6aaf6084c38c03c40/validator_config.json -o validator_config.json
 ```
 
 **!!! 请不要直接使用该文件启动节点，务必参照以下启动指引修改配置文件模板后运行, 各参数将在下文解释。**
