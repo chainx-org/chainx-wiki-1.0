@@ -102,10 +102,11 @@ async function ed25519Sign(message) {
 
 获取某个块下的所有转账交易
 ```javascript
-const { ApiBase, HttpProvider } = require('chainx.js');
+const { ApiBase, HttpProvider, WsProvider } = require('chainx.js');
 
 (async () => {
   const api = new ApiBase(new HttpProvider('https://w1.chainx.org.cn/rpc'));
+  // const api = new ApiBase(new WsProvider('wss://w1.chainx.org.cn/ws'))
   // 等价  new Chainx('wss://w1.chainx.org/ws').api
 
   await api.isReady;
