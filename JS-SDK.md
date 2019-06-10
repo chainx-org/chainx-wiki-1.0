@@ -105,9 +105,10 @@ async function ed25519Sign(message) {
 const { ApiBase, HttpProvider, WsProvider } = require('chainx.js');
 
 (async () => {
+  // 使用 http 连接
   const api = new ApiBase(new HttpProvider('https://w1.chainx.org.cn/rpc'));
+  // 使用 websocket 连接
   // const api = new ApiBase(new WsProvider('wss://w1.chainx.org.cn/ws'))
-  // 等价  new Chainx('wss://w1.chainx.org/ws').api
 
   await api.isReady;
 
