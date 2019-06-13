@@ -50,8 +50,57 @@ const Chainx = require('chainx.js').default;
 ```
 
 
-离线签名
+离线签名 http 版本。
+```javascript
+const { ApiBase, HttpProvider } = require('chainx.js');
+const nacl = require('tweetnacl');
 
+// 签名过程
+async function ed25519Sign(message) {
+  // 签名账户的 32 位私钥
+  const privateKey = Buffer.from('5858582020202020202020202020202020202020202020202020202020202020', 'hex');
+  // 使用 ed25519 算法进行签名。
+  return nacl.sign.detached(message, nacl.sign.keyPair.fromSeed(privateKey).secretKey);
+}
+
+(async () => {
+  const chainx = new ApiBase(new HttpProvider('https://w1.chainx.org/rpc'));
+
+  await chainx._isReady;
+
+  // 签名账户的公钥
+  const address = '5CjVPmj6Bm3TVUwfY5ph3PE2daxPHp1G3YZQnrXc8GDjstwT';
+
+  // 投票提息
+  const extrinsic = chainx.tx.xStaking.claim(address);
+
+  // 获取该账户交易次数
+  const nonce = await chainx.query.system.accountNonce(address);
+
+  // 获取待签原文
+  // 可传入参数： extrinsic.encodeMessage(address, { nonce, acceleration = 1, blockHash = genesisHash, era = '0x00' })
+  const encoded = extrinsic.encodeMessage(address, { nonce, acceleration: 10 });
+
+  // 获取手续费，
+  const fee = await extrinsic.getFee(address, { acceleration: 1 });
+
+  console.log('fee', fee)
+
+  // 离线签名
+  const signature = await ed25519Sign(encoded);
+
+  // 注入签名
+  extrinsic.appendSignature(signature);
+
+  // 发送交易
+  const txHash = await extrinsic.send();
+
+  console.log(txHash);
+})();
+
+```
+
+离线签名 websocket 版本
 ```javascript
 const Chainx = require('chainx.js').default;
 const nacl = require('tweetnacl');
