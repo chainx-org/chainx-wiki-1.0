@@ -151,11 +151,13 @@ $ curl https://gist.githubusercontent.com/liuchengxu/3b3ed4ce027e39fc89b5a5a6c28
 - `base-path`: 数据存放路径，注意与启动节点步骤1中的相对应
 
 另一方面，**对于存储空间大**的用户，我们目前强烈建议在上面的`json`文件里加上
+
 ```bash
 {
     "pruning": "archive",  // 以存档模式启动
 }
 ```
+
 请注意若使用这个模式启动的节点产生的数据目录，今后**必须永远**一直有这个参数，不能移除。同理，若启动时没有加这个参数启动的数据目录，今后也**永远也不能**加这个参数。
 
 这个`"pruning": "archive"`代表使用**存档模式**启动节点，会保存全量的状态树，否则，默认情况下将会裁剪256个块之前的状态树。
@@ -241,9 +243,9 @@ Repeat again:
   "bootnodes": [],
   "name": "Your-Node-Name",             // 在节点浏览器中显示的节点名
   "validator-name": "Your-Validator-Name", // 注册节点时使用的名称
-  "base-path": "<步骤1中指定的数据存放路径>",
-  "keystore-path": "<步骤1中指定的keystore路径>",
-  "keystore-password": "<步骤1中生成的keystore时使用的密码>"
+  "base-path": "<步骤2中指定的数据存放路径>",
+  "keystore-path": "<步骤2中指定的keystore路径>",
+  "keystore-password": "<步骤2中生成的keystore时使用的密码>"
 }
 ```
 
@@ -302,6 +304,6 @@ nohup ./chainx --config=$(pwd)/config.json > chainx.log 2>&1 &
 - 简介
 - 选择“参选”。
 
-请求社区投票至前 100 名，每 60 分钟（1800块的整数倍）会进行一次验证人选举，如果在前 100 名就可以出块了，如果看到命令行打印 `Prepared block for proposing at 6467`之类的，就代表在出块了 。
+请求社区投票至前 30 名，每 60 分钟（1800块的整数倍）会进行一次验证人选举，如果在前 100 名就可以出块了，如果看到命令行打印 `Prepared block for proposing at 6467`之类的，就代表在出块了 。
 
 **如果由于节点部署不当等导致的节点掉线，系统会在每个分红周期惩罚节点奖池**，漏一个块的罚金是出一个块奖励的 3 倍，罚金从节点奖池扣除。如果奖池被惩罚至0，则会自动强制退选，节点需检查部署情况后，再次更新节点至参选状态，等待下一轮换届。
