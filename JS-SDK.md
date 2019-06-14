@@ -151,6 +151,16 @@ async function ed25519Sign(message) {
 
 获取某个块下的所有转账交易
 ```javascript
+/**
+一般来说如果只是为了拿到PCX转账的金额，地址，来确认入账，大概的逻辑是这样
+  1.监听块高，得到下一个最新块高
+  2.得到块中的交易列表
+  3.解析每笔交易，如果是XAsset的transfer交易，解析这笔交易的Event是否最后一个event是Sucess？如果是，则代表这是一笔成功的转账交易。
+    a.解析这笔交易的参数得到发送人，收款人地址dest，收款金额，资产类型，备注
+    b.如果收款人的dest是关注的地址，则确认入账（处理业务）
+**/
+
+
 const { ApiBase, HttpProvider, WsProvider } = require('chainx.js');
 
 (async () => {
