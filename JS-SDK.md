@@ -201,7 +201,7 @@ async function ed25519Sign(message) {
 })();
 ```
 
-### 获取某个块下的所有转账交易
+### 资产对接示例
 
 ```javascript
 
