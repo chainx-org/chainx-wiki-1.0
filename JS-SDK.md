@@ -1,135 +1,52 @@
-<!-- TOC GFM -->
-
-            * [安装](#安装)
-            * [快速开始](#快速开始)
-                * [离线签名 http 版本](#离线签名-http-版本)
-                * [离线签名 websocket 版本](#离线签名-websocket-版本)
-                * [获取某个块下的所有转账交易](#获取某个块下的所有转账交易)
-            * [Chainx.js](#chainxjs)
-            * [类型定义](#类型定义)
-            * [Account 模块](#account-模块)
-            * [交易函数](#交易函数)
-                * [chainx.trustee.createWithdrawTx(withdrawalIdList, tx)](#chainxtrusteecreatewithdrawtxwithdrawalidlist-tx)
-                    * [参数](#参数)
-                    * [示例](#示例)
-                * [chainx.trustee.signWithdrawTx(tx?)](#chainxtrusteesignwithdrawtxtx)
-                    * [参数](#参数-1)
-                    * [示例](#示例-1)
-                * [chainx.trustee.setupBitcoinTrustee(about, hotEntity, coldEntity)](#chainxtrusteesetupbitcointrusteeabout-hotentity-coldentity)
-                    * [参数](#参数-2)
-                    * [示例](#示例-2)
-                * [chainx.asset.transfer(dest, token, value, memo)](#chainxassettransferdest-token-value-memo)
-                    * [参数](#参数-3)
-                    * [示例](#示例-3)
-                * [chainx.asset.withdraw(token, value, addr, ext)](#chainxassetwithdrawtoken-value-addr-ext)
-                    * [参数](#参数-4)
-                    * [示例](#示例-4)
-                * [chainx.trade.putOrder(pair_index, order_type, order_direction, amount, price)](#chainxtradeputorderpair_index-order_type-order_direction-amount-price)
-                    * [参数](#参数-5)
-                    * [示例](#示例-5)
-                * [chainx.trade.cancelOrder(pair_index, order_index)](#chainxtradecancelorderpair_index-order_index)
-                    * [参数](#参数-6)
-                    * [示例](#示例-6)
-                * [chainx.stake.register(name)](#chainxstakeregistername)
-                    * [参数](#参数-7)
-                    * [示例](#示例-7)
-* [](#)
-                * [chainx.stake.nominate(targetAddress, value, memo)](#chainxstakenominatetargetaddress-value-memo)
-                    * [参数](#参数-8)
-                    * [示例](#示例-8)
-                * [chainx.stake.unnominate(targetAddress,  value,  memo)](#chainxstakeunnominatetargetaddress--value--memo)
-                    * [参数](#参数-9)
-                    * [示例](#示例-9)
-                * [chainx.stake.refresh(url?,  desire_to_run?,  next_key?,  about?)](#chainxstakerefreshurl--desire_to_run--next_key--about)
-                    * [参数](#参数-10)
-                    * [示例](#示例-10)
-                * [chainx.stake.voteClaim(target)](#chainxstakevoteclaimtarget)
-                    * [参数](#参数-11)
-                    * [示例](#示例-11)
-                * [chainx.stake.depositClaim(token)](#chainxstakedepositclaimtoken)
-                    * [参数](#参数-12)
-                    * [示例](#示例-12)
-                * [chainx.stake.unfreeze(target,  revocation_index)](#chainxstakeunfreezetarget--revocation_index)
-                    * [参数](#参数-13)
-                    * [示例](#示例-13)
-                * [chainx.stake.setupTrustee(chain,  about,  hot_entity, cold_entity)](#chainxstakesetuptrusteechain--about--hot_entity-cold_entity)
-                    * [参数](#参数-14)
-                    * [示例](#示例-14)
-            * [获取数据](#获取数据)
-                * [chainx.chain.getInfo()](#chainxchaingetinfo)
-                    * [参数](#参数-15)
-                    * [示例](#示例-15)
-                * [chainx.chain.getBlockPeriod()](#chainxchaingetblockperiod)
-                    * [参数](#参数-16)
-                    * [示例](#示例-16)
-                * [chainx.chain.subscribeNewHead()](#chainxchainsubscribenewhead)
-                    * [参数](#参数-17)
-                    * [示例](#示例-17)
-                * [chainx.trustee.getTrusteeSessionInfo(chain)](#chainxtrusteegettrusteesessioninfochain)
-                    * [参数](#参数-18)
-                    * [示例](#示例-18)
-                * [chainx.trustee.getTrusteeInfoByAccount(who)](#chainxtrusteegettrusteeinfobyaccountwho)
-                    * [参数](#参数-19)
-                    * [示例](#示例-19)
-                * [chainx.trustee.getWithdrawTx(chain)](#chainxtrusteegetwithdrawtxchain)
-                    * [参数](#参数-20)
-                    * [示例](#示例-20)
-                * [chainx.asset.getAssetsByAccount(who, page_index, page_size)](#chainxassetgetassetsbyaccountwho-page_index-page_size)
-                    * [参数](#参数-21)
-                    * [示例](#示例-21)
-                * [chainx.asset.getAssets(page_index, page_size)](#chainxassetgetassetspage_index-page_size)
-                    * [参数](#参数-22)
-                    * [示例](#示例-22)
-                * [chainx.asset.getWithdrawalList(chain, page_index, page_size)](#chainxassetgetwithdrawallistchain-page_index-page_size)
-                    * [参数](#参数-23)
-                    * [示例](#示例-23)
-                * [chainx.asset.getWithdrawalListByAccount(who, page_index, page_size)](#chainxassetgetwithdrawallistbyaccountwho-page_index-page_size)
-                    * [参数](#参数-24)
-                    * [示例](#示例-24)
-                * [chainx.asset.getDepositList(chain, page_index, page_size)](#chainxassetgetdepositlistchain-page_index-page_size)
-                    * [参数](#参数-25)
-                    * [示例](#示例-25)
-                * [chainx.asset.getAddressByAccount(who, chain)](#chainxassetgetaddressbyaccountwho-chain)
-                    * [参数](#参数-26)
-                    * [示例](#示例-26)
-                * [chainx.asset.verifyAddressValidity(token, addr, memo)](#chainxassetverifyaddressvaliditytoken-addr-memo)
-                    * [参数](#参数-27)
-                    * [示例](#示例-27)
-                * [chainx.asset.getWithdrawalLimitByToken(token)](#chainxassetgetwithdrawallimitbytokentoken)
-                    * [参数](#参数-28)
-                    * [示例](#示例-28)
-                * [chainx.stake.getNominationRecords(who)](#chainxstakegetnominationrecordswho)
-                    * [参数](#参数-29)
-                    * [示例](#示例-29)
-                * [chainx.stake.getIntentions()](#chainxstakegetintentions)
-                    * [参数](#参数-30)
-                    * [示例](#示例-30)
-                * [chainx.stake.getPseduIntentions()](#chainxstakegetpseduintentions)
-                    * [参数](#参数-31)
-                    * [示例](#示例-31)
-                * [chainx.stake.getPseduNominationRecords(who)](#chainxstakegetpsedunominationrecordswho)
-                    * [参数](#参数-32)
-                    * [示例](#示例-32)
-                * [chainx.stake.getBondingDuration()](#chainxstakegetbondingduration)
-                    * [参数](#参数-33)
-                    * [示例](#示例-33)
-                * [chainx.stake.getIntentionBondingDuration()](#chainxstakegetintentionbondingduration)
-                    * [参数](#参数-34)
-                        * [示例](#示例-34)
-                * [chainx.stake.getNextKeyFor(who)](#chainxstakegetnextkeyforwho)
-                    * [参数](#参数-35)
-                    * [示例](#示例-35)
-                * [chainx.trade.getTradingPairs()](#chainxtradegettradingpairs)
-                    * [参数](#参数-36)
-                    * [示例](#示例-36)
-                * [chainx.trade.getQuotations(id, piece)](#chainxtradegetquotationsid-piece)
-                    * [参数](#参数-37)
-                    * [示例](#示例-37)
-                * [chainx.trade.getOrders(who, page_index, page_size)](#chainxtradegetorderswho-page_index-page_size)
-                    * [参数](#参数-38)
-                    * [示例](#示例-38)
-
-<!-- /TOC -->
+* [安装](#安装)
+* [快速开始](#快速开始)
+    * [离线签名 http 版本](#离线签名-http-版本)
+    * [离线签名 websocket 版本](#离线签名-websocket-版本)
+    * [获取某个块下的所有转账交易](#获取某个块下的所有转账交易)
+* [Chainx.js](#chainxjs)
+* [类型定义](#类型定义)
+* [Account 模块](#account-模块)
+* [交易函数](#交易函数)
+    * [chainx.trustee.createWithdrawTx(withdrawalIdList, tx)](#chainxtrusteecreatewithdrawtxwithdrawalidlist-tx)
+    * [chainx.trustee.signWithdrawTx(tx?)](#chainxtrusteesignwithdrawtxtx)
+    * [chainx.trustee.setupBitcoinTrustee(about, hotEntity, coldEntity)](#chainxtrusteesetupbitcointrusteeabout-hotentity-coldentity)
+    * [chainx.asset.transfer(dest, token, value, memo)](#chainxassettransferdest-token-value-memo)
+    * [chainx.asset.withdraw(token, value, addr, ext)](#chainxassetwithdrawtoken-value-addr-ext)
+    * [chainx.trade.putOrder(pair_index, order_type, order_direction, amount, price)](#chainxtradeputorderpair_index-order_type-order_direction-amount-price)
+    * [chainx.trade.cancelOrder(pair_index, order_index)](#chainxtradecancelorderpair_index-order_index)
+    * [chainx.stake.register(name)](#chainxstakeregistername)
+    * [chainx.stake.nominate(targetAddress, value, memo)](#chainxstakenominatetargetaddress-value-memo)
+    * [chainx.stake.unnominate(targetAddress,  value,  memo)](#chainxstakeunnominatetargetaddress--value--memo)
+    * [chainx.stake.refresh(url?,  desire_to_run?,  next_key?,  about?)](#chainxstakerefreshurl--desire_to_run--next_key--about)
+    * [chainx.stake.voteClaim(target)](#chainxstakevoteclaimtarget)
+    * [chainx.stake.depositClaim(token)](#chainxstakedepositclaimtoken)
+    * [chainx.stake.unfreeze(target,  revocation_index)](#chainxstakeunfreezetarget--revocation_index)
+    * [chainx.stake.setupTrustee(chain,  about,  hot_entity, cold_entity)](#chainxstakesetuptrusteechain--about--hot_entity-cold_entity)
+* [获取数据](#获取数据)
+    * [chainx.chain.getInfo()](#chainxchaingetinfo)
+    * [chainx.chain.getBlockPeriod()](#chainxchaingetblockperiod)
+    * [chainx.chain.subscribeNewHead()](#chainxchainsubscribenewhead)
+    * [chainx.trustee.getTrusteeSessionInfo(chain)](#chainxtrusteegettrusteesessioninfochain)
+    * [chainx.trustee.getTrusteeInfoByAccount(who)](#chainxtrusteegettrusteeinfobyaccountwho)
+    * [chainx.trustee.getWithdrawTx(chain)](#chainxtrusteegetwithdrawtxchain)
+    * [chainx.asset.getAssetsByAccount(who, page_index, page_size)](#chainxassetgetassetsbyaccountwho-page_index-page_size)
+    * [chainx.asset.getAssets(page_index, page_size)](#chainxassetgetassetspage_index-page_size)
+    * [chainx.asset.getWithdrawalList(chain, page_index, page_size)](#chainxassetgetwithdrawallistchain-page_index-page_size)
+    * [chainx.asset.getWithdrawalListByAccount(who, page_index, page_size)](#chainxassetgetwithdrawallistbyaccountwho-page_index-page_size)
+    * [chainx.asset.getDepositList(chain, page_index, page_size)](#chainxassetgetdepositlistchain-page_index-page_size)
+    * [chainx.asset.getAddressByAccount(who, chain)](#chainxassetgetaddressbyaccountwho-chain)
+    * [chainx.asset.verifyAddressValidity(token, addr, memo)](#chainxassetverifyaddressvaliditytoken-addr-memo)
+    * [chainx.asset.getWithdrawalLimitByToken(token)](#chainxassetgetwithdrawallimitbytokentoken)
+    * [chainx.stake.getNominationRecords(who)](#chainxstakegetnominationrecordswho)
+    * [chainx.stake.getIntentions()](#chainxstakegetintentions)
+    * [chainx.stake.getPseduIntentions()](#chainxstakegetpseduintentions)
+    * [chainx.stake.getPseduNominationRecords(who)](#chainxstakegetpsedunominationrecordswho)
+    * [chainx.stake.getBondingDuration()](#chainxstakegetbondingduration)
+    * [chainx.stake.getIntentionBondingDuration()](#chainxstakegetintentionbondingduration)
+    * [chainx.stake.getNextKeyFor(who)](#chainxstakegetnextkeyforwho)
+    * [chainx.trade.getTradingPairs()](#chainxtradegettradingpairs)
+    * [chainx.trade.getQuotations(id, piece)](#chainxtradegetquotationsid-piece)
+    * [chainx.trade.getOrders(who, page_index, page_size)](#chainxtradegetorderswho-page_index-page_size)
 
 ## 安装
 
@@ -530,12 +447,12 @@ alice.privateKey() // 私钥 0x...
 1. 没有任何签名的待签原文，后续可以继续调用`signWithdrawTx`进行自己的签名
 2. **对应于这个发送者（一定是信托）**签署过的待签，也就是将`signWithdrawTx`的过程合并在了这里，提现交易的提起者可以同时对这笔提现交易签名，调用`createWithdrawTx`发送ChainX，之后就不需要再调用`signWithdrawTx`进行签名
 
-#### 参数
+参数:
 
 - `withdrawalIdList`：提现ID列表
 - `tx`：构造的待签原文（可以是没有签名的原文与**有一个**签名的原文，多个签名的不允许）
 
-#### 示例
+示例:
 
 ```javascript
 chainx.trustee.createWithdrawTx([1, 2], '0x......');
@@ -545,11 +462,11 @@ chainx.trustee.createWithdrawTx([1, 2], '0x......');
 
 提交签名后的交易原文
 
-#### 参数
+参数:
 
 - `tx`：签名后的交易原文
 
-#### 示例
+示例:
 
 ```javascript
 chainx.trustee.signWithdrawTx('0x......');
@@ -559,13 +476,13 @@ chainx.trustee.signWithdrawTx('0x......');
 
 设置比特币信托地址
 
-#### 参数
+参数:
 
 - `tx`：签名后的交易原文
 - ` hotEntity`：热地址
 - `coldEntity`：冷地址
 
-#### 示例
+示例:
 
 ```javascript
 chainx.trustee.setupBitcoinTrustee('111'， '0x......', '0x......');
@@ -575,14 +492,14 @@ chainx.trustee.setupBitcoinTrustee('111'， '0x......', '0x......');
 
 转账
 
-#### 参数
+参数:
 
 - `dest`：接收人的地址
 - `token`：转账的币种
 - `value`：转账金额（最小的精度，只能为整数）
 - `memo`：备注
 
-#### 示例
+示例:
 
 ```javascript
 chainx.asset.transfer('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 'PCX', 1000, '转给你');
@@ -592,14 +509,14 @@ chainx.asset.transfer('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 'PCX',
 
 提现
 
-#### 参数
+参数:
 
 - `token`：提现的资产类型
 - `value`：提现的数量
 - `addr`：接收的地址
 - `ext`：备注
 
-#### 示例
+示例:
 
 ```javascript
 chainx.asset.withdraw('BTC', 100, '5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', '提现');
@@ -609,7 +526,7 @@ chainx.asset.withdraw('BTC', 100, '5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgX
 
 用户挂单
 
-#### 参数
+参数:
 
 - `pairid`：交易对ID
 - `ordertype`：类型（限价单|市价单)
@@ -617,7 +534,7 @@ chainx.asset.withdraw('BTC', 100, '5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgX
 - `amount`：数量
 - `price`：价格
 
-#### 示例
+示例:
 
 ```javascript
 chainx.trade.putOrder(1, 'Limit', 'Buy', 100, 100);
@@ -627,12 +544,12 @@ chainx.trade.putOrder(1, 'Limit', 'Buy', 100, 100);
 
 取消挂单
 
-#### 参数
+参数:
 
 - `pairid`：交易对ID
 - `index`：用户委托编号
 
-#### 示例
+示例:
 
 ```javascript
 chainx.trade.cancelOrder(0, 2);
@@ -642,11 +559,11 @@ chainx.trade.cancelOrder(0, 2);
 
 注册节点。
 
-#### 参数
+参数:
 
 - `name`：注册节点的名称
 
-#### 示例
+示例:
 
 ```javascript
 chainx.stake.register('节点');
@@ -658,13 +575,13 @@ chainx.stake.register('节点');
 
 对节点投票。
 
-#### 参数
+参数:
 
 - `targetAddress`：被投票的节点的地址
 - `value`: 投票金额
 - `memo`: 备注
 
-#### 示例
+示例:
 
 ```javascript
 chainx.stake.nominate('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1000, '投票');
@@ -674,13 +591,13 @@ chainx.stake.nominate('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1000, 
 
 撤销对节点的投票。
 
-#### 参数
+参数:
 
 - `targetAddress` ：撤票节点
 - `value` ：撤票金额
 - `memo`：备注
 
-#### 示例
+示例:
 
 ```javascript
 chainx.stake.refresh('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1000, '撤销投票');
@@ -690,14 +607,14 @@ chainx.stake.refresh('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1000, '
 
 更新节点网址，参选状态，出块地址和关于。所有参数均是可选项，不传需要填写 `null` 作为占位。
 
-#### 参数
+参数:
 
 - `url`: 节点网址
 - `desireToRun`: 是否参选
 - `nextKey`: 出块地址
 - `about`: 关于
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.refresh(null, true, null, '我是节点');
@@ -707,11 +624,11 @@ chainx.stake.refresh(null, true, null, '我是节点');
 
 选举投票提息。
 
-#### 参数
+参数:
 
 - `target`: 投票节点
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.voteClaim('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ');
@@ -721,11 +638,11 @@ chainx.stake.voteClaim('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ');
 
 充值挖矿提息。
 
-#### 参数
+参数:
 
 - `token`: 充值币种
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.depositClaim('BTC');
@@ -735,13 +652,13 @@ chainx.stake.depositClaim('BTC');
 
 撤销投票后，撤销金额有一定的时候锁定期。锁定期满后，可以对锁定金额进行解冻，使其变为可用余额。
 
-#### 参数
+参数:
 
 - `target`: 解冻节点
 
 - `revocationIndex`: 解冻索引。 用户对同一解冻节点可能同时有多次解冻操作，该索引指明解冻编号
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.unfreeze('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1);
@@ -751,7 +668,7 @@ chainx.stake.unfreeze('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1);
 
 设置信托节点信息。
 
-#### 参数
+参数:
 
 - `chain`: 链 ID
 
@@ -761,7 +678,7 @@ chainx.stake.unfreeze('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1);
 
 - `coldEntity`: 链的冷地址
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.setupTrustee('ChainX', 'about', ['Bitcoin', '0x......'], ['Bitcoin', '0x......']);
@@ -777,11 +694,11 @@ ChainX对于数据的获取**基本**是是对RPC接口调用的封装
 
 获取链的基本信息
 
-#### 参数
+参数:
 
 无
 
-#### 示例
+示例:
 
 ```js
 chainx.chain.getInfo()
@@ -794,11 +711,11 @@ chainx.chain.getInfo()
 
 获取出块的间隔
 
-#### 参数
+参数:
 
 无
 
-#### 示例
+示例:
 
 ```js
 chainx.chain.getBlockPeriod()
@@ -811,11 +728,11 @@ chainx.chain.getBlockPeriod()
 
 订阅最新的块，返回一个 rxjs 标准的 `observable`
 
-#### 参数
+参数:
 
 无
 
-#### 示例
+示例:
 
 ```js
 const subscription = chainx.chain.subscribeNewHead().subscribe(result => {
@@ -835,11 +752,11 @@ const subscription = chainx.chain.subscribeNewHead().subscribe(result => {
 
 分局链返回当前的信托相关信息
 
-#### 参数
+参数:
 
 - chain: Chain, 链ID
 
-#### 示例
+示例:
 
 ```js
 chainx.trustee.getTrusteeSessionInfo("BTC")
@@ -895,11 +812,11 @@ chainx.trustee.getTrusteeSessionInfo("BTC")
 
 获取该用户的信托信息（已注册信托后会显示）
 
-#### 参数
+参数:
 
 - `who`: AccountId 账户
 
-#### 示例
+示例:
 
 ```js
 chainx.trustee.getTrusteeInfoByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ')
@@ -919,11 +836,11 @@ chainx.trustee.getTrusteeInfoByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7
 
 获取对应链的提现交易，已经与这个交易相关的ChainX申请提现的用户提现记录id列表（用于信托获取对应链上正在处理中的多签提现交易，如对于BTC而言，该接口返回信托需要进行签署的比特币提现待签原文以及相关信息）
 
-#### 参数
+参数:
 
 - chain: Chain, 链ID
 
-#### 示例
+示例:
 
 ```js
 chainx.trustee.getWithdrawTx('Bitcoin')
@@ -949,13 +866,13 @@ chainx.trustee.getWithdrawTx('Bitcoin')
 
 用户资产信息
 
-#### 参数
+参数:
 
 - `who`: AccountId 账户
 - `page_index`: u32 页码 (从0开始)
 - `page_size`: u32 页大小 (<=100)
 
-#### 示例
+示例:
 
 ```js
 chainx.asset.getAssetsByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 0, 10)
@@ -998,12 +915,12 @@ chainx.asset.getAssetsByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqq
 
 总资产信息
 
-#### 参数
+参数:
 
 - `page_index`：u32 页码 (从0开始)
 - `page_size`：u32 页大小 (<=100)
 
-#### 示例
+示例:
 
 ```js
 chainx.asset.getAssets(0, 10)
@@ -1058,13 +975,13 @@ chainx.asset.getAssets(0, 10)
 
 当前所有提现中记录
 
-#### 参数
+参数:
 
 - `chain`: String 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
 - `page_index`: u32 页码 (从0开始)
 - `page_size`: u32 页大小 (<=100)
 
-#### 示例
+示例:
 
 ```js
 chainx.asset.getWithdrawalList('Bitcoin', 0, 10)
@@ -1109,13 +1026,13 @@ chainx.asset.getWithdrawalList('Bitcoin', 0, 10)
 
 当前用户的提现中记录
 
-#### 参数
+参数:
 
 - `who`: AccountId 账户
 - `page_index`: u32 页码 (从0开始)
 - `page_size`: u32 页大小 (<=100)
 
-#### 示例
+示例:
 
 ```js
 chainx.asset.getWithdrawalListByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 0, 10)
@@ -1128,13 +1045,13 @@ chainx.asset.getWithdrawalListByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw
 
 充值中列表
 
-#### 参数
+参数:
 
 - `chain`: String 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
 - `page_index`: u32 页码 (从0开始)
 - `page_size`: u32 页大小 (<=100)
 
-#### 示例
+示例:
 
 ```js
 chainx.asset.getDepositList('Bitcoin', 0, 10)
@@ -1175,12 +1092,12 @@ chainx.asset.getDepositList('Bitcoin', 0, 10)
 
 ChainX账户绑定BTC地址列表
 
-#### 参数
+参数:
 
 - `who`: AccountId 账户
 - `chain`: String 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
 
-#### 示例
+示例:
 
 ```js
 chainx.asset.getAddressByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 'Bitcoin')
@@ -1195,13 +1112,13 @@ chainx.asset.getAddressByAccount('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXq
 
 验证提现地址正确性
 
-#### 参数
+参数:
 
 - `token`: 币种名
 - `addr`: 地址
 - `memo`: 备注 （注：3个参数与提起提现请求时候交易`withdraw` 的参数列表完全一致）
 
-#### 示例
+示例:
 
 ```js
 chainx.asset.verifyAddressValidity("BTC", "2N8tR484JD32i1DY2FnRPLwBVaNuXSfzoAv", "")
@@ -1214,11 +1131,11 @@ true // 返回 true 代表地址校验正确，false代表错误
 
 chainx 链上与提现金额相关的限制，如提现的最小值与用户提现扣除的手续费
 
-#### 参数
+参数:
 
 - token: 币种名
 
-#### 示例
+示例:
 
 ```js
 chainx.asset.getWithdrawalLimitByToken("BTC")
@@ -1234,11 +1151,11 @@ chainx.asset.getWithdrawalLimitByToken("BTC")
 
 用户投票信息
 
-#### 参数
+参数:
 
 - `who`: AccountId 账户
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.getNominationRecords('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ')
@@ -1266,11 +1183,11 @@ chainx.stake.getNominationRecords('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgX
 
 节点列表
 
-#### 参数
+参数:
 
 无
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.getIntentions()
@@ -1301,11 +1218,11 @@ chainx.stake.getIntentions()
 
 充值挖矿列表
 
-#### 参数
+参数:
 
 无
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.getPseduIntentions()
@@ -1328,11 +1245,11 @@ chainx.stake.getPseduIntentions()
 
 用户投票信息
 
-#### 参数
+参数:
 
 - `who`: AccountId 账户
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.getPseduNominationRecords('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ')
@@ -1353,11 +1270,11 @@ chainx.stake.getPseduNominationRecords('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7
 
 获取普通用户撤销投票的锁定期，
 
-#### 参数
+参数:
 
 无
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.getBondingDuration()
@@ -1370,11 +1287,11 @@ chainx.stake.getBondingDuration()
 
 获取节点用户撤销投票的锁定期
 
-#### 参数
+参数:
 
 无
 
-##### 示例
+#示例:
 
 ```js
 chainx.stake.getIntentionBondingDuration()
@@ -1387,11 +1304,11 @@ chainx.stake.getIntentionBondingDuration()
 
 获取节点出块地址
 
-#### 参数
+参数:
 
 - `who`: AccountId 账户
 
-#### 示例
+示例:
 
 ```js
 chainx.stake.getNextKeyFor('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ')
@@ -1404,11 +1321,11 @@ chainx.stake.getNextKeyFor('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ')
 
 交易对列表
 
-#### 参数
+参数:
 
 无
 
-#### 示例
+示例:
 
 ```js
 chainx.trade.getTradingPairs()
@@ -1438,12 +1355,12 @@ chainx.trade.getTradingPairs()
 
 交易对报价列表
 
-#### 参数
+参数:
 
 - `id`:`OrderPairID` 从`chainx.trade.getTradingPairs`接口中返回的交易对ID
 - `piece`:`u32` ?档 必须<=10
 
-#### 示例
+示例:
 
 ```js
 chainx.trade.getQuotations(0,10)
@@ -1467,13 +1384,13 @@ chainx.trade.getQuotations(0,10)
 
 用户挂单列表
 
-#### 参数
+参数:
 
 - `who`: AccountId 账户
 - `page_index`: u32 页码 (从0开始)
 - `page_size`: u32 页大小 (<=100)
 
-#### 示例
+示例:
 
 ```js
 chainx.trade.getOrders('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 0, 10)
