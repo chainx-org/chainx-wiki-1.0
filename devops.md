@@ -78,7 +78,7 @@ $ nohup ./chainx --config=config.json > error.log 2>&1 &
 {
 	"log-compression": false, # 开启日志压缩，若开启这个参数，则老日志以 `chainx.log.gz.0` 命名并压缩，默认不开启
 	"log-console": false, # 日志输出到文件的同时，同时输出到控制台的标准输入输出，默认不开启
-	"log-dir": "./log", # 日志输出的目录，默认为`./log`，请保证日志目录有写入权限
+	"log-dir": "./log", # 日志输出的目录，默认为`./log`，请保证日志目录有写入权限，若路径不存在，会自动创建
 	"log-name": "chainx.log", # 日志的文件名，默认为`chainx.log`，若设置成其他，则日志轮转也会一直使用配置的文件名
 	"log-roll-count": 10, # 日志轮转的上限，默认为10
 	"log-size": 300, # 日志的大小上限，单位为 MB，即单个日志最大为300M。`log-size` * `log-roll-count`将是`log-dir`目录最大占用的空间
