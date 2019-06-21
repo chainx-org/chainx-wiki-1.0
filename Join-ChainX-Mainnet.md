@@ -122,6 +122,10 @@ $ curl https://gist.githubusercontent.com/liuchengxu/3b3ed4ce027e39fc89b5a5a6c28
 
 **!!! 请不要直接使用该文件启动节点，务必参照以下启动指引修改配置文件模板后运行, 各参数将在下文解释。**
 
+**启动前注意事项：**
+
+- 自v1.0.2版本起，`chainx`默认并没有将输出信息在终端进行打印，而是存储在`chainx`同级目录下的 `log/chainx.log`, 详情可通过`chainx --help` 查看 `--log*` 等相关选项。
+
 #### 1. 启动同步节点
 
 对于同步节点的启动，我们推荐以下配置：
