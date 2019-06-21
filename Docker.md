@@ -7,7 +7,7 @@ ChainX 主网使用镜像: [chainxorg/chainx:v1.0.2](https://hub.docker.com/r/ch
 该步骤目的是生成节点出块地址。
 
 ```bash
-$ docker run -it --rm -v $(pwd)/data:/data -v $(pwd)/keystore:/keystore chainxorg/chainx:mainnet chainx -i --keystore-path=/keystore --base-path=/data
+$ docker run -it --rm -v $(pwd)/data:/data -v $(pwd)/log:/log -v $(pwd)/keystore:/keystore chainxorg/chainx:v1.0.2 chainx -i --keystore-path=/keystore --base-path=/data --log-dir=/log
 Password:
 Repeat again:
 ...
@@ -40,6 +40,7 @@ f1a10ac84641d72074f89c8b4dcaa10ab2a8e982921a81c292f2839f9bf6080f
     "ws-port": 8087,
     "rpc-port": 8086,
     "base-path": "/data",
+    "log-dir": "/log",
     "keystore-path": "/keystore",
     "keystore-password": "<Your-Keystore-Password>",
     "other-execution": "NativeElseWasm",
@@ -54,13 +55,17 @@ f1a10ac84641d72074f89c8b4dcaa10ab2a8e982921a81c292f2839f9bf6080f
 启动同步节点 Docker：
 
 ```bash
-$ docker run -d --restart always --name chainx -p 8087:8087 -p 8086:8086 -p 20222:20222 -v $(pwd)/data:/data -v $(pwd)/keystore:/keystore -v $(pwd)/config.json:/config.json chainxorg/chainx:mainnet chainx --config=/config.json
+$ docker run -d --restart always --name chainx -p 8087:8087 -p 8086:8086 -p 20222:20222 -v $(pwd)/data:/data -v $(pwd)/log:/log -v $(pwd)/keystore:/keystore -v $(pwd)/config.json:/config.json chainxorg/chainx:v1.0.2 chainx --config=/config.json
 ```
 
 查看 Docker 日志：
 
 ```bash
+# 部分Error信息等
 $ docker logs -f chainx
+
+# 运行时日志
+$ tail -f log/chainx.log
 ```
 
 ### 3. 注册并更新节点进入参选状态
@@ -92,6 +97,7 @@ $ docker logs -f chainx
     "ws-port": 8087,
     "rpc-port": 8086,
     "base-path": "/data",
+    "log-dir": "/log",
     "keystore-path": "/keystore",
     "keystore-password": "<Your-Keystore-Password>",
     "other-execution": "NativeElseWasm",
