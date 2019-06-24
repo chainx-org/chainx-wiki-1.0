@@ -688,7 +688,11 @@ chainx.stake.setupTrustee('ChainX', 'about', ['Bitcoin', '0x......'], ['Bitcoin'
 
 ChainX对于数据的获取**基本**是是对RPC接口调用的封装
 
-无特别说明，则RPC调用获取数据的返回的均是 Promise。
+无特别说明，则RPC调用获取数据的返回的均是 Promise。大部分接口均可以传递一个块 hash 作为最后一个参数。即是查询该块下的数据。例子：
+```javascript
+// 查询某个块hash的账户资产信息
+chainx.asset.getAssetsByAccount('5Pjajd12o9hVixBPRPHZEdjsrct3NZp9Ge7QP4PiSivQrBZa', 0, 100, '0x376945b9a09b9b0698b334f557ba7d892974625d2ff0a192270a236e7a6ba297')
+```
 
 ### chainx.chain.getInfo()
 
