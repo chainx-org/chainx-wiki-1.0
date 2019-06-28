@@ -32,6 +32,8 @@ L-BTC同X-BTC一样采用0.1倍价格折扣参与跨链挖矿。L-BTC只能持�
 
 5. 有且只有一个OP_RETURN且格式为 `ChainX:用户ChainX地址[@channel]:用户BTC锁仓地址[0..4]` （channel为节点名，作为可选项，代表渠道方可以自动获得10%的挖矿收益。BTC锁仓地址取前4位，用于从utxo中匹配出用户锁仓的地址，若匹配不出将不认可这笔锁仓交易） 
 
+6. 一旦已经成为锁定的UTXO被花费，ChainX链上对应这笔UTXO的L-BTC即会被销毁
+
     注：OP_RETURN最大字段为80bytes，因此内容长度最大为
 
     ```bash
