@@ -1,12 +1,12 @@
 ChainX是BTC最大的侧链和二层网络，跨链中继所有BTC块头和交易证明，并通过链上轻节点模式来演算BTC的PoW算法得出最长链，保证交易和资产安全。
 
-## 什么是X-BTC
+## 什么是X-BTC(充值挖矿）
 
 用户通过向ChainX公共多签托管地址发起BTC充值交易，同时在OP_RETURN中附带自己的ChainX账户地址信息，ChainX中继会自动提交交易证明，并在获得ChainX轻节点安全确认后，OP_RETURN中所附带的ChainX账户将自动获得1:1的X-BTC。X-BTC可以参与充值挖矿、快速转账和DEX交易。
 
 ChainX采用全额储备金的公开透明模式1:1发行X-BTC，赋予了BTC在ChainX网络内2s的快速转账能力和去中心化交易能力，并且将此最高信用的X-BTC输送给Polkadot网络。
 
-## 什么是L-BTC
+## 什么是L-BTC（自锁仓挖矿）
 
 为了进一步扩大ChainX转接桥在BTC社区中的用户覆盖和社区共识。ChainX即将在1.0.3版本升级之后，支持BTC自锁仓跨链挖矿。
 
