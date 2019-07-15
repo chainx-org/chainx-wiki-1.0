@@ -146,6 +146,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
         * [chainx_getWithdrawalList](#chainx_getwithdrawallist)
         * [chainx_getDepositList](#chainx_getdepositlist)
         * [chainx_getWithdrawalLimitByToken](#chainx_getwithdrawallimitbytoken)
+        * [chainx_getDepositLimitByToken](#chainx_getdepositlimitbytoken)
         * [chainx_getAddressByAccount](#chainx_getaddressbyaccount)
         * [chainx_verifyAddressValidity](#chainx_verifyaddressvalidity)
     * [验证者部分](#验证者部分)
@@ -945,6 +946,28 @@ chainx 链上与提现金额相关的限制，如提现的最小值与用户提�
 {
 	minimalWithdrawal: 150000,
 	fee: 100000
+}
+```
+
+#### chainx_getDepositLimitByToken
+
+chainx 链上与充值金额相关的限制，如充值的最小值
+
+调用
+
+- 方法名：`chainx_getDepositLimitByToken`
+
+- 参数：
+
+  ```bash
+  ["BTC" ] # 资产名称 目前支持的是 BTC 其他不支持
+  ```
+
+返回
+
+```bash
+{
+	minimalDeposit: 100000,
 }
 ```
 
