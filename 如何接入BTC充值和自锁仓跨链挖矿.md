@@ -18,7 +18,13 @@ L-BTC同X-BTC一样采用0.1倍价格折扣参与跨链挖矿。L-BTC只能持�
 1. INPUT的地址必须是1或3开头的普通地址（p2pk|p2pkh|p2sh）
 2. 其中一个output的地址是ChainX的公共多签托管地址（通过RPC [chainx_particularAccounts接口](https://github.com/chainx-org/ChainX/wiki/RPC#chainx_particularaccounts)实时获取）
 3. 其中一个OP_RETURN且格式为  用户`ChainX地址[@channel]` （channel为节点名，作为可选项，代表渠道方可以自动获得10%的挖矿收益）
-4. 充值金额必须>=提现BTC手续费金额（通过RPC [chainx_getwithdrawallimitbytoken接口](https://github.com/chainx-org/ChainX/wiki/RPC#chainx_getwithdrawallimitbytoken) 实时获取）
+    例如
+    ```bash
+    5RXaXGcz84KQ1XZeAMbjbexXRPNAaPdt3st5QDG3H6VegwD6@Laocius
+    或
+    5RXaXGcz84KQ1XZeAMbjbexXRPNAaPdt3st5QDG3H6VegwD6
+    ```
+4. 充值金额必须>=提现BTC充值金额限制（通过RPC [chainx_getdepositlimitbytoken接口](https://github.com/chainx-org/ChainX/wiki/RPC#chainx_getdepositlimitbytoken) 实时获取）
 ## L-BTC自锁仓交易规则（须全部满足）
 
 1. 含有value的output不超过2个（即一个锁仓UTXO，一个找零UTXO），OP_RETURN不超过1个（即output为2-3个，其中一个output是OP_RETURN），INPUT不超过10个(为了限制矿池及交易所交易，筛选出普通用户交易)
@@ -39,6 +45,12 @@ L-BTC同X-BTC一样采用0.1倍价格折扣参与跨链挖矿。L-BTC只能持�
     ```bash
     # ChainX:chainx_addr[@channel]:btc_addr[0..4]  # [@channel] 代表可选，[0..4]代表取前4个字节
     5(ChainX) + 1(:) + 48(ChainX_addr_len) + 1(@) + 12(channel最大长度12) + 1(:) + 4(比特币地址取前4位) = 72 Bytes
+    ```
+    例：
+    ```bash
+    ChainX:5RXaXGcz84KQ1XZeAMbjbexXRPNAaPdt3st5QDG3H6VegwD6@Laocius:1LfR
+    或者
+    ChainX:5RXaXGcz84KQ1XZeAMbjbexXRPNAaPdt3st5QDG3H6VegwD6:1LfR
     ```
 
 **注意：OP_RETURN的编码为 字符串=>Hex=>Bytes 写入BTC交易**
