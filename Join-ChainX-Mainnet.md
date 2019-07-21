@@ -58,7 +58,7 @@ ChainX为PoS区块链，具备staking的基础特征。
 
 我们提供了以下两种途径:
 
-- 在 https://github.com/chainx-org/ChainX/releases/tag/v1.0.0 下载 v1.0.0 测试网 ChainX 二进制 `chainx`，目前仅支持 Ubuntu 16.04+ 或 macOS。
+- 在 https://github.com/chainx-org/ChainX/releases/tag/v1.0.3 下载 v1.0.3 ChainX 二进制 `chainx`，目前仅支持 Ubuntu 16.04+ 或 macOS。
 - 如果是其他系统，可采用 [Docker 运行 ChainX 节点](Docker)。
 
 ### 2. 启动节点前准备
@@ -89,7 +89,6 @@ ChainX 主网已经于 2019 年 5 月 25 日正式启动，如果之前有运行
 
 ```bash
 ./chainx --help
-ChainX 0.9.10-0f95c36-x86_64-linux-gnu
 
 ChainX community
 Fully Decentralized Interchain Crypto Asset Management on Polkadot
