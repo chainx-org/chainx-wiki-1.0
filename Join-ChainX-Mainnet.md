@@ -58,7 +58,7 @@ ChainX为PoS区块链，具备staking的基础特征。
 
 我们提供了以下两种途径:
 
-- 在 https://github.com/chainx-org/ChainX/releases/tag/v1.0.3 下载 v1.0.3 ChainX 二进制 `chainx`，目前仅支持 Ubuntu 16.04+ 或 macOS。
+- 在 https://github.com/chainx-org/ChainX/releases 下载 最新版本的 ChainX 二进制 `chainx`，目前仅支持 Ubuntu 16.04+ 或 macOS。
 - 如果是其他系统，可采用 [Docker 运行 ChainX 节点](Docker)。
 
 ### 2. 启动节点前准备
