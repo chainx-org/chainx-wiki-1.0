@@ -10,7 +10,7 @@
 * [5. 节点退选，连接，云服务商，vps选择等问题](#5-节点退选连接云服务商vps选择等问题)
 * [6. 数据运行中出错](#6-数据运行中出错)
 * [7. 本机数据备份](#7-本机数据备份)
-
+* [8. 比特币全节点搭建](#8-信托自建比特币全节点的参考)
 <!-- /TOC -->
 
 
@@ -413,39 +413,38 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
          4. 重新启动验证者
    3. 根据需要重新启动同步数据节点
 
-###  8. 信托自建比特币全节点的参考
+##  8. 信托自建比特币全节点的参考
    
    建议信托节点使用自己搭建的比特币全节点
    
    1. 直接在 [bitcoin.org](https://bitcoin.org/bin) 下载二进制包
       或 
 
-      ```
-      wget https://bitcoin.org/bin/bitcoin-core-0.17.0.1/bitcoin-0.17.0.1-x86_64-linux-gnu.tar.gz
+      ```bash
+      $ wget https://bitcoin.org/bin/bitcoin-core-0.17.0.1/bitcoin-0.17.0.1-x86_64-linux-gnu.tar.gz
       ```
    2. 解压,创建软连接
       
-      ```
-      tar zxf bitcoin-0.17.0.1-x86_64-linux-gnu.tar.gz
-      ln -fs /opt/bitcoin-0.17.0 /opt/bitcoin
-      ln -fs /opt/bitcoin-0.17.0/bin/bitcoind /usr/local/bin/bitcoind
-      ln -fs /opt/bitcoin-0.17.0/bin/bitcoin-cli /usr/local/bin/bitcoin-cli
+      ```bash
+      $ tar zxf bitcoin-0.17.0.1-x86_64-linux-gnu.tar.gz
+      $ ln -fs /opt/bitcoin-0.17.0 /opt/bitcoin
+      $ ln -fs /opt/bitcoin-0.17.0/bin/bitcoind /usr/local/bin/bitcoind
+      $ ln -fs /opt/bitcoin-0.17.0/bin/bitcoin-cli /usr/local/bin/bitcoin-cli
       ```
 
    3. 指定数据目录，或者使用默认路径
 
-      ```
-      mkdir -p /bitcoin-mainnet/btc_data
+      ```bash
+      $ mkdir -p /bitcoin-mainnet/btc_data
       ```
 
    4. 创建配置文件
 
+      ```bash
+      $ mkdir ~/.bitcoin
+      $ vim ~/.bitcoin/bitcoin.conf
       ```
-      mkdir ~/.bitcoin
-      vim ~/.bitcoin/bitcoin.conf
-      ```
-      修改配置文件
-      ```
+      ```bash
       # server=1 tells Bitcoin-Qt and bitcoind to accept JSON-RPC commands
       server=1
       # On client-side, you add the normal user/password pair to send commands:
@@ -477,19 +476,20 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
       # Location of the debug log
       debuglogfile=/bitcoin-mainnet/debug.log
       ```
+
    5. 启动比特币全节点
-      ```
-      nohup bitcoind -conf=~/.bitcoin/bitcoin.conf -daemon
+      ```bash
+      $ nohup bitcoind -conf=~/.bitcoin/bitcoin.conf -daemon &
       ```
 
    6. 测试比特币节点rpc服务
 
-      ```
-      curl -s -X POST --user btc:btc2018 -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmininginfo", "params": [] }'
+      ```bash
+      $ curl -s -X POST --user btc:btc2018 -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmininginfo", "params": [] }'
 
       ```
    7. 往钱包导入信托冷热多签地址
       每当信托换届或者信托冷热多签地址更换时，需要运维人员将更换的新地址导入到钱包，以便信托节点在使用ChainX-wallet构造提现交易时可以获取到该地址的UTXO列表。导入命令如下：
-      ```
-      bitcoin-cli -rpcport=8332 -rpcuser=btc -rpcpassword=btc2018 importaddress 比特币地址 "" true
+      ```bash
+      $ bitcoin-cli -rpcport=8332 -rpcuser=btc -rpcpassword=btc2018 importaddress 比特币地址 "" true
       ```
