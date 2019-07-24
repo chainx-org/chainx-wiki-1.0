@@ -435,7 +435,7 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
    3. 指定数据目录，或者使用默认路径
 
       ```
-      mkdir -p /data/btc_data
+      mkdir -p /bitcoin-mainnet/btc_data
       ```
 
    4. 创建配置文件
@@ -488,4 +488,8 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
       curl -s -X POST --user btc:btc2018 -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmininginfo", "params": [] }'
 
       ```
-
+   7. 往钱包导入信托冷热多签地址
+      每当信托换届或者信托冷热多签地址更换时，需要运维人员将更换的新地址导入到钱包，以便信托节点在使用ChainX-wallet构造提现交易时可以获取到该地址的UTXO列表。导入命令如下：
+      ```
+      bitcoin-cli -rpcport=8332 -rpcuser=btc -rpcpassword=btc2018 importaddress 比特币地址 "" true
+      ```
