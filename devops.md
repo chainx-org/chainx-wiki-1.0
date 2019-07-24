@@ -412,3 +412,80 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
          3. **或者**直接将`<backup>/database/chains/chainx_mainnet/db` mv 到 `<validator>/database/chains/chainx_mainnet/`目录下
          4. 重新启动验证者
    3. 根据需要重新启动同步数据节点
+
+###  8. 信托自建比特币全节点的参考
+   
+   建议信托节点使用自己搭建的比特币全节点
+   
+   1. 直接在 [bitcoin.org](https://bitcoin.org/bin) 下载二进制包
+      或 
+
+      ```
+      wget https://bitcoin.org/bin/bitcoin-core-0.17.0.1/bitcoin-0.17.0.1-x86_64-linux-gnu.tar.gz
+      ```
+   2. 解压,创建软连接
+      
+      ```
+      tar zxf bitcoin-0.17.0.1-x86_64-linux-gnu.tar.gz
+      ln -fs /opt/bitcoin-0.17.0 /opt/bitcoin
+      ln -fs /opt/bitcoin-0.17.0/bin/bitcoind /usr/local/bin/bitcoind
+      ln -fs /opt/bitcoin-0.17.0/bin/bitcoin-cli /usr/local/bin/bitcoin-cli
+      ```
+
+   3. 指定数据目录，或者使用默认路径
+
+      ```
+      mkdir -p /data/btc_data
+      ```
+
+   4. 创建配置文件
+
+      ```
+      mkdir ~/.bitcoin
+      vim ~/.bitcoin/bitcoin.conf
+      ```
+      修改配置文件
+      ```
+      # server=1 tells Bitcoin-Qt and bitcoind to accept JSON-RPC commands
+      server=1
+      # On client-side, you add the normal user/password pair to send commands:
+      rpcuser=远程访问的认证用户
+      rpcpassword=远程访问密码
+
+      # How many seconds bitcoin will wait for a complete RPC HTTP request.
+      # after the HTTP connection is established. 
+      rpcclienttimeout=30
+
+      # it is also read by bitcoind to determine if RPC should be enabled 
+      # 远程访问的ip或网段 建议指定ip范围，不允许陌生ip访问
+      #rpcallowip=10.1.1.34/255.255.255.0
+
+      # Listen for RPC connections on this TCP port:
+      rpcport=8332
+      rpcservertimeout=60
+
+      # Specify where to find wallet, lockfile and logs. If not present, those files will be
+      # created as new.
+      wallet=/bitcoin-mainnet/wallets
+      walletdir=/bitcoin-mainnet/wallets
+
+      datadir=/bitcoin-mainnet/data
+      blocksdir=/bitcoin-mainnet/data
+
+      # Log timestamps with microsecond precision.
+      logtimemicros=1
+      # Location of the debug log
+      debuglogfile=/bitcoin-mainnet/debug.log
+      ```
+   5. 启动比特币全节点
+      ```
+      nohup bitcoind -conf=~/.bitcoin/bitcoin.conf -daemon
+      ```
+
+   6. 测试比特币节点rpc服务
+
+      ```
+      curl -s -X POST --user btc:btc2018 -H 'content-type: text/plain;' http://127.0.0.1:8332/ --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getmininginfo", "params": [] }'
+
+      ```
+
