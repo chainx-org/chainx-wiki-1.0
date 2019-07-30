@@ -24,3 +24,7 @@
 ### 加入主网
 
 - [Join ChainX Mainnet](Join-ChainX-Mainnet)
+
+### 加入测试网
+
+- [Join ChainX Testnet](Join-ChainX-Testnet)
