@@ -151,6 +151,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
         * [chainx_verifyAddressValidity](#chainx_verifyaddressvalidity)
     * [验证者部分](#验证者部分)
         * [chainx_getNominationRecords](#chainx_getnominationrecords)
+        * [chainx_getNextRenominateByAccount](#chainx_getnextrenominatebyaccount)
         * [chainx_getIntentions](#chainx_getintentions)
         * [chainx_getPseduIntentions](#chainx_getpseduintentions)
         * [getPseduNominationRecords](#getpsedunominationrecords)
@@ -1059,6 +1060,29 @@ ChainX账户绑定BTC地址列表
 ]
 ```
 
+#### chainx_getNextRenominateByAccount
+
+获取用户下次可切换投票的高度。
+
+- 方法名: `chainx_getNextRenominateByAccount`
+
+- 参数:
+
+  ```bash
+  [ "0x........." ] # 查询的账户公钥
+  ```
+
+返回:
+
+```
+{
+    "jsonrpc": "2.0",
+    "result": null,
+    "id": 1
+}
+```
+返回
+
 #### chainx_getIntentions
 
 获取节点列表
@@ -1134,6 +1158,7 @@ ChainX账户绑定BTC地址列表
     "id": "BTC", // 资产 ID
     "lastTotalDepositWeight": 0, // 票龄
     "lastTotalDepositWeightUpdate": 0 // 票龄更新高度
+    "next_claim": 100, // 针对该资产的下次可提息高度
   }
 ]
 ```
