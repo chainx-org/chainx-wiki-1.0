@@ -154,7 +154,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
         * [chainx_getNextRenominateByAccount](#chainx_getnextrenominatebyaccount)
         * [chainx_getIntentions](#chainx_getintentions)
         * [chainx_getPseduIntentions](#chainx_getpseduintentions)
-        * [getPseduNominationRecords](#getpsedunominationrecords)
+        * [chainx_getPseduNominationRecords](#chainx_getpsedunominationrecords)
     * [交易所部分](#交易所部分)
         * [chainx_getTradingPairs](#chainx_gettradingpairs)
         * [chainx_getQuotations](#chainx_getquotations)
@@ -1140,13 +1140,13 @@ ChainX账户绑定BTC地址列表
 ]
 ```
 
-#### getPseduNominationRecords
+#### chainx_getPseduNominationRecords
 
 用户投票信息
 
 调用
 
-- 方法名：`chainx_getPseduIntentions`
+- 方法名：`chainx_getPseduNominationRecords`
 - 参数：`["0x........."]` 查询用户的公钥
 
 返回
