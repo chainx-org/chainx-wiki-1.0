@@ -164,6 +164,9 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
         * [chainx_getMockBitcoinNewTrustees](#chainx_getmockbitcoinnewtrustees)
         * [chainx_getTrusteeInfoByAccount](#chainx_gettrusteeinfobyaccount)
         * [chainx_getWithdrawTx](#chainx_getwithdrawtx)
+    * [手续费部分](#手续费部分)
+        * [chainx_getFeeByCallAndLength](#chainx_getFeeByCallAndLength)
+        * [chainx_getFeeWeightMap](#chainx_getFeeWeightMap)
     * [其他](#其他)
         * [chainx_particularAccounts](#chainx_particularaccounts)
 
@@ -1465,6 +1468,61 @@ ChainX账户绑定BTC地址列表
   	["0x..........", false], // 已否决
   	["0x..........", true], // 已签名
   ]
+}
+```
+
+### 手续费部分
+
+该部分具体内容请参照[ChainX的手续费模型](手续费模型)
+
+#### chainx_getFeeByCallAndLength
+
+调用者提供**编码过**的交易方法（注意不是交易本体（交易由签名与交易方法组成）），与交易编码过原文的长度，可获取到该交易**加速前**的手续费大小（一倍加速手续费）
+
+调用
+
+- 方法名：`chainx_getFeeByCallAndLength`
+
+- 参数：
+
+  ```bash
+  [ "0x111111111111111", 100 ] 
+  ```
+
+返回
+
+```bash
+{
+	10000
+}
+```
+
+#### chainx_getFeeWeightMap
+
+返回当前链上的手续费权重，基础手续费与字节手续费。手续费权重由`模块名 <空格> 交易方法名`组成
+
+调用
+
+- 方法名：`chainx_getFeeWeightMap`
+
+- 参数：
+
+  ```bash
+  [  ] 
+  ```
+
+返回
+
+```bash
+{
+"feeWeight": {
+    "XAssets transfer": 1,
+    "XAssetsProcess revoke_withdraw": 10,
+    "XAssetsProcess withdraw": 3,
+    # ....
+    },
+"transactionBaseFee": 10000,
+"transactionByteFee": 100
 }
 ```
 
