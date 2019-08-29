@@ -150,8 +150,11 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
         * [chainx_getAddressByAccount](#chainx_getaddressbyaccount)
         * [chainx_verifyAddressValidity](#chainx_verifyaddressvalidity)
     * [验证者部分](#验证者部分)
+        * [chainx_getStakingDividendByAccount](#chainx_getstakingdividendbyaccount)
+        * [chainx_getCrossMiningDividendByAccount](#chainx_getcrossminingdividendbyaccount)
         * [chainx_getNominationRecords](#chainx_getnominationrecords)
         * [chainx_getNextRenominateByAccount](#chainx_getnextrenominatebyaccount)
+        * [chainx_getIntentionByAccount](#chainx_getintentionbyaccount)
         * [chainx_getIntentions](#chainx_getintentions)
         * [chainx_getPseduIntentions](#chainx_getpseduintentions)
         * [chainx_getPseduNominationRecords](#chainx_getpsedunominationrecords)
@@ -165,8 +168,8 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
         * [chainx_getTrusteeInfoByAccount](#chainx_gettrusteeinfobyaccount)
         * [chainx_getWithdrawTx](#chainx_getwithdrawtx)
     * [手续费部分](#手续费部分)
-        * [chainx_getFeeByCallAndLength](#chainx_getFeeByCallAndLength)
-        * [chainx_getFeeWeightMap](#chainx_getFeeWeightMap)
+        * [chainx_getFeeByCallAndLength](#chainx_getfeebycallandlength)
+        * [chainx_getFeeWeightMap](#chainx_getfeeweightmap)
     * [其他](#其他)
         * [chainx_particularAccounts](#chainx_particularaccounts)
 
@@ -1028,6 +1031,69 @@ ChainX账户绑定BTC地址列表
 
 ### 验证者部分
 
+#### chainx_getStakingDividendByAccount
+
+获取用户投票利息
+
+调用:
+
+```jsonc
+{
+	"id":1,
+	"jsonrpc":"2.0",
+	"method":"chainx_getStakingDividendByAccount",
+	"params":["0xa2308187439ac204df9e299e1e54afefafea4bf348e03dad679737c91871dc53"] // 参数填写账户公钥
+	
+}
+```
+
+返回:
+
+```:jsonc
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "0xa2308187439ac204df9e299e1e54afefafea4bf348e03dad679737c91871dc53": 7201153980 // key 为投票节点公钥，value 为用户对该节点的待领投票利息
+    },
+    "id": 1
+}
+```
+
+#### chainx_getCrossMiningDividendByAccount
+
+获取用户跨链挖矿利息
+
+调用：
+
+```jsonc
+{
+	"id":1,
+	"jsonrpc":"2.0",
+	"method":"chainx_getCrossMiningDividendByAccount",
+	"params":["0x4662b210b9ce571828cd3f4c27582c4af708be9121cc6ef4849fd21728df5d8b"]
+	
+}
+```
+
+返回：
+
+```jsonc
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "BTC": {
+            "referral": 286930008, // 推荐人利息(注: 跨链挖矿用户提息时，总挖矿利息的10%归推荐人，90%归用户自己)
+            "unclaimed": 2582370072 // 跨链挖矿用户的待领利息
+        },
+        "SDOT": {
+            "referral": 0,
+            "unclaimed": 0
+        }
+    },
+    "id": 1
+}
+```
+
 #### chainx_getNominationRecords
 
 用户投票信息
@@ -1084,7 +1150,49 @@ ChainX账户绑定BTC地址列表
     "id": 1
 }
 ```
-返回
+
+#### chainx_getIntentionByAccount
+
+获取单个节点信息
+
+调用:
+
+```jsonc
+{
+	"id":1,
+	"jsonrpc":"2.0",
+	"method":"chainx_getIntentionByAccount",
+	"params":["0xa2308187439ac204df9e299e1e54afefafea4bf348e03dad679737c91871dc53"] // 参数填写节点账户公钥
+	
+}
+```
+
+返回:
+
+```jsonc
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "about": "",
+        "account": "0xa2308187439ac204df9e299e1e54afefafea4bf348e03dad679737c91871dc53",
+        "isActive": true,
+        "isTrustee": [],
+        "isValidator": true,
+        "jackpot": 12601153980,
+        "jackpotAccount": "0xeacbf3fbb456f3227ace4450db99235021736165a5dd33da819aafd84b84f8c9",
+        "lastTotalVoteWeight": "0",
+        "lastTotalVoteWeightUpdate": 0,
+        "name": "Laocius",
+        "selfVote": 1000000000,
+        "sessionKey": "0x5917d1850e940bcd23254c73dcb936b730dd950ee6b750af02cc8caaedcd83ba",
+        "totalNomination": 1000000000,
+        "url": "polkadot.network"
+    },
+    "id": 1
+}
+```
+
+`chainx_getIntentionByAccount` 为 `chainx_getIntentions` 的单元素版本。
 
 #### chainx_getIntentions
 
@@ -1106,7 +1214,7 @@ ChainX账户绑定BTC地址列表
     "isTrustee": true, // 是否是信托节点
     "isValidator": true, // 是否是结算节点
     "jackpot": 387096776, // 奖池金额
-    "jackpotAddress": "0xce153e3235448f29ca9052a660e36abd9b9fdc72f80a4059a2427ff06b1a3706", // 奖池地址
+    "jackpotAccount": "0xce153e3235448f29ca9052a660e36abd9b9fdc72f80a4059a2427ff06b1a3706", // 奖池地址
     "lastTotalVoteWeight": 0, // 总票龄
     "lastTotalVoteWeightUpdate": 0, // 总票龄更新时间
     "name": "Alice", // 节点名
