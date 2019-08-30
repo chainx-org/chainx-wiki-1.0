@@ -17,7 +17,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 - POST的参数为：
 
-  ```bash
+  ```jsonc
   {
       "id":1, # 用于并行（异步）发请求的请求标示，会在返回值中返回，如果单次请求随便一个值就可以
       "jsonrpc":"2.0", # 版本，一般为2.0
@@ -28,7 +28,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 - rpc的返回值为json，格式为
 
-  ```bash
+  ```jsonc
   {
       "jsonrpc": "2.0",
       "result": <数据内容>,
@@ -40,7 +40,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 参数
 
-```bash
+```jsonc
 {
 	"id":1,
 	"jsonrpc":"2.0",
@@ -52,7 +52,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 {
     "jsonrpc": "2.0",
     "result": { # result 为返回的结果，这里是这个用户的所有资产信息
@@ -98,6 +98,9 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 文中的引用部分为substrate源码中的注释
 
+注意：
+
+- 以下接口中以 V1 结尾与无 V1 的区别在于其中一个字段的类型不同，其他均一致。对于类型不同的字段，V1 版本中类型为 String, 无 V1 标识的版本中对应字段类型为 Number(对应 rust 中类型为 u64). 这是由于 rust [serde-json](https://github.com/serde-rs/json/issues/559) 库 u128 反序列化问题而采取的 workaround.
 
 <!-- TOC GFM -->
 
@@ -153,11 +156,16 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
         * [chainx_getStakingDividendByAccount](#chainx_getstakingdividendbyaccount)
         * [chainx_getCrossMiningDividendByAccount](#chainx_getcrossminingdividendbyaccount)
         * [chainx_getNominationRecords](#chainx_getnominationrecords)
+        * [chainx_getNominationRecordsV1](#chainx_getnominationrecordsv1)
         * [chainx_getNextRenominateByAccount](#chainx_getnextrenominatebyaccount)
         * [chainx_getIntentionByAccount](#chainx_getintentionbyaccount)
+        * [chainx_getIntentionByAccountV1](#chainx_getintentionbyaccountv1)
         * [chainx_getIntentions](#chainx_getintentions)
+        * [chainx_getIntentionsV1](#chainx_getintentionsv1)
         * [chainx_getPseduIntentions](#chainx_getpseduintentions)
+        * [chainx_getPseduIntentionsV1](#chainx_getpseduintentionsv1)
         * [chainx_getPseduNominationRecords](#chainx_getpsedunominationrecords)
+        * [chainx_getPseduNominationRecordsV1](#chainx_getpsedunominationrecordsv1)
     * [交易所部分](#交易所部分)
         * [chainx_getTradingPairs](#chainx_gettradingpairs)
         * [chainx_getQuotations](#chainx_getquotations)
@@ -192,7 +200,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": "0x.............", # 这笔交易的hash
 ```
 
@@ -209,7 +217,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": [
 	"0x...............", # tx1
 	"0x...............", # tx2
@@ -244,7 +252,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": {
 	# 区块头摘要信息
     "digest": {
@@ -278,7 +286,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": {
     "block": {
     	# 当前区块中的所有交易
@@ -319,7 +327,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": "0x259d61439a9c40237b3d583ed673a0d2875285f29b9f1a0a7ef522c41d4c4136"
 ```
 
@@ -336,7 +344,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": "0x259d61439a9c40237b3d583ed673a0d2875285f29b9f1a0a7ef522c41d4c4136"
 ```
 
@@ -372,7 +380,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
   - 在最新状态（块高）上调用
 
-      ```bash
+      ```jsonc
       [
         "<runtime api 的方法名>",
         "<参数>" # 参数需要被 `encode` 序列化
@@ -381,7 +389,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
   - **或**给予一个区块hash，在这个hash对应的状态（块高）上调用
 
-    ```bash
+    ```jsonc
     [
       "<runtime api 的方法名>",
       "<参数>", # 参数需要被 `encode` 序列化
@@ -391,7 +399,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": "0x.........................."  # result 的结果需要使用对应数据结构为类型 `decode` 反序列化得到
 ```
 
@@ -415,7 +423,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
   - 在最新状态（块高）上调用
 
-    ```bash
+    ```jsonc
     [
       "0x....", # key 被 `encode` 序列化并使用对应的hash
     ]
@@ -423,7 +431,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
   - **或**给予一个区块hash，在这个hash对应的状态（块高）上调用
 
-    ```bash
+    ```jsonc
     [
       "0x....", # key 被 `encode` 序列化并使用对应的hash
       "0x....................." # 对应的块高
@@ -432,13 +440,13 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": "0x........" result 的结果需要使用对应数据结构为类型 `decode` 反序列化得到
 ```
 
 或未查询得到
 
-```bash
+```jsonc
 "result": null
 ```
 
@@ -468,19 +476,19 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
   - 在最新状态（块高）上调用
 
-    ```bash
+    ```jsonc
     []
     ```
 
   - **或**给予一个区块hash，在这个hash对应的状态（块高）上调用
 
-    ```bash
+    ```jsonc
     [  "0x....................." ]   # 对应的块高
     ```
 
 返回
 
-```bash
+```jsonc
 "result": "0x........"  # 返回值为编码过的metadata
 ```
 
@@ -500,19 +508,19 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
   - 在最新状态（块高）上调用
 
-    ```bash
+    ```jsonc
     []
     ```
 
   - **或**给予一个区块hash，在这个hash对应的状态（块高）上调用
 
-    ```bash
+    ```jsonc
     [  "0x....................." ]   # 对应的块高
     ```
 
 返回
 
-```bash
+```jsonc
 "result": {
     "apis": [
         [
@@ -571,7 +579,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": "ChainX"
 ```
 
@@ -589,7 +597,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": "1.0.0"
 ```
 
@@ -607,7 +615,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": "ChainX mainnet v1.0.0"
 ```
 
@@ -625,7 +633,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": {
     "address_type": 44,  # chainx 目前对于 ss58check 的地址类型
     "bitcoin_type": "mainnet", # 比特币网络类型
@@ -652,7 +660,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": {
     "isSyncing": false,  # 是否在同步中
     "peers": 19,  # p2p 连接的节点
@@ -674,7 +682,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 返回
 
-```bash
+```jsonc
 "result": [
     {
         "bestHash": "0xd14421e3c60f50218659dc100689457621a380ff77f60a413442a018e58a2e0e",
@@ -728,13 +736,13 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
   - 获取最新的块信息
 
-    ```bash
+    ```jsonc
     []
     ```
 
   - **或**给予一个块高，返回对应的块数据
 
-    ```bash
+    ```jsonc
     [  100 ]   # 对应的块高
     ```
 
@@ -754,7 +762,7 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
 * 参数：
 
-  ```bash
+  ```jsonc
   [
   	"0x................", # 需要查询的账户的公钥
   	0, # 分页（从第几页开始）
@@ -764,7 +772,7 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
 返回
 
-```bash
+```jsonc
 "result": {
 	"data": [
 		# 资产列表， 内容同上
@@ -797,7 +805,7 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [
   	0, # 分页（从第几页开始）
   	100  # 分页（每页多少个数据）
@@ -806,7 +814,7 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
 返回
 
-```bash
+```jsonc
 "result": {
 	"data": [
 		{
@@ -843,7 +851,7 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [
   	"Bitcoin", # 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
   	0, # 分页（从第几页开始）
@@ -853,7 +861,7 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
 返回
 
-```bash
+```jsonc
 {
   "data": [
     {
@@ -891,7 +899,7 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [
   	"Bitcoin", # 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
   	0, # 分页（从第几页开始）
@@ -943,13 +951,13 @@ chainx 链上与提现金额相关的限制，如提现的最小值与用户提�
 
 - 参数：
 
-  ```bash
+  ```jsonc
   ["BTC" ] # 资产名称 目前支持的是 BTC 其他不支持
   ```
 
 返回
 
-```bash
+```jsonc
 {
 	minimalWithdrawal: 150000,
 	fee: 100000
@@ -966,13 +974,13 @@ chainx 链上与充值金额相关的限制，如充值的最小值
 
 - 参数：
 
-  ```bash
+  ```jsonc
   ["BTC" ] # 资产名称 目前支持的是 BTC 其他不支持
   ```
 
 返回
 
-```bash
+```jsonc
 {
 	minimalDeposit: 100000,
 }
@@ -988,7 +996,7 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [
   	"0x..........", # 账户公钥
   	"Bitcoin" # 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
@@ -997,7 +1005,7 @@ ChainX账户绑定BTC地址列表
 
 返回
 
-```bash
+```jsonc
 [
   "mfioc8QgfcTVwuVd787JrdHMVjHACFWGX7" # Bitcoin 地址列表
 ]
@@ -1013,7 +1021,7 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [
   	"BTC", # 币种名
   	"mfioc8QgfcTVwuVd787JrdHMVjHACFWGX7", # 需要校验的提现地址
@@ -1023,7 +1031,7 @@ ChainX账户绑定BTC地址列表
 
 返回
 
-```bash
+```jsonc
 [
 	true # 或者 false, 返回 true 代表地址校验正确，false代表错误
 ]
@@ -1104,7 +1112,7 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [ "0x........." ] # 查询的账户公钥
   ```
 
@@ -1129,6 +1137,10 @@ ChainX账户绑定BTC地址列表
 ]
 ```
 
+#### chainx_getNominationRecordsV1
+
+除了返回的字段 `lastVoteWeight` 类型为 String, 其他内容与 `chainx_getNominationRecords` 一样。
+
 #### chainx_getNextRenominateByAccount
 
 获取用户下次可切换投票的高度。
@@ -1137,7 +1149,7 @@ ChainX账户绑定BTC地址列表
 
 - 参数:
 
-  ```bash
+  ```jsonc
   [ "0x........." ] # 查询的账户公钥
   ```
 
@@ -1192,7 +1204,11 @@ ChainX账户绑定BTC地址列表
 }
 ```
 
-`chainx_getIntentionByAccount` 为 `chainx_getIntentions` 的单元素版本。
+`chainx_getIntentionByAccount` 为 `chainx_getIntentions` 的单元素版本, 详情参见 `chainx_getIntentions`。
+
+#### chainx_getIntentionByAccountV1
+
+除了返回的字段 `lastTotalVoteWeight` 类型为 String, 其他内容与 `chainx_getIntentionByAccount` 一样。
 
 #### chainx_getIntentions
 
@@ -1205,7 +1221,7 @@ ChainX账户绑定BTC地址列表
 
 返回
 
-```js
+```jsonc
 "result": [
   {
     "about": "", // 关于
@@ -1226,6 +1242,10 @@ ChainX账户绑定BTC地址列表
 ]
 ```
 
+#### chainx_getIntentionsV1
+
+除了返回的字段 `lastTotalVoteWeight` 类型为 String, 其他内容与 `chainx_getIntentions` 一样。
+
 #### chainx_getPseduIntentions
 
 充值挖矿列表
@@ -1237,7 +1257,7 @@ ChainX账户绑定BTC地址列表
 
 返回
 
-```js
+```jsonc
 "result": [
   {
     "circulation": 2000000000, // 总发行量
@@ -1251,6 +1271,10 @@ ChainX账户绑定BTC地址列表
 ]
 ```
 
+#### chainx_getPseduIntentionsV1
+
+除了返回的字段 `lastTotalDepositWeight` 类型为 String, 其他内容与 `chainx_getPseduIntentions` 一样。
+
 #### chainx_getPseduNominationRecords
 
 用户投票信息
@@ -1262,7 +1286,7 @@ ChainX账户绑定BTC地址列表
 
 返回
 
-```js
+```jsonc
 "result": [
   {
     "balance": 1000000000, // 投票金额
@@ -1273,6 +1297,10 @@ ChainX账户绑定BTC地址列表
   }
 ]
 ```
+
+#### chainx_getPseduNominationRecordsV1
+
+除了返回的字段 `lastTotalDepositWeight` 类型为 String, 其他内容与 `chainx_getPseduNominationRecords` 一样。
 
 ### 交易所部分
 
@@ -1287,7 +1315,7 @@ ChainX账户绑定BTC地址列表
 
 返回
 
-```bash
+```jsonc
 "result": [
 	{
 		"assets": "PCX", # 交易对first
@@ -1318,7 +1346,7 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [
   	0, # id`:`OrderPairID` 从`chainx_getTradingPairs`接口中返回的交易对ID
   	10, # 档 必须<=10
@@ -1327,7 +1355,7 @@ ChainX账户绑定BTC地址列表
 
 返回
 
-```bash
+```jsonc
 "result": {
   "buy": [
     //买N档
@@ -1353,7 +1381,7 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [
   	"0x..............", # 用户公钥
   	0, # 分页，起始页
@@ -1363,7 +1391,7 @@ ChainX账户绑定BTC地址列表
 
 返回
 
-```bash
+```jsonc
 "result": {
   "data": [
     {
@@ -1401,13 +1429,13 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [	"Bitcoin" ]  # 链id, 对于这个接口只有Bitcoin
   ```
 
 返回
 
-```js
+```jsonc
 "result": {
 	"coldEntity": {
         "addr": "3Ne676pvdydEp425KdHDAEsff5dososuKL",
@@ -1462,7 +1490,7 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [ 
   	[ # 需要模拟参与生成的信托候选的公钥，是个列表
   		"0x........",
@@ -1474,7 +1502,7 @@ ChainX账户绑定BTC地址列表
 
 返回（注：返回值和`chainx_getTrusteeSessionInfo`一样，因为使用的相同的实现）
 
-```bash
+```jsonc
 "result": {
 	"coldEntity": {
         "addr": "3Ne676pvdydEp425KdHDAEsff5dososuKL",
@@ -1529,13 +1557,13 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [ "0x.........." ] # 用户的公钥
   ```
 
 返回
 
-```bash
+```jsonc
 "result": {
     "Bitcoin": {
         "about": "bitocin", # 注册信息
@@ -1556,13 +1584,13 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [ "Bitcoin" ] # 链id，当前只有Bitcoin
   ```
 
 返回
 
-```bash
+```jsonc
 {
   "signStatus": false, //签名状态： false 未签名完成， true 签名完成
   "tx": "0100000001283fe241ec9528a48e6ce79b1ede9aabb59dbe38edeee013a28744c31d3db7860000000000ffffffff0288130000000000001976a914a5155d5636db0a9b8314460812f5105d84a5ae3d88acf0d200000000000017a9145737c1979343920ceea40e7c7d68b264b0effa3e8700000000", //比特币提现的交易原文
@@ -1593,13 +1621,13 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [ "0x111111111111111", 100 ] 
   ```
 
 返回
 
-```bash
+```jsonc
 {
 	10000
 }
@@ -1615,13 +1643,13 @@ ChainX账户绑定BTC地址列表
 
 - 参数：
 
-  ```bash
+  ```jsonc
   [  ] 
   ```
 
 返回
 
-```bash
+```jsonc
 {
 "feeWeight": {
     "XAssets transfer": 1,
@@ -1647,7 +1675,7 @@ ChainX链上的特殊地址
 
 返回
 
-```bash
+```jsonc
 "result": {
     "councilAddress": "0x67df26a755e0c31ac81e2ed530d147d7f2b9a3f5a570619048c562b1ed00dfdd",
     "teamAddress": "0x6193a00c655f836f9d8a62ed407096381f02f8272ea3ea0df0fd66c08c53af81",
