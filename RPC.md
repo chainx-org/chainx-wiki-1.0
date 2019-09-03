@@ -142,6 +142,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 * [chainx](#chainx)
     * [链相关部分](#链相关部分)
         * [chainx_getBlockByNumber](#chainx_getblockbynumber)
+        * [chainx_getExtrinsicsEventsByBlockHash](#chainx_getetrinsicseventsbyblockhash)
     * [资产部分](#资产部分)
         * [chainx_getAssetsByAccount](#chainx_getassetsbyaccount)
         * [chainx_getAssets](#chainx_getassets)
@@ -750,6 +751,150 @@ ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自�
 
 > 返回结果与`chain_getBlock`相同
 
+#### chainx_getExtrinsicsEventsByBlockHash
+
+#####  v1.0.6
+
+提供一个区块的hash，返回这个区块下的所有events的信息。由于`Event`结构多样且复杂，目前ChainX提供的`Event`列表**没有进行结构化处理**，而是以纯文本的形式展示。用户对于简单的event处理**可以采用正则匹配**的方式去获取自己需要的信息。今后若event的需求大时，ChainX会考虑将`Event`的数据结构处理成结构化的形式返回。
+
+该rpc返回对应块下，交易于块中index对应的Event列表。也就是说，从`chain_getBlock`或者`chainx_getBlockByNumber`rpc接口返回数据的`extrinsics` 部分的顺序，按照其`index`即是该接口`events`部分的map对应的索引。
+
+例：通过`hash1` 调用`chain_getBlock` 获得区块信息如下：
+
+```jsonc
+"result": {
+    "block": {
+    	# 当前区块中的所有交易
+        "extrinsics": [
+            "0x2001010003dcaae75c", # 内部交易
+            "0x8c010600e1bb5dce598f45732d6f5796adaca4ca261387ed5b5cda96c3c588f256e8205b"， # 内部交易
+            "0x......................................." # 外部交易
+        ],
+        # 区块头，与上面的接口返回相同
+        "header": {
+            # ....
+        }
+    },
+    # 验证者列表，目前已经是废弃字段
+    "justification": null
+}
+```
+
+则使用相同的`hash1`调用该接口后将会返回例如：
+
+```jsonc
+{
+	"events": {
+		"0": [ "...", "..."], # 对应 上文`extrinsics` 中列表中的第一条内部交易
+		"1": [ "...", "..."], # 对应 上文`extrinsics` 中列表中的第二条内部交易
+		"2": [ "...", "..."] # 对应 上文`extrinsics` 中列表中的第三条外部交易
+	}
+}
+```
+
+调用
+
+- 方法名：`chainx_getExtrinsicsEventsByBlockHash`
+
+- 参数： 
+
+  - 若不提供任何参数，默认返回最近块下的Event
+
+    ```jsonc
+    []
+    ```
+
+  - **或**给予一个块的hash ，返回对应的块下的Event
+
+    ```jsonc
+    [  "0x.............." ]   # 对应的块的hash
+    ```
+
+返回
+
+```jsonc
+"result": {
+        "blockHash": "0x99ed77b4737117e6920bc5c48c22c5e034ce96851790044b9f69f248fdadf3ff",
+        "events": {
+            "0": [
+                "system(ExtrinsicSuccess)"
+            ],
+            "1": [
+                "system(ExtrinsicSuccess)"
+            ],
+            "2": [
+                "xassets(Move([80, 67, 88], d7d5ed3026fb60790e690b43f0dbd6858aabb824e6f78e03008f88a50cce09a6 (5UX2DeGC...), Free, a2308187439ac204df9e299e1e54afefafea4bf348e03dad679737c91871dc53 (5TJgYKHP...), Free, 11880))",
+                "xfee_manager(FeeForProducer(a2308187439ac204df9e299e1e54afefafea4bf348e03dad679737c91871dc53 (5TJgYKHP...), 11880))",
+                "xassets(Move([80, 67, 88], d7d5ed3026fb60790e690b43f0dbd6858aabb824e6f78e03008f88a50cce09a6 (5UX2DeGC...), Free, eacbf3fbb456f3227ace4450db99235021736165a5dd33da819aafd84b84f8c9 (5UwtAaDg...), Free, 106920))",
+                "xfee_manager(FeeForJackpot(eacbf3fbb456f3227ace4450db99235021736165a5dd33da819aafd84b84f8c9 (5UwtAaDg...), 106920))",
+                "xbitcoin(InsertHeader(536870912, 0xeecd86ec439a1748586a619e931ce17fcd8d0116e4e899055db95c2900000000, 1576451, 0x2664edaf0ed4a13a09ab650d7a7a2b0d2143c2663a10c5a5b9b4083f00000000, 0xc653f0fe33fa5c04034596cf638a21e4dd61fd3b7e1538eaf3d16a2d9ece64cc, 1567182098, 3675665054, 1576448, 0x28e629b0b8ceb6e9f71d1ad066a3d71ed3dec0eb54d2bd113287b00500000000))",
+                "system(ExtrinsicSuccess)"
+            ]
+        }
+```
+
+**若提供了不存在的区块hash，会由于找不到对应的状态根而返回错误！**例：
+
+```jsonc
+{
+    "jsonrpc": "2.0",
+    "error": {
+        "code": -32603,
+        "message": "Unknown error occured",
+        "data": "Error(Client(UnknownBlock(\"Unknown state for block Hash(0x99ed77b4737117e6920bc5c48c22c5e034ce96851790044b9f69f248fd1df3ff)\")), State { next_error: None, backtrace: InternalBacktrace { backtrace: None } })"
+    },
+    "id": 1
+}
+```
+
+对于Event的返回值解释如下（原理与js sdk的解析相同，只是这里在节点内部将Event解析好以字符形式返回）：
+
+例：
+
+Event字符构成如下：
+
+简单来说Event是归属于某个模块下的，因此首先有模块名，而在后续括号内部是event名
+
+```bash
+system(ExtrinsicSuccess)
+模块名 (Event名)
+```
+
+稍微复杂的例子：
+
+```bash
+xassets(Move([80, 67, 88], d7d5ed3026fb60790e690b43f0dbd6858aabb824e6f78e03008f88a50cce09a6 (5UX2DeGC...), Free, eacbf3fbb456f3227ace4450db99235021736165a5dd33da819aafd84b84f8c9 (5UwtAaDg...), Free, 106920))
+模块名xassets(Event名Move(参数1 [80, 67, 88]即ascii码PCX, 参数2 公钥1, 参数3 from类型, 参数4 公钥2，参数5 to类型，参数6 数值))
+因此该Event语义为将PCX从公钥1的Free类型资产移动到公钥2的Free类型，数值为106920 (即转账的一直表述形式)
+```
+
+**另：由于大部分使用者只关心交易是否成功的`Event`，这条`Event`即为每条交易Event列表的最后一条Event（js sdk的逻辑相同）**
+
+即 
+
+* `system(ExtrinsicSuccess)`  表示该交易执行成功
+* `system(ExtrinsicFailed)`   表示该交易执行失败
+
+因此若使用者想通过该rpc获取交易执行是否成功，只需要获取对应Event列表的最后一条Event进行判断即可。
+
+例上述例子中：
+
+```jsonc
+"events": {
+    # ...
+    "2": [
+        "xassets()",
+        "xfee_manager()",
+        "xassets()",
+        "xfee_manager()",
+        "xbitcoin()",
+        "system(ExtrinsicSuccess)"
+    ]
+}
+```
+
+在该例显示，这个块下的第3条交易（即index为2）的Events列表如上，则判断这笔交易是否成功，只需要检查这个列表的最后一项`system(ExtrinsicSuccess|ExtrinsicFailed)` 即可。
+
 ### 资产部分
 
 #### chainx_getAssetsByAccount
@@ -1041,6 +1186,8 @@ ChainX账户绑定BTC地址列表
 
 #### chainx_getStakingDividendByAccount
 
+##### v1.0.6
+
 获取用户投票利息
 
 调用:
@@ -1068,6 +1215,8 @@ ChainX账户绑定BTC地址列表
 ```
 
 #### chainx_getCrossMiningDividendByAccount
+
+##### v1.0.6
 
 获取用户跨链挖矿利息
 
@@ -1139,6 +1288,8 @@ ChainX账户绑定BTC地址列表
 
 #### chainx_getNominationRecordsV1
 
+##### v1.0.6
+
 除了返回的字段 `lastVoteWeight` 类型为 String, 其他内容与 `chainx_getNominationRecords` 一样。
 
 #### chainx_getNextRenominateByAccount
@@ -1164,6 +1315,8 @@ ChainX账户绑定BTC地址列表
 ```
 
 #### chainx_getIntentionByAccount
+
+##### v1.0.6
 
 获取单个节点信息
 
@@ -1208,6 +1361,8 @@ ChainX账户绑定BTC地址列表
 
 #### chainx_getIntentionByAccountV1
 
+##### v1.0.6
+
 除了返回的字段 `lastTotalVoteWeight` 类型为 String, 其他内容与 `chainx_getIntentionByAccount` 一样。
 
 #### chainx_getIntentions
@@ -1244,6 +1399,8 @@ ChainX账户绑定BTC地址列表
 
 #### chainx_getIntentionsV1
 
+##### v1.0.6
+
 除了返回的字段 `lastTotalVoteWeight` 类型为 String, 其他内容与 `chainx_getIntentions` 一样。
 
 #### chainx_getPseduIntentions
@@ -1273,6 +1430,8 @@ ChainX账户绑定BTC地址列表
 
 #### chainx_getPseduIntentionsV1
 
+##### v1.0.6
+
 除了返回的字段 `lastTotalDepositWeight` 类型为 String, 其他内容与 `chainx_getPseduIntentions` 一样。
 
 #### chainx_getPseduNominationRecords
@@ -1299,6 +1458,8 @@ ChainX账户绑定BTC地址列表
 ```
 
 #### chainx_getPseduNominationRecordsV1
+
+##### v1.0.6
 
 除了返回的字段 `lastTotalDepositWeight` 类型为 String, 其他内容与 `chainx_getPseduNominationRecords` 一样。
 
@@ -1634,6 +1795,8 @@ ChainX账户绑定BTC地址列表
 ```
 
 #### chainx_getFeeWeightMap
+
+##### v1.0.6
 
 返回当前链上的手续费权重，基础手续费与字节手续费。手续费权重由`模块名 <空格> 交易方法名`组成
 
