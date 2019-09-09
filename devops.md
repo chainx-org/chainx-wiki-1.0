@@ -239,8 +239,8 @@ $ nohup ./chainx --config=config.json > error.log 2>&1 &
 
 如对于ChainX而言:
 
-* 若使用主网启动（`chain=mainnet`或不指定），则主网的数据路径为：`<DATABASE>/chains/mainnet/db`
-* 若使用测试网启动（`chain=testnet`），则测试网的数据路径为：`<DATABASE>/chains/testnet/db`
+* 若使用主网启动（`chain=mainnet`或不指定），则主网的数据路径为：`<DATABASE>/chains/chainx_mainnet/db`
+* 若使用测试网启动（`chain=testnet`），则测试网的数据路径为：`<DATABASE>/chains/chainx_testnet/db`
 
 因此若需要备份，替换节点存储的数据，即对该`db`文件夹进行操作：
 
