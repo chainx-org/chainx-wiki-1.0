@@ -4,118 +4,73 @@ ChainX's RPC system is derived from the substrate rpc crate, with custom `chainx
 <!-- TOC GFM -->
 
 * [author](#author)
-        * [author_submitExtrinsic](#author_submitextrinsic)
-        * [author_pendingExtrinsics](#author_pendingextrinsics)
-        * [author_submitAndWatchExtrinsic](#author_submitandwatchextrinsic)
-        * [author_unwatchExtrinsic](#author_unwatchextrinsic)
+    * [author_submitExtrinsic](#author_submitextrinsic)
+    * [author_pendingExtrinsics](#author_pendingextrinsics)
+    * [author_submitAndWatchExtrinsic](#author_submitandwatchextrinsic)
+    * [author_unwatchExtrinsic](#author_unwatchextrinsic)
 * [chain](#chain)
-        * [chain_getHeader](#chain_getheader)
-        * [chain_getBlock](#chain_getblock)
-        * [chain_getBlockHash](#chain_getblockhash)
-        * [chain_getFinalizedHead](#chain_getfinalizedhead)
-        * [subscribe_newHead](#subscribe_newhead)
-        * [unsubscribe_newHead](#unsubscribe_newhead)
-        * [chain_subscribeFinalisedHeads](#chain_subscribefinalisedheads)
-        * [chain_unsubscribeFinalisedHeads](#chain_unsubscribefinalisedheads)
+    * [chain_getHeader](#chain_getheader)
+    * [chain_getBlock](#chain_getblock)
+    * [chain_getBlockHash](#chain_getblockhash)
+    * [chain_getFinalizedHead](#chain_getfinalizedhead)
+    * [subscribe_newHead](#subscribe_newhead)
+    * [unsubscribe_newHead](#unsubscribe_newhead)
+    * [chain_subscribeFinalisedHeads](#chain_subscribefinalisedheads)
+    * [chain_unsubscribeFinalisedHeads](#chain_unsubscribefinalisedheads)
 * [state](#state)
-        * [state_call](#state_call)
-        * [state_getKeys](#state_getkeys)
-        * [state_getStorage](#state_getstorage)
-        * [state_getStorageHash](#state_getstoragehash)
-        * [state_getStorageSize](#state_getstoragesize)
-        * [state_getMetadata](#state_getmetadata)
-        * [state_getRuntimeVersion](#state_getruntimeversion)
-        * [state_queryStorage](#state_querystorage)
-        * [chain_subscribeRuntimeVersion](#chain_subscriberuntimeversion)
-        * [chain_unsubscribeRuntimeVersion](#chain_unsubscriberuntimeversion)
-        * [state_subscribeStorage](#state_subscribestorage)
-        * [state_unsubscribeStorage](#state_unsubscribestorage)
+    * [state_call](#state_call)
+    * [state_getKeys](#state_getkeys)
+    * [state_getStorage](#state_getstorage)
+    * [state_getStorageHash](#state_getstoragehash)
+    * [state_getStorageSize](#state_getstoragesize)
+    * [state_getMetadata](#state_getmetadata)
+    * [state_getRuntimeVersion](#state_getruntimeversion)
+    * [state_queryStorage](#state_querystorage)
+    * [chain_subscribeRuntimeVersion](#chain_subscriberuntimeversion)
+    * [chain_unsubscribeRuntimeVersion](#chain_unsubscriberuntimeversion)
+    * [state_subscribeStorage](#state_subscribestorage)
+    * [state_unsubscribeStorage](#state_unsubscribestorage)
 * [system](#system)
-        * [system_name](#system_name)
-        * [system_version](#system_version)
-        * [system_chain](#system_chain)
-        * [system_properties](#system_properties)
-        * [system_health](#system_health)
-        * [system_peers](#system_peers)
-        * [system_networkState](#system_networkstate)
+    * [system_name](#system_name)
+    * [system_version](#system_version)
+    * [system_chain](#system_chain)
+    * [system_properties](#system_properties)
+    * [system_health](#system_health)
+    * [system_peers](#system_peers)
+    * [system_networkState](#system_networkstate)
 * [chainx](#chainx)
-        * [chainx_getBlockByNumber](#chainx_getblockbynumber)
-            * [Params](#params)
-        * [chainx_getNextRenominateByAccount](#chainx_getnextrenominatebyaccount)
-        * [chainx_getStakingDividendByAccount](#chainx_getstakingdividendbyaccount)
-            * [Params](#params-1)
-            * [Example](#example)
-        * [chainx_getCrossMiningDividendByAccount](#chainx_getcrossminingdividendbyaccount)
-            * [Params](#params-2)
-            * [Example](#example-1)
-        * [chainx_getAssetsByAccount](#chainx_getassetsbyaccount)
-            * [Params](#params-3)
-            * [Example](#example-2)
-        * [chainx_getAssets](#chainx_getassets)
-            * [Params](#params-4)
-            * [Example](#example-3)
-        * [chainx_verifyAddressValidity](#chainx_verifyaddressvalidity)
-        * [chainx_getWithdrawalLimitByToken](#chainx_getwithdrawallimitbytoken)
-            * [Params](#params-5)
-            * [Example](#example-4)
-        * [chainx_getDepositLimitByToken](#chainx_getdepositlimitbytoken)
-            * [Params](#params-6)
-            * [Example](#example-5)
-        * [chainx_getDepositList](#chainx_getdepositlist)
-            * [Params](#params-7)
-            * [Example](#example-6)
-        * [chainx_getWithdrawalList](#chainx_getwithdrawallist)
-            * [Params](#params-8)
-            * [Example](#example-7)
-        * [chainx_getNominationRecords](#chainx_getnominationrecords)
-            * [Params](#params-9)
-            * [Example](#example-8)
-        * [chainx_getNominationRecordsV1](#chainx_getnominationrecordsv1)
-        * [chainx_getIntentions](#chainx_getintentions)
-            * [Params](#params-10)
-            * [Example](#example-9)
-        * [chainx_getIntentionsV1](#chainx_getintentionsv1)
-        * [chainx_getIntentionByAccount](#chainx_getintentionbyaccount)
-            * [Params](#params-11)
-            * [Example](#example-10)
-        * [chainx_getIntentionByAccountV1](#chainx_getintentionbyaccountv1)
-        * [chainx_getPseduIntentions](#chainx_getpseduintentions)
-            * [Params](#params-12)
-            * [Example](#example-11)
-        * [chainx_getPseduIntentionsV1](#chainx_getpseduintentionsv1)
-        * [chainx_getPseduNominationRecords](#chainx_getpsedunominationrecords)
-            * [Params](#params-13)
-            * [Example](#example-12)
-        * [chainx_getPseduNominationRecordsV1](#chainx_getpsedunominationrecordsv1)
-        * [chainx_getTradingPairs](#chainx_gettradingpairs)
-            * [Params](#params-14)
-            * [Example](#example-13)
-        * [chainx_getQuotations](#chainx_getquotations)
-            * [Params](#params-15)
-            * [Example](#example-14)
-        * [chainx_getOrders](#chainx_getorders)
-            * [Params](#params-16)
-            * [Params](#params-17)
-        * [chainx_getAddressByAccount](#chainx_getaddressbyaccount)
-            * [Params](#params-18)
-            * [Example](#example-15)
-        * [chainx_getTrusteeSessionInfo](#chainx_gettrusteesessioninfo)
-            * [Params](#params-19)
-            * [Example](#example-16)
-        * [chainx_getTrusteeInfoByAccount](#chainx_gettrusteeinfobyaccount)
-            * [Params](#params-20)
-            * [Example](#example-17)
-        * [chainx_getFeeByCallAndLength](#chainx_getfeebycallandlength)
-        * [chainx_getFeeWeightMap](#chainx_getfeeweightmap)
-            * [Params](#params-21)
-            * [Example](#example-18)
-        * [chainx_getWithdrawTx](#chainx_getwithdrawtx)
-            * [Params](#params-22)
-            * [Example](#example-19)
-        * [chainx_getMockBitcoinNewTrustees](#chainx_getmockbitcoinnewtrustees)
-        * [chainx_particularAccounts](#chainx_particularaccounts)
-            * [Params](#params-23)
-            * [Example](#example-20)
+    * [chainx_getBlockByNumber](#chainx_getblockbynumber)
+    * [chainx_getNextRenominateByAccount](#chainx_getnextrenominatebyaccount)
+    * [chainx_getStakingDividendByAccount](#chainx_getstakingdividendbyaccount)
+    * [chainx_getCrossMiningDividendByAccount](#chainx_getcrossminingdividendbyaccount)
+    * [chainx_getAssetsByAccount](#chainx_getassetsbyaccount)
+    * [chainx_getAssets](#chainx_getassets)
+    * [chainx_verifyAddressValidity](#chainx_verifyaddressvalidity)
+    * [chainx_getWithdrawalLimitByToken](#chainx_getwithdrawallimitbytoken)
+    * [chainx_getDepositLimitByToken](#chainx_getdepositlimitbytoken)
+    * [chainx_getDepositList](#chainx_getdepositlist)
+    * [chainx_getWithdrawalList](#chainx_getwithdrawallist)
+    * [chainx_getNominationRecords](#chainx_getnominationrecords)
+    * [chainx_getNominationRecordsV1](#chainx_getnominationrecordsv1)
+    * [chainx_getIntentions](#chainx_getintentions)
+    * [chainx_getIntentionsV1](#chainx_getintentionsv1)
+    * [chainx_getIntentionByAccount](#chainx_getintentionbyaccount)
+    * [chainx_getIntentionByAccountV1](#chainx_getintentionbyaccountv1)
+    * [chainx_getPseduIntentions](#chainx_getpseduintentions)
+    * [chainx_getPseduIntentionsV1](#chainx_getpseduintentionsv1)
+    * [chainx_getPseduNominationRecords](#chainx_getpsedunominationrecords)
+    * [chainx_getPseduNominationRecordsV1](#chainx_getpsedunominationrecordsv1)
+    * [chainx_getTradingPairs](#chainx_gettradingpairs)
+    * [chainx_getQuotations](#chainx_getquotations)
+    * [chainx_getOrders](#chainx_getorders)
+    * [chainx_getAddressByAccount](#chainx_getaddressbyaccount)
+    * [chainx_getTrusteeSessionInfo](#chainx_gettrusteesessioninfo)
+    * [chainx_getTrusteeInfoByAccount](#chainx_gettrusteeinfobyaccount)
+    * [chainx_getFeeByCallAndLength](#chainx_getfeebycallandlength)
+    * [chainx_getFeeWeightMap](#chainx_getfeeweightmap)
+    * [chainx_getWithdrawTx](#chainx_getwithdrawtx)
+    * [chainx_getMockBitcoinNewTrustees](#chainx_getmockbitcoinnewtrustees)
+    * [chainx_particularAccounts](#chainx_particularaccounts)
 
 <!-- /TOC -->
 
@@ -606,6 +561,36 @@ Get the current deposit info given the chain_id.
 	"method":"chainx_getWithdrawalList",
 	"params":["Bitcoin", 0, 100]
 	
+}
+```
+
+```
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "data": [
+            {
+                "accountid": "0x9b039dae8c888de7fcdbaa47b7879a166f5ecc6317f36c38db6c7b605af620f5",
+                "address": "1GU7Y99BUi3oM9oPwQ7WjPnathLVJwUvsf",
+                "applicationStatus": "Processing",
+                "balance": 1739410000,
+                "height": 4554356,
+                "id": 538,
+                "memo": "",
+                "status": {
+                    "value": "Broadcasting"
+                },
+                "token": "BTC",
+                "txid": ""
+            },
+            ......
+            }
+        ],
+        "pageIndex": 0,
+        "pageSize": 100,
+        "pageTotal": 1
+    },
+    "id": 1
 }
 ```
 
