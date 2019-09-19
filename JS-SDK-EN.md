@@ -12,19 +12,47 @@
 * [Create account](#create-account)
 * [Send extrinsics](#send-extrinsics)
     * [chainx.trustee.createWithdrawTx(withdrawalIdList, tx)](#chainxtrusteecreatewithdrawtxwithdrawalidlist-tx)
+        * [Args](#args)
+        * [Example](#example)
     * [chainx.trustee.signWithdrawTx(tx?)](#chainxtrusteesignwithdrawtxtx)
+        * [Args](#args-1)
+        * [Example](#example-1)
     * [chainx.trustee.setupBitcoinTrustee(about, hotEntity, coldEntity)](#chainxtrusteesetupbitcointrusteeabout-hotentity-coldentity)
+        * [Args](#args-2)
+        * [Example](#example-2)
     * [chainx.asset.transfer(dest, token, value, memo)](#chainxassettransferdest-token-value-memo)
+        * [Args](#args-3)
+        * [Example](#example-3)
     * [chainx.asset.withdraw(token, value, addr, ext)](#chainxassetwithdrawtoken-value-addr-ext)
+        * [Args](#args-4)
+        * [Example](#example-4)
     * [chainx.trade.putOrder(pair_index, order_type, order_direction, amount, price)](#chainxtradeputorderpair_index-order_type-order_direction-amount-price)
+        * [Args](#args-5)
+        * [Example](#example-5)
     * [chainx.trade.cancelOrder(pair_index, order_index)](#chainxtradecancelorderpair_index-order_index)
+        * [Args](#args-6)
+        * [Example](#example-6)
     * [chainx.stake.register(name)](#chainxstakeregistername)
+        * [Args](#args-7)
+        * [Example](#example-7)
     * [chainx.stake.nominate(targetAddress, value, memo)](#chainxstakenominatetargetaddress-value-memo)
+        * [Args](#args-8)
+        * [Example](#example-8)
     * [chainx.stake.unnominate(targetAddress, value, memo)](#chainxstakeunnominatetargetaddress-value-memo)
+        * [Args](#args-9)
+        * [Example](#example-9)
     * [chainx.stake.refresh(url?, desire_to_run?, next_key?, about?)](#chainxstakerefreshurl-desire_to_run-next_key-about)
+        * [Args](#args-10)
+        * [Example](#example-10)
     * [chainx.stake.voteClaim(target)](#chainxstakevoteclaimtarget)
+        * [Args](#args-11)
+        * [Example](#example-11)
     * [chainx.stake.depositClaim(token)](#chainxstakedepositclaimtoken)
+        * [Args](#args-12)
+        * [Example](#example-12)
     * [chainx.stake.unfreeze(target, revocation_index)](#chainxstakeunfreezetarget-revocation_index)
+        * [Args](#args-13)
+        * [Example](#example-13)
     * [chainx.stake.setupTrustee(chain, about, hot_entity, cold_entity)](#chainxstakesetuptrusteechain-about-hot_entity-cold_entity)
 * [Getters](#getters)
     * [chainx.chain.getInfo()](#chainxchaingetinfo)
@@ -212,8 +240,8 @@ async function ed25519Sign(message) {
 Generally speaking, if you want to get the amount, sender and receiver of a certain PCX transfer, the workflow is:
 
 1. Listen to the block height event to get the latest block height.
-2. Get all the extrinsic in the latest block.
-3. Parse every extrinsic to collect all the transfer extrinsic. If the extrinsic is `xAssets.transfer` type and the last event is `Success`, then it's an successful transfer.
+2. Get all the extrinsics in the latest block.
+3. Parse every extrinsic to collect all the transfer extrinsics. If an extrinsic's method is `xAssets.transfer` and the last event is `Success`, then it's a successful transfer:
     1. Parse the arguments of transfer extrinsic to get sender, receiver(dest), amount, asset type and memo.
     2. If the receiver(dest) is the address you are watching at, then continue to handle your buiness.
 
@@ -349,19 +377,173 @@ console.log('address:', account3.address()); // address
 ## Send extrinsics
 
 ### chainx.trustee.createWithdrawTx(withdrawalIdList, tx)
+
+#### Args
+
+#### Example
+
+```javascript
+chainx.trustee.signWithdrawTx('0x......');
+```
+
 ### chainx.trustee.signWithdrawTx(tx?)
+
+#### Args
+
+#### Example
+
+```javascript
+chainx.trustee.setupBitcoinTrustee('111'， '0x......', '0x......');
+```
+
 ### chainx.trustee.setupBitcoinTrustee(about, hotEntity, coldEntity)
+
+#### Args
+
+#### Example
+
+```javascript
+chainx.trustee.setupBitcoinTrustee('111'， '0x......', '0x......');
+```
+
 ### chainx.asset.transfer(dest, token, value, memo)
+
+Transfer asset.
+
+#### Args
+
+#### Example
+
+```javascript
+chainx.asset.transfer('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 'PCX', 1000, '转给你');
+```
+
 ### chainx.asset.withdraw(token, value, addr, ext)
+
+#### Args
+
+#### Example
+
 ### chainx.trade.putOrder(pair_index, order_type, order_direction, amount, price)
+
+New order.
+
+#### Args
+
+1. `pair_index`: trading pair id.
+2. `order_type`: Only `Limit` for now.
+3. `order_direction`: `Buy` or `Sell`.
+4. `amount`
+5. `price`
+
+#### Example
+
+```javascript
+chainx.trade.putOrder(1, 'Limit', 'Buy', 100, 100);
+```
+
 ### chainx.trade.cancelOrder(pair_index, order_index)
+
+Cancel the open order.
+
+#### Args
+
+1. `pair_index`: trading pair id.
+2. `order_index`: user oder index.
+
+#### Example
+
+```javascript
+chainx.trade.cancelOrder(0, 2);
+```
+
 ### chainx.stake.register(name)
+
+#### Args
+
+1. `name`: intention name
+
+#### Example
+
+```javascript
+chainx.stake.register('节点');
+```
+
 ### chainx.stake.nominate(targetAddress, value, memo)
+
+#### Args
+
+#### Example
+
+```javascript
+chainx.stake.nominate('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1000, 'Nominate');
+```
+
 ### chainx.stake.unnominate(targetAddress, value, memo)
+
+#### Args
+
+#### Example
+
+```javascript
+chainx.stake.refresh('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1000, 'Unnominate');
+```
+
 ### chainx.stake.refresh(url?, desire_to_run?, next_key?, about?)
+
+#### Args
+1. `url`: your domain name.
+2. `desire_to_run`: if the transactor want to participate in the validators election.
+3. `next_key`: address for block authoring.
+4. `about`: brief intention introduction.
+
+#### Example
+
+```javascript
+chainx.stake.refresh(null, true, null, 'intention about');
+```
+
 ### chainx.stake.voteClaim(target)
+Claim the staking dividend.
+
+#### Args
+
+1. `target`: the intention voted
+
+#### Example
+
+```javascript
+chainx.stake.voteClaim('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ');
+```
+
 ### chainx.stake.depositClaim(token)
+Claim the cross mining dividend.
+
+#### Args
+
+1. `token`: token type
+
+#### Example
+
+```javascript
+chainx.stake.depositClaim('BTC');
+```
+
 ### chainx.stake.unfreeze(target, revocation_index)
+
+There is a lock period after you perform an `unnominate` action. When the locked balance is due, you can unfreeze it to make it be the free balance.
+
+#### Args
+
+1. `target`: intention account
+2. `revocation_index`: user can have serveral unfreeze items, this index is used for specifing which one to unfreeze.
+
+#### Example
+
+```javascript
+chainx.stake.unfreeze('5FxL27izsvhViiQtgwBm6kP8XvMSZ3JjyoMCmaw7pGrgXqqJ', 1);
+```
+
 ### chainx.stake.setupTrustee(chain, about, hot_entity, cold_entity)
 
 ## Getters
