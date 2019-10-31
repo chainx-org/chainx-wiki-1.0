@@ -721,7 +721,7 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 ## chainx
 
-ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自己定义的相应数据
+ChainX部分的rpc与ChainX链上的业务逻辑相关，主要返回ChainX自己定义的相应数据. 除了 `chainx_getBlockByNumber`, 其他所有 `chainx_*` RPC接口均支持在最后一个参数指定块哈希查询某个块的状态，如果不填默认是best_hash.
 
 ### 链相关部分
 
