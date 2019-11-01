@@ -358,7 +358,7 @@ chainx.provider.websocket.close()
 
 ## Account 模块
 
-通过`chainx.account.from(seed | privateKey | seed | mnemonic)` 可以生成一个 account 对象。
+通过`chainx.account.from(seed | privateKey | mnemonic)` 可以生成一个 account 对象。
 
 ```js
 const alice = chainx.account.from('0x....')
