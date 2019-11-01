@@ -228,11 +228,11 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 ### author_submitAndWatchExtrinsic
 
-**仅用于websocket，见其他文档**
+**仅用于websocket，待Substrate官方文档完成后补充**
 
 ### author_submitAndWatchExtrinsic
 
-**仅用于websocket，见其他文档**
+**仅用于websocket，待Substrate官方文档完成后补充**
 
 ## chain
 
@@ -351,19 +351,19 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 ### chain_subscribeNewHead
 
-**仅用于websocket，见其他文档**
+**仅用于websocket，待Substrate官方文档完成后补充**
 
 ### chain_unsubscribeNewHead
 
-**仅用于websocket，见其他文档**
+**仅用于websocket，待Substrate官方文档完成后补充**
 
 ### chain_subscribeFinalizedHeads
 
-**仅用于websocket，见其他文档**
+**该接口目前暂时不可用**
 
 ### chain_unsubscribeFinalizedHeads
 
-**仅用于websocket，见其他文档**
+**该接口目前暂时不可用**
 
 ## state
 
@@ -550,19 +550,19 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 ### state_subscribeRuntimeVersion
 
-**仅用于websocket，见其他文档**
+**仅用于websocket，待Substrate官方文档完成后补充**
 
 ### state_unsubscribeRuntimeVersion
 
-**仅用于websocket，见其他文档**
+**仅用于websocket，待Substrate官方文档完成后补充**
 
 ### state_subscribeStorage
 
-**仅用于websocket，见其他文档**
+**仅用于websocket，待Substrate官方文档完成后补充**
 
 ### state_unsubscribeStorage
 
-**仅用于websocket，见其他文档**
+**仅用于websocket，待Substrate官方文档完成后补充**
 
 ## system
 

@@ -37,6 +37,12 @@ ChainX当前提供了几个测试网节点：
 
 ### 运行ChainX测试网节点
 
+###　原测试网 ChainX Testnet 已经准备废弃，需要加入测试网的节点后续请使用新测试网　ChainX Testnet Taoism
+
+新测试网节点将于11月16日发布，命名为 ChainX Testnet Taoism，届时将会在新测试网上提供智能合约的功能！
+
+### 下文为原测试网ChainX Testnet 的启动方式，注意后续将会废弃！
+
 **请下载最新的ChainX二进制，链接[下载](https://github.com/chainx-org/ChainX/releases)**。由于下一章节描述的问题，请下载`v1.0.5`版本，`v1.0.6`版本以及最新的版本的二进制
 
 测试网的节点浏览器为：[https://stats.chainx.org/#list/ChainX%20Testnet](https://stats.chainx.org/#list/ChainX Testnet)
@@ -67,7 +73,7 @@ ChainX目前提供的种子节点：
 
 **启动方式也与主网相同**
 
-### 测试网节点的区块同步
+### 测试网ChainX Testnet节点的区块同步
 
 **由于测试网在1.0.5-1.0.6的升级过程中没有严格按照升级流程执行，因此若使用最新的ChainX二进制进行同步，会在`2057083`这个块卡住。**
 
