@@ -1029,7 +1029,7 @@ xassets(Move([80, 67, 88], d7d5ed3026fb60790e690b43f0dbd6858aabb824e6f78e03008f8
 
   ```jsonc
   [
-  	"Bitcoin", # 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
+  	"Bitcoin", # 链ID 枚举[ “Bitcoin”]
   	0, # 分页（从第几页开始）
   	100  # 分页（每页多少个数据）
   ]
@@ -1077,7 +1077,7 @@ xassets(Move([80, 67, 88], d7d5ed3026fb60790e690b43f0dbd6858aabb824e6f78e03008f8
 
   ```jsonc
   [
-  	"Bitcoin", # 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
+  	"Bitcoin", # 链ID 枚举[“Bitcoin”]
   	0, # 分页（从第几页开始）
   	100  # 分页（每页多少个数据）
   ]
@@ -1164,7 +1164,7 @@ chainx 链上与充值金额相关的限制，如充值的最小值
 
 #### chainx_getAddressByAccount
 
-ChainX账户绑定BTC地址列表
+ChainX账户已绑定BTC地址列表，这里的地址列表表示充值X-BTC的地址列表，并非L-BTC的锁仓列表，锁仓列表只能通过api获取
 
 调用
 
@@ -1175,7 +1175,7 @@ ChainX账户绑定BTC地址列表
   ```jsonc
   [
   	"0x..........", # 账户公钥
-  	"Bitcoin" # 链ID 枚举[“ChainX”, “Bitcoin”, “Ethereum”, “Polkadot”]
+  	"Bitcoin" # 链ID 枚举[“Bitcoin”, “Ethereum”]， “Ethereum” 这里只是表示SDot的绑定
   ] 
   ```
 
@@ -1416,12 +1416,12 @@ ChainX账户绑定BTC地址列表
     "isTrustee": true, // 是否是信托节点
     "isValidator": true, // 是否是结算节点
     "jackpot": 387096776, // 奖池金额
-    "jackpotAccount": "0xce153e3235448f29ca9052a660e36abd9b9fdc72f80a4059a2427ff06b1a3706", // 奖池地址
+    "jackpotAccount": "0xce153e3235448f29ca9052a660e36abd9b9fdc72f80a4059a2427ff06b1a3706", // 奖池公钥
     "lastTotalVoteWeight": 0, // 总票龄
     "lastTotalVoteWeightUpdate": 0, // 总票龄更新时间
     "name": "Alice", // 节点名
     "selfVote": 1250000000, // 节点自投票
-    "sessionKey": "0xd172a74cda4c865912c32ba0a80a57ae69abae410e5ccb59dee84e2f4432db4f", // 节点出块地址， 类型为 AccountId
+    "sessionKey": "0xd172a74cda4c865912c32ba0a80a57ae69abae410e5ccb59dee84e2f4432db4f", // 节点出块公钥， 类型为 AccountId
     "totalNomination": 1250000000, // 节点总投票
     "url": "Alice.com" // 节点网址
   }
@@ -1860,7 +1860,7 @@ ChainX账户绑定BTC地址列表
 
 #### chainx_particularAccounts
 
-ChainX链上的特殊地址
+ChainX链上的特殊公钥
 
 调用
 
@@ -1873,7 +1873,7 @@ ChainX链上的特殊地址
 "result": {
     "councilAddress": "0x67df26a755e0c31ac81e2ed530d147d7f2b9a3f5a570619048c562b1ed00dfdd",
     "teamAddress": "0x6193a00c655f836f9d8a62ed407096381f02f8272ea3ea0df0fd66c08c53af81",
-    "trusteesAddress": { # 当前信托多签地址
+    "trusteesAddress": { # 当前信托多签公钥
         "Bitcoin": "0x8dc93cedb19de3341ca919160a58fe2497ed23b38169933f240007d1d703e2d5"
     }
 }
