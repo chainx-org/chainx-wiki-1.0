@@ -29,3 +29,8 @@
 ### 加入测试网
 
 - [Join ChainX Testnet](Join-ChainX-Testnet)
+
+### 本地调试节点
+
+* [ChainX Dev 模式](ChainX-Dev)
+
