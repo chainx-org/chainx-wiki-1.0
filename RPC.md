@@ -179,6 +179,8 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
     * [手续费部分](#手续费部分)
         * [chainx_getFeeByCallAndLength](#chainx_getfeebycallandlength)
         * [chainx_getFeeWeightMap](#chainx_getfeeweightmap)
+    * 合约部分
+        * 
     * [其他](#其他)
         * [chainx_particularAccounts](#chainx_particularaccounts)
 
@@ -1853,6 +1855,194 @@ ChainX账户已绑定BTC地址列表，这里的地址列表表示充值X-BTC的
     },
 "transactionBaseFee": 10000,
 "transactionByteFee": 100
+}
+```
+
+### 合约部分
+
+合约相关的RPC自v1.0.7版本开始提供，主要用于获取合约存储相关的调用。
+
+#### chainx_contractCall
+
+##### v1.0.7
+
+从rpc直接调用一个合约中的方法。Substrate Contracts合约平台中的合约方法不区分是否可变，因此合约中的所有方法都可以从该接口触发。但由于对存储状态的修改只可以通过区块执行的方式，实际上**合约中会修改状态的方法虽然可以调用，但是不会生效，但是会有正常的返回值。**
+
+因此该RPC接口可用于：
+
+1. 合约中可以编写将合约中存储组织结构化返回的函数，通过该RPC去调用，获取合约中存储的数值。
+2. 调试合约
+
+调用
+
+* 方法名：`chainx_contractCall`
+
+* 参数：
+
+  ```jsonc
+  [
+      {
+          "dest": "0x4367ca48b692e35f459d8376cfa71ad5e10962e7e3be13cdc46efc1364a4845a",
+          "gasLimit": 100000000,
+          "inputData": "0xfe4a4425",
+          "origin": "0xa2308187439ac204df9e299e1e54afefafea4bf348e03dad679737c91871dc53"
+      }
+  ]
+  ```
+
+  * dest: 合约地址的公钥
+  * gasLimit: origin 对应的账户需要付费的gasLimit，注意这笔**gas不会真的被花费掉**，而是只会用于提供检查是否能够在这个gasLimit的限制下执行这个合约的方法调用。因此在用于获取合约返回值时，这个值可以随便填写一个比较大的值（低于origin中PCX的Free类型的资产数目），在用于调试合约时，可以用来测试出对于执行该合约方法合适的gasLimit
+  * inputdata: 合约方法的 selector 连上这个合约方法需要提供的参数的encode编码。即`selector+encode(params)`。selector可以从合约编译产生的`old_abi.json`或者`abi.json`中获取到，标示调用该合约的方法（类似以太坊合约中的函数签名）
+  * origin：提供gasLimit的账户，该账户必须持有能够提供gasLimit的PCX。**PCX不会在调用该RPC的过程中被花费**
+
+  或者可以加上块hash，在该块下执行相应合约方法
+
+  ```jsonc
+  [
+  	{
+  		// 参数如上
+  	},
+  	"0x121212121212121212121..."  // 区块hash
+  ]
+  ```
+
+返回
+
+```jsonc
+{
+    "data": "0x12341234",
+    "status": 0
+}
+```
+
+* data：调用该合约后的返回值，**该返回值是合约方法定义返回值的encode编码，即encode(返回值)**。(请注意当前Substrate中类似合约的返回值是encode(encode(返回值))，ChainX已在该接口返回部分做过一次decode)
+* status：合约调用的状态码，一般情况下为0，若为其他值则是在合约调用中出现了异常
+
+#### chainx_contractGetStorage
+
+##### v1.0.7
+
+通过合约的key直接获取对应的存储。该方法获取合约存储比较困难，因为key的值一般情况下需要通过计算才能获取。
+
+调用
+
+- 方法名：`chainx_contractGetStorage`
+
+- 参数：
+
+  ```jsonc
+  [
+      "0x121212121212121...",  // 合约地址的公钥
+      "0x343434343434343...",  // 存储的key，是H256，即是32字节的Bytes。
+  ]
+  ```
+
+  或者可以加上块hash，获取该块状态下的合约存储
+
+  ```jsonc
+  [
+   	"0x121212121212121...",  // 合约地址的公钥
+      "0x343434343434343...",  // 存储的key，是H256，即是32字节的Bytes。
+  	"0x121212121212121212121..."  // 区块hash
+  ]
+  ```
+
+返回
+
+```jsonc
+"0x123121212121212"  // 与`state_getstorage`的返回值类似，是encode的编码
+```
+
+####　chainx_contractErc20Call
+
+##### v1.0.7
+
+对ChainX内集成的ERC20合约的调用封装。该RPC可以在不需要ERC20合约abi和地址的情况下，获取ERC20合约中的资产，代币信息等信息。该接口目前仅仅支持ChainX中的BTC- ERC20 。
+
+调用
+
+- 方法名：`chainx_contractErc20Call`
+
+- 参数：
+
+  ```jsonc
+  [
+      {
+          "token": "BTC",
+          "selector": "BalanceOf", 
+          "inputData": "0x88dc3417d5058ec4b4503e0c12ea1a0a89be200fe98922423d4334014fa6b0ee"
+      }
+  ]
+  ```
+
+  * token: **目前只支持 BTC**
+  * selector: 针对ERC20的合约，selector支持以下参数：`[BalanceOf, TotalSupply, Name, Symbol, Decimal]`，即对应于`chainx_contractErc20Info`币种返回的erc20信息中的selectors，与ERC20合约中的abi信息相对应，即合约中支持的部分方法。
+  * inputData：根据selector含义对应的参数。注意如果类似`TotalSupply`没有参数的selector，inputData需要填写`"0x"`
+
+  或者可以加上块hash，获取该块状态下相应的结果
+
+  ```jsonc
+  [
+  	{
+  		// 参数如上
+  	},
+  	"0x121212121212121212121..."  // 区块hash
+  ]
+  ```
+
+返回：
+
+该接口的返回值与`chainx_contractCall`类似，但是对应相应的selector已经做了解码：
+
+```jsonc
+{
+    "data": 100000,
+    "status": 0
+}
+```
+
+其中：
+
+* status 含义与`chainx_contractCall`的返回结果相同
+* data：`[BalanceOf, TotalSupply, Decimal]` 返回数字，对于`[Name, Symbol]` 返回字符
+
+#### chainx_contractErc20Info
+
+##### v1.0.7
+
+返回链上已经注册的币种对应的erc20合约信息，包含erc20实例的地址以及selectors。
+
+调用
+
+- 方法名：`chainx_contractErc20Info`
+
+- 参数：
+
+  ```jsonc
+  [ ]
+  ```
+
+  或者可以加上块hash，获取该块状态下注册信息
+
+  ```jsonc
+  [	"0x121212121212121212121..."  // 区块hash ]
+  ```
+
+返回
+
+```jsonc
+"BTC": {
+    "erc20": {
+        "address": "0x2ec0d10abb966aab967031003044329dad1dbd376e1a2a9d880aed4cbb205d6b",
+        "selectors": {
+            "BalanceOf": "0xe41dbb26",
+            "Decimals": "0xe0446593",
+            "Issue": "0x9d64838c",
+            "Name": "0xd0411301",
+            "Symbol": "0x54e93e98",
+            "TotalSupply": "0x38935d92"
+        }
+    }
 }
 ```
 
