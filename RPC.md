@@ -179,8 +179,9 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
     * [手续费部分](#手续费部分)
         * [chainx_getFeeByCallAndLength](#chainx_getfeebycallandlength)
         * [chainx_getFeeWeightMap](#chainx_getfeeweightmap)
-    * 合约部分
-        * 
+    * [合约部分](合约部分)
+        * [chainx_contractXRCTokenInfo](#chainx_contractXRCTokenInfo)
+        * [chainx_contractXRC20Call](#chainx_contractXRC20Call)
     * [其他](#其他)
         * [chainx_particularAccounts](#chainx_particularaccounts)
 
@@ -1953,15 +1954,56 @@ ChainX账户已绑定BTC地址列表，这里的地址列表表示充值X-BTC的
 "0x123121212121212"  // 与`state_getstorage`的返回值类似，是encode的编码
 ```
 
-####　chainx_contractErc20Call
+#### chainx_contractXRCTokenInfo
 
 ##### v1.0.7
 
-对ChainX内集成的ERC20合约的调用封装。该RPC可以在不需要ERC20合约abi和地址的情况下，获取ERC20合约中的资产，代币信息等信息。该接口目前仅仅支持ChainX中的BTC- ERC20 。
+返回链上已经注册的币种对应的XRC代币合约信息，包含XRC20实例的地址以及selectors，将来可能会返回XRC777等信息。
 
 调用
 
-- 方法名：`chainx_contractErc20Call`
+- 方法名：`chainx_contractXRCTokenInfo`
+
+- 参数：
+
+  ```jsonc
+  [ ]
+  ```
+
+  或者可以加上块hash，获取该块状态下注册信息
+
+  ```jsonc
+  [	"0x121212121212121212121..."  // 区块hash ]
+  ```
+
+返回
+
+```jsonc
+"BTC": {
+    "XRC20": {
+        "address": "0x2ec0d10abb966aab967031003044329dad1dbd376e1a2a9d880aed4cbb205d6b",
+        "selectors": {
+            "BalanceOf": "0xe41dbb26",
+            "Decimals": "0xe0446593",
+            "Destroy": "0x18c9374b",
+            "Issue": "0x9d64838c",
+            "Name": "0xd0411301",
+            "Symbol": "0x54e93e98",
+            "TotalSupply": "0x38935d92"
+        }
+    }
+}
+```
+
+####　chainx_contractXRC20Call
+
+##### v1.0.7
+
+对ChainX内集成的XRC20合约的调用封装。该RPC可以在不需要XRC20合约abi和地址的情况下，获取XRC20合约中的资产，代币信息等信息。该接口目前仅仅支持ChainX中的XRC20 -BTC。
+
+调用
+
+- 方法名：`chainx_contractXRC20Call`
 
 - 参数：
 
@@ -1976,7 +2018,7 @@ ChainX账户已绑定BTC地址列表，这里的地址列表表示充值X-BTC的
   ```
 
   * token: **目前只支持 BTC**
-  * selector: 针对ERC20的合约，selector支持以下参数：`[BalanceOf, TotalSupply, Name, Symbol, Decimal]`，即对应于`chainx_contractErc20Info`币种返回的erc20信息中的selectors，与ERC20合约中的abi信息相对应，即合约中支持的部分方法。
+  * selector: 针对XRC20的合约，selector支持以下参数：`[BalanceOf, TotalSupply, Name, Symbol, Decimal]`，即对应于`chainx_contractXRCTokenInfo`币种返回的XRC20信息中的selectors，与XRC20合约中的abi信息相对应，即合约中支持的部分方法。
   * inputData：根据selector含义对应的参数。注意如果类似`TotalSupply`没有参数的selector，inputData需要填写`"0x"`
 
   或者可以加上块hash，获取该块状态下相应的结果
@@ -2005,46 +2047,6 @@ ChainX账户已绑定BTC地址列表，这里的地址列表表示充值X-BTC的
 
 * status 含义与`chainx_contractCall`的返回结果相同
 * data：`[BalanceOf, TotalSupply, Decimal]` 返回数字，对于`[Name, Symbol]` 返回字符
-
-#### chainx_contractErc20Info
-
-##### v1.0.7
-
-返回链上已经注册的币种对应的erc20合约信息，包含erc20实例的地址以及selectors。
-
-调用
-
-- 方法名：`chainx_contractErc20Info`
-
-- 参数：
-
-  ```jsonc
-  [ ]
-  ```
-
-  或者可以加上块hash，获取该块状态下注册信息
-
-  ```jsonc
-  [	"0x121212121212121212121..."  // 区块hash ]
-  ```
-
-返回
-
-```jsonc
-"BTC": {
-    "erc20": {
-        "address": "0x2ec0d10abb966aab967031003044329dad1dbd376e1a2a9d880aed4cbb205d6b",
-        "selectors": {
-            "BalanceOf": "0xe41dbb26",
-            "Decimals": "0xe0446593",
-            "Issue": "0x9d64838c",
-            "Name": "0xd0411301",
-            "Symbol": "0x54e93e98",
-            "TotalSupply": "0x38935d92"
-        }
-    }
-}
-```
 
 ### 其他
 

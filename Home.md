@@ -14,7 +14,14 @@
 - [Bitcoin 多签信托](https://github.com/chainx-org/ChainX/wiki/Bitcoin%E5%A4%9A%E7%AD%BE%E4%BF%A1%E6%89%98)
 - [SDOT 转接桥](SDOT-转接桥)
 
+## Contract
+
+* [ChainX智能合约](智能合约)
+
 ## Developers
 
 - [JS-SDK](JS-SDK)
 - [RPC](RPC)
+
+## Wallet
+
