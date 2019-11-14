@@ -1,4 +1,4 @@
-## 加入ChainX测试网
+# 加入ChainX测试网
 
 在开始以下步骤前，请了解 [加入主网 ](Join-ChainX-Mainnet) 的相关内容，ChainX测试网的功能与主网相同。
 
@@ -14,6 +14,34 @@ ChainX的测试网采用：
 * 测试网浏览器： [https://testnet.scan.chainx.org.cn](https://testnet.scan.chainx.org.cn/)
 * 测试网api： [https://testnet.api.chainx.org.cn/](https://testnet.api.chainx.org.cn/)
 * 测试网监控台：[https://stats.chainx.org/#list/ChainX%20Testnet%20Taoism](https://stats.chainx.org/#list/ChainX Testnet Taoism)
+
+## 运行ChainX测试网节点
+
+ChainX测试网节点自`v1.0.4`版本可使用主网的二进制进行启动，只需要稍许修改配置即可。
+
+ChainX测试网启动配置`config.json`：
+
+```bash
+{
+	"chain": "testnet", // 当 chain 指定位 testnet时，以测试网的genesis即配置启动节点
+	// 其他配置请参照主网配置
+	"bootnodes":[  // 由于测试网没有内置种子节点，因此启动测试网的用户请一定填写测试网的种子
+	
+	]
+}
+```
+
+**其他配置项请参照主网配置进行修改**
+
+ChainX目前提供的种子节点：
+
+```bash
+"bootnodes":[
+	"/ip4/120.27.210.87/tcp/31128/p2p/QmYvnWNdryPM4aKTcjZLMittkA7KTXi3fMSSQ7aWytFi8v"
+]
+```
+
+**启动方式也与主网相同**
 
 ### 钱包接入测试网节点
 
@@ -40,67 +68,4 @@ ChainX当前提供了几个测试网节点：
 **ChainX测试网的api**
 
 * https://testnet.api.chainx.org.cn/
-
-### 运行ChainX测试网节点
-
-当前
-
-
-
-
-
-
-
-###　原测试网 ChainX Testnet 已经准备废弃，需要加入测试网的节点后续请使用新测试网　ChainX Testnet Taoism
-
-新测试网节点将于11月16日发布，命名为 ChainX Testnet Taoism，届时将会在新测试网上提供智能合约的功能！
-
-### 下文为原测试网ChainX Testnet 的启动方式，注意后续将会废弃！
-
-**请下载最新的ChainX二进制，链接[下载](https://github.com/chainx-org/ChainX/releases)**。由于下一章节描述的问题，请下载`v1.0.5`版本，`v1.0.6`版本以及最新的版本的二进制
-
-测试网的节点浏览器为：[https://stats.chainx.org/#list/ChainX%20Testnet](https://stats.chainx.org/#list/ChainX Testnet)
-
-ChainX测试网节点自`v1.0.4`版本可使用主网的二进制进行启动，只需要稍许修改配置即可。
-
-ChainX测试网启动配置`config.json`：
-
-```bash
-{
-	"chain": "testnet", // 当 chain 指定位 testnet时，以测试网的genesis即配置启动节点
-	// 其他配置请参照主网配置
-	"bootnodes":[  // 由于测试网没有内置种子节点，因此启动测试网的用户请一定填写测试网的种子
-	
-	]
-}
-```
-
-**其他配置项请参照主网配置进行修改**
-
-ChainX目前提供的种子节点：
-
-```bash
-"bootnodes":[
-	"/ip4/39.96.178.97/tcp/20222/p2p/QmUKBbrRE682raePUvB5okupiyzt1YdXq9GroXFZRNAwGS"
-]
-```
-
-**启动方式也与主网相同**
-
-### 测试网ChainX Testnet节点的区块同步
-
-**由于测试网在1.0.5-1.0.6的升级过程中没有严格按照升级流程执行，因此若使用最新的ChainX二进制进行同步，会在`2057083`这个块卡住。**
-
-导致这个问题的原因是在1.0.5-1.0.6的升级过程中使用相同的版本号1.0.6升级了2次链上的wasm代码。因此在使用wasm同步的过程中，会由于版本号与wasm内容不一致导致无法继续同步。
-
-因此**对于测试网**而言，我们推荐使用如下步骤进行同步：
-
-1. 若从0开始同步：
-   1. 首先使用`v1.0.5` 版本的ChainX二进制节点进行同步，同步至块高`2057083`时会自然卡住，无法同步。块高参加日志，或从监控台https://stats.chainx.org/#list/ChainX%20Testnet 看到
-   2. 然后将节点停止，并使用`v1.0.6`版本的ChainX二进制替换`v1.0.5`版本，重启进行同步。此时应该可以正常同步
-   3. 只要同步超过`2057083`块高，后续可在任何时间使用最新节点替换当前同步的节点。
-2. 从超过块高`2057083`的数据包继续同步
-   1. 由于该问题由ChainX升级不当导致，因此ChainX直接提供一个同步超过`2057083`块高的数据包。
-   2. 下载链接为：`47.111.133.215/db_over_2057083.tar.gz`
-   3. 替换数据包的方式请参考运维文档：[运维文档/6. ChainX(Substrate)模型下的数据存储位置](devops#6-chainxsubstrate模型下的数据存储位置) 中的相应描述进行数据替换
 
