@@ -1995,7 +1995,7 @@ ChainX账户已绑定BTC地址列表，这里的地址列表表示充值X-BTC的
 }
 ```
 
-####　chainx_contractXRC20Call
+#### chainx_contractXRC20Call
 
 ##### v1.0.7
 
