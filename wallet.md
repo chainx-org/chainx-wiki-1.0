@@ -39,8 +39,8 @@ ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布�
 chainxProvider.enable().then(console.log)
 
 {
-	address: "5Fe4i2nqi1yPaMowBmjYKb7eRmRYgSE4QAgpxJq1kaGdvQL8" // 账户地址
-	name: "Alice"                                               // 帐号名称
+  address: "5Fe4i2nqi1yPaMowBmjYKb7eRmRYgSE4QAgpxJq1kaGdvQL8" // 账户地址
+  name: "Alice"                                               // 帐号名称
 }
 ```
 
@@ -60,8 +60,8 @@ chainxProvider.getCurrentNode().then(console.log)
 
 {
   isTestNet: true                           // 当前节点是否为测试网
-	name: "testnet.w1.org.cn"									// 当前节点名称
-	url: "wss://testnet.w1.chainx.org.cn/ws"  // 点前节点 url
+  name: "testnet.w1.org.cn"									// 当前节点名称
+  url: "wss://testnet.w1.chainx.org.cn/ws"       // 点前节点 url
 }
 ```
 
@@ -70,11 +70,9 @@ chainxProvider.getSettings().then(console.log)
 
 {
   isTestNet: true  // 点前是否为测试网络
-	version: 1.0.4	 // 插件版本
+  version: 1.0.4	 // 插件版本
 }
 ```
-
-
 
 安装完成之后
 
