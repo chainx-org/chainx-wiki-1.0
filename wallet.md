@@ -16,6 +16,66 @@ ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布�
 
 > 如果因为网络无法安装插件，可以在我们的[插件发布仓库](https://github.com/chainx-org/chainx-extension-release)下载插件压缩包，并通过 Chrome 的 Load unpacked 来加载插件。
 
+### 插件注入说明
+
+插件安装完成之后，会在 `window` 对象中注入 `chainxProvider` 对象。
+
+该对象包含的方法和相关说明如下：
+
+|  函数名 | 函数说明  |
+|  ----  | ----  |
+| enable | 获取当前插件的钱包账户 |
+| signExtrinsic | 签名 |
+| signAndSendExtrinsic | 签名并发送 |
+| listenAccountChange | 监听账户变化 |
+| listenNodeChange | 监听节点变化 |
+| listenNetworkChange | 监听网络变化 |
+| getCurrentNode | 获取当前网络节点 |
+| getSettings | 获取插件设置 |
+
+函数调用示例：
+
+``` javascript
+chainxProvider.enable().then(console.log)
+
+{
+	address: "5Fe4i2nqi1yPaMowBmjYKb7eRmRYgSE4QAgpxJq1kaGdvQL8" // 账户地址
+	name: "Alice"                                               // 帐号名称
+}
+```
+
+``` javascript
+signExtrinsic(
+  address: string, // 发送交易的账户地址
+  module: string,  // 交易模块如：xAssets
+  method: string,  // 交易方法如：transfer
+  args: Array      // method 需要的 参数
+)
+
+signAndSendExtrinsic 同 signExtrinsic
+```
+
+``` javascript
+chainxProvider.getCurrentNode().then(console.log)
+
+{
+  isTestNet: true                           // 当前节点是否为测试网
+	name: "testnet.w1.org.cn"									// 当前节点名称
+	url: "wss://testnet.w1.chainx.org.cn/ws"  // 点前节点 url
+}
+```
+
+``` javascript
+chainxProvider.getSettings().then(console.log)
+
+{
+  isTestNet: true  // 点前是否为测试网络
+	version: 1.0.4	 // 插件版本
+}
+```
+
+
+
 安装完成之后
 
 1. 将网络切换至测试网
