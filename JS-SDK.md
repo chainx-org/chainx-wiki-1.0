@@ -369,7 +369,7 @@ chainx.provider.websocket.close()
 const { compactAddLength } = require('@chainx/util');
 const code = compactAddLength(fs.readFileSync(path.resolve(__dirname, './erc20.wasm')));
 
-const extrinsic = chainx.api.tx.xContracts.putCode(500000, code);
+const extrinsic = chainx.api.tx.xContracts.putCode(100000000, code);
 
 let codeHash;
 
@@ -396,7 +396,7 @@ const abi = new Abi(erc20);
 // 5GE7vwvDmKCCPrVLc9XZJAiAspM9LhQWbQjPvZ3QxzBUbhT7
 const extrinsic = chainx.api.tx.xContracts.instantiate(
   1000,
-  500000,
+  100000000,
   '0x5e71dc66c1527bf4047942c5ada9c5c59941bff8eb8b2d1a6d849306bfd52e93',
   abi.constructors[0](...), // 合约的构造函数
 );
@@ -421,7 +421,7 @@ const abi = new Abi(erc20);
 const ex = chainx.api.tx.xContracts.call(
   '5GE7vwvDmKCCPrVLc9XZJAiAspM9LhQWbQjPvZ3QxzBUbhT7', // contract address
   0, // value
-  500000, // gas
+  10000000, // gas
   // 调用的函数
   abi.messages.transfer('5FvHGYk44FHZXznrhoskVyr2zGPYn5CpUXphRKM8eGRJZMtX', 10)
 );
