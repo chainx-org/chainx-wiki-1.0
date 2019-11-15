@@ -9,6 +9,8 @@ ChainX的测试网采用：
 
 **当前ChainX的测试网为 `ChainX Testnet Taoism` **，即测试网-道。从这个版本开始，测试网将会提供智能合约的功能。
 
+**ChainX Testnet Taoism 请下载v1.0.7的pre-release版本**，[下载链接](#)
+
 测试网相关配套设施：
 
 * 测试网浏览器： [https://testnet.scan.chainx.org.cn](https://testnet.scan.chainx.org.cn/)

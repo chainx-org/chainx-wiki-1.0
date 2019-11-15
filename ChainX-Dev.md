@@ -4,7 +4,7 @@
 
 ChainX 可以提供Dev（开发者模式）启动，用于**本机进行**调试使用。如用户测试合约等功能。
 
-请下载最新的ChainX二进制，链接[下载](https://github.com/chainx-org/ChainX/releases)。
+**当前ChainX Dev请下载 v1.0.7 的pre-release版本，正式版未发布。**[下载链接](#)
 
 ChainX对于Dev模式默认提供了4个验证人：
 
