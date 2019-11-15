@@ -180,6 +180,8 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
         * [chainx_getFeeByCallAndLength](#chainx_getfeebycallandlength)
         * [chainx_getFeeWeightMap](#chainx_getfeeweightmap)
     * [合约部分](合约部分)
+        * [chainx_contractCall](chainx_contractCall)
+        * [chainx_contractGetStorage](#chainx_contractGetStorage)
         * [chainx_contractXRCTokenInfo](#chainx_contractXRCTokenInfo)
         * [chainx_contractXRC20Call](#chainx_contractXRC20Call)
     * [其他](#其他)
