@@ -470,7 +470,7 @@ chainx.chain.convertToAsset('BTC', 100000, 0, 500000).then(extrinsic => {
 
 #### chainx.api.rpc.chainx.contractXRC20Call({ "token": "BTC", "selector": "BalanceOf", "inputData": 0x...})
 
-https://github.com/chainx-org/ChainX/wiki/RPC#chainx_contractxrc20call
+参见 https://github.com/chainx-org/ChainX/wiki/RPC#chainx_contractxrc20call
 
 ## Account 模块
 
