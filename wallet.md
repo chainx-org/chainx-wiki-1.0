@@ -14,6 +14,8 @@ ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布�
 
 点击 [Chainx Extension](https://chrome.google.com/webstore/detail/chainx-extension/dffjlgnecfafjfmkknpipapcbgajflge) 安装插件。
 
+> 如果因为网络无法安装插件，可以在我们的[插件发布仓库](https://github.com/chainx-org/chainx-extension-release)下载插件压缩包，并通过 Chrome 的 Load unpacked 来加载插件。
+
 安装完成之后
 
 1. 将网络切换至测试网
