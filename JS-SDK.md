@@ -446,6 +446,31 @@ ex.signAndSend(Alice, (error, result) => {
   console.log(error, result);
 });
 ```
+#### chainx.chain.convertToAsset(token, balance, value, gas)
+
+将 xrc 资产转为余额
+
+```javascript
+chainx.chain.convertToAsset('BTC', 100000, 0, 500000).then(extrinsic => {
+  extrinsic.signAndSend(Alice, (error, result) => {
+    console.log(error, result);
+  });
+});
+```
+
+### RPC
+
+#### chainx.api.rpc.chainx.contractcall({ "dest": 5SS..., "gasLimit": 500000, "inputData": 0x..., "origin": 5HH... })
+
+参见 https://github.com/chainx-org/ChainX/wiki/RPC#chainx_contractcall
+
+#### chainx.api.rpc.chainx.contractXRCTokenInfo()
+
+参见 https://github.com/chainx-org/ChainX/wiki/RPC#chainx_contractxrctokeninfo
+
+#### chainx.api.rpc.chainx.contractXRC20Call({ "token": "BTC", "selector": "BalanceOf", "inputData": 0x...})
+
+https://github.com/chainx-org/ChainX/wiki/RPC#chainx_contractxrc20call
 
 ## Account 模块
 
