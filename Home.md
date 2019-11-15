@@ -25,3 +25,5 @@
 
 ## Wallet
 
+* [ChainX 钱包](wallet)
+
