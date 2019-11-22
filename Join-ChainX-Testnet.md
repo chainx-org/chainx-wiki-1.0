@@ -7,7 +7,7 @@ ChainX的测试网采用：
 1. ChainX地址与主网地址的版本不相同，也就是**相同的私钥，在ChainX主网和测试网下的地址是不相同的**
 2. ChainX测试网的Bitcoin采用的是比特币测试网，即 `Bitcoin Testnet`，而非其他比特币测试网
 
-**当前ChainX的测试网为 `ChainX Testnet Taoism` **，即测试网-道。从这个版本开始，测试网将会提供智能合约的功能。
+**当前ChainX的测试网为 `ChainX Testnet Taoism`**，即测试网-道。从这个版本开始，测试网将会提供智能合约的功能。
 
 **ChainX Testnet Taoism 请下载v1.0.7的pre-release版本**，[下载链接](https://github.com/chainx-org/ChainX/releases/tag/v1.0.7-alpha)
 

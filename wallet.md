@@ -10,6 +10,10 @@ ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布�
 
 ## 新钱包
 
+**ChainX新钱包为网页钱包+插件（Chrome插件）的形式。**
+
+钱包地址为：[https://dapps.chainx.org.cn/](https://dapps.chainx.org.cn/)
+
 ### 安装插件
 
 点击 [Chainx Extension](https://chrome.google.com/webstore/detail/chainx-extension/dffjlgnecfafjfmkknpipapcbgajflge) 安装插件。
