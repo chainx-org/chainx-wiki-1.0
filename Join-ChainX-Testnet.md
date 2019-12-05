@@ -1,5 +1,7 @@
 # 加入ChainX测试网
 
+[English Version](https://github.com/chainx-org/ChainX/wiki/Join-ChainX-Testnet-EN)
+
 在开始以下步骤前，请了解 [加入主网 ](Join-ChainX-Mainnet) 的相关内容，ChainX测试网的功能与主网相同。
 
 ChainX的测试网采用：
