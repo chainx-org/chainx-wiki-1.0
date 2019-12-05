@@ -4,7 +4,7 @@
 
 ### 1. Accessing the test network
 
-Please refer to the instructions of accessing the ChainX test network. After completing the relevant steps, the nodes should be synchronized to the latest and the corresponding configurations of the wallets completed.
+Please refer to the instructions of [accessing the ChainX testnet](https://github.com/chainx-org/ChainX/wiki/Join-ChainX-Testnet-EN). After completing the relevant steps, the nodes should be synchronized to the latest and the corresponding configurations of the wallets completed.
 
 ### 2. Running local nodes
 
