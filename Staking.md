@@ -119,7 +119,7 @@ Interest receivable = latest user vote age / latest total vote age * amount in t
 ```
 
 
-**Interest withdrawal **
+**Interest withdrawal**
 
 A user withdraws his or her interest from the prize pool according to the proportion of the user's vote age to the total vote age of nodes. After receiving the interest, the following changes occur to the vote age:
 
