@@ -19,6 +19,15 @@ ink! 框架共有两个大版本，即 ink1.0 和 ink2.0. ink2.0 在合约编写
 
 除了以上两点改动，在合约编写上与 [paritytech/ink](https://github.com/paritytech/ink) 保持一直，再次强调：请合约开发者 [基于 chainx-org/ink 的 ink2.0 分支进行开发](https://github.com/chainx-org/ink/tree/ink2.0)。
 
+# cargo-contract
+
+[chainx-org/cargo-contract](https://github.com/chainx-org/cargo-contract/tree/ink2.0) fork 自 [paritytech/cargo-contract](https://github.com/paritytech/cargo-contract), 是一个 `cargo` 命令行插件, 可用于创建和编译 `ink!` 所编写的 `WebAssembly` 智能合约。
+
+```
+cargo install --git https://github.com/chainx-org/cargo-contract --branch ink2.0 cargo-contract --force
+```
+
+具体细节请见 [cargo-contract/README](https://github.com/chainx-org/cargo-contract/tree/ink2.0) 
 
 ### ink 合约编写相关资源:
 
