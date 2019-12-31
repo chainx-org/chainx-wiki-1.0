@@ -23,7 +23,7 @@
 
 ### ink! CLI
 
-安装好 Rust 环境后， 安装方便构建合约项目的命令行工具 `cargo-contract`. 注意，请安装 [chainx-org/cargo-contract ink2.0 brnach](https://github.com/chainx-org/cargo-contract/tree/ink2.0), 而不是安装 `paritytech/cargo-contract`。
+安装好 Rust 环境后， 安装方便构建合约项目的命令行工具 `cargo-contract`. 注意，请安装 [chainx-org/cargo-contract ink2.0 branch](https://github.com/chainx-org/cargo-contract/tree/ink2.0), 而不是安装 `paritytech/cargo-contract`。
 
 ```bash
 $ cargo install --git https://github.com/chainx-org/cargo-contract --branch ink2.0 cargo-contract --force
