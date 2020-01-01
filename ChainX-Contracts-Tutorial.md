@@ -97,7 +97,7 @@ $ ./chainx --dev --default-log -d <指定数据目录> --log=runtime=debug --no-
 
 2.	确保你合约目录的 `target` 目录存在编译好的 `wasm` 文件和 `json` 文件：
 
-<img src="images/contract-frontend/image-20191114120447447.png" alt="image-20191114120447447" style="zoom:25%;" />
+<img src="images/contract-frontend/WechatIMG567.png" alt="image-20191114120447447" style="zoom:25%;" />
 
 3.	点击 UPLOAD WASM，并在表单中上传和填写相应的参数：
 
