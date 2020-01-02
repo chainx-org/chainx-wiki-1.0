@@ -52,6 +52,7 @@ $ cargo-contract contract new flipper
 运行测试：
 
 ```bash
+$ cd flipper
 $ cargo +nightly test
 ```
 
