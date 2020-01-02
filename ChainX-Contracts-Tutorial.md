@@ -46,7 +46,7 @@ $ cargo install --git https://github.com/chainx-org/cargo-contract --branch ink2
 创建一个 flipper 的示例项目:
 
 ```bash
-$ cargo-contract new flipper
+$ cargo-contract contract new flipper
 ```
 
 运行测试：
