@@ -62,6 +62,14 @@ $ cargo +nightly test
 $ cargo-contract contract build
 ```
 
+生成合约 metadata，也就是合约 ABI:
+
+```bash
+$ cargo-contract contract generate-metadata
+```
+
+在 `target/` 目录下面会生成一个 `metadata.json` 文件，其中包含了与合约交互的必要信息。
+
 ## Running a ChainX Node
 
 启动单节点模式：
