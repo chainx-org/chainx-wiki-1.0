@@ -25,7 +25,7 @@
 
 ### ChainX Binary
 
-请前往 [chainx-org/ChainX](https://github.com/chainx-org/ChainX) 下载 [ChainX v1.0.7-alpha](https://github.com/chainx-org/ChainX/releases/tag/v1.0.7-alpha).
+请前往 [chainx-org/ChainX](https://github.com/chainx-org/ChainX) 下载 v1.0.7 的最新版本 [ChainX v1.0.7-beta.1](https://github.com/chainx-org/ChainX/releases/tag/v1.0.7-beta.1).
 
 ### Rust Environment for ink!
 
