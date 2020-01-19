@@ -20,8 +20,9 @@
             * [JS-SDK](#js-sdk-2)
 
 <!-- /TOC -->
+----
 
-[English version](ChainX-Contract-Tutorial-EN).
+[>>>> English version](ChainX-Contracts-Tutorial-EN).
 
 ## Setup
 
