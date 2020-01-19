@@ -21,6 +21,8 @@
 
 <!-- /TOC -->
 
+[English version](ChainX-Contract-Tutorial-EN).
+
 ## Setup
 
 ### ChainX Binary
