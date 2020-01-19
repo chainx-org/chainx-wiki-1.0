@@ -17,6 +17,7 @@
 ## Contract
 
 * [ChainX智能合约](智能合约)
+* [ChainX智能合约 quick tutorial](https://github.com/chainx-org/ChainX/wiki/ChainX-Contracts-Tutorial)
 
 ## Developers
 
