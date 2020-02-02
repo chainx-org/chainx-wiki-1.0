@@ -1,5 +1,7 @@
 ## Bitcoin 转接桥
 
+[English version](Bitcoin-Bridge)
+
 ChainX的Bitcoin转接桥采用单向轻节点中继模式，用户的资金由多个信托节点共同托管，共有冷热两个多签地址，均为公开地址，所有操作透明可查。
 
 ## Bitcoin轻节点
