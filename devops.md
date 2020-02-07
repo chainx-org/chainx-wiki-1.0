@@ -281,7 +281,7 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 
 2. 若重启节点后仍然`panic`，那么该份数据已经无法恢复。只能**重新开始同步**或**使用已有数据恢复**
 
-   1. 为应对这种情况，ChainX目前计划每隔一周（每周五晚上）备份一次数据镜像并提供下载，节点可通过以下命令下载最近的数据镜像
+   1. 为应对这种情况，ChainX目前提供了`2019.07.11`备份过的数据镜像并提供下载，节点可通过以下命令下载最近的数据镜像，并基于该部分进行同步
 
       ```bash
       wget 114.55.243.192/db_no_archive.tar.gz
