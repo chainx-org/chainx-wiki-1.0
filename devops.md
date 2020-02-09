@@ -159,11 +159,8 @@ $ nohup ./chainx --config=config.json > error.log 2>&1 &
    1. 随机选择以下种子列表的**一个**：（不推荐，因为种子节点可能已经连满了，或者失效）
 
       ```bash
-      "/ip4/47.96.134.203/tcp/20222/p2p/QmNzDfC4qTC9B5r8W7XxAR4n3qSF7SqgF6FsNGEWCL4foY",
-      "/ip4/47.110.252.22/tcp/20222/p2p/Qmcwx277eRTNmeK2iTLrGDHqRwYW8FxL8ppwRXM3SnbUvS",
       "/ip4/47.96.97.52/tcp/20222/p2p/QmXABmmDgTT75o2UVCKS8iaYh75zPL5by3iSfS8msSWwEo",
       "/ip4/47.110.14.60/tcp/20222/p2p/QmR2Jdd4V93yzTDyX5gKQ7PE4M2KsbK3vjC8RvXCnzqHU6",
-      "/ip4/47.110.14.60/tcp/30333/p2p/QmfDqzUo64DDDeinmWDif2umjgJpKyunYkKC81XNZ9Cwzt"，
       ```
 
    2. **或**通过过 [https://telemetry.polkadot.io/#/ChainX ](https://telemetry.polkadot.io/#/ChainX )，点击右边设置按钮，打开最下面一栏的`NetworkState`，然后回到主界面，此时每一个节点的最右边会出现网络链接的按钮。选择一个目前块高度正常的节点点开会跳转到一个新页面，是一个`json`数据。（推荐）
