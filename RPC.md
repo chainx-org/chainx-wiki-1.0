@@ -193,6 +193,62 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 
 `author` 一般是**提交交易**相关的RPC接口
 
+对于`author` 的所有接口，错误处理均遵循以下约定
+
+错误以以下格式返回：
+```jsonc
+{
+	"code": <错误码>,
+	"message": <错误信息>,
+	"data": <详细信息或者一个int类型的数字，标识错误>
+}
+```
+其中code与messge和data的关系如下：
+> 交易格式错误： code: 1001 -> message: "Extrinsic has invalid format."，data: null
+>
+> Runtime内部验证错误(一般不会发生)：code:1002 -> message: <根据内部错误决定>，data：<根据内部错误决定>
+>
+> 非法交易：code: 1010 -> message："Invalid Transaction"
+>
+> 			date 是一个int类型的数字，用于区分不同的错误类型：
+> 			
+> 			date: 0  -> 签名验证错误
+> 			
+> 			date: 1  -> account nonce 小于当前链上记录的nonce
+> 			
+> 			date: 2  -> account nonce 超过当前链上记录的nonce
+> 			
+> 			date: 3  -> 发送用户的资金不够（小于手续费的检查）
+> 			
+> 			date: -1  -> 当前不允许调用这个方法
+> 			
+> 			date: -2  -> 当前的发送者已经被禁止发送交易
+> 			
+> 			date: -10  -> 解析出错误的 account nonce
+> 			
+> 			date: -20  -> 未解析出发送者
+> 			
+> 			date: -30  -> 加速 acc 不能为0，或者未设置
+> 			
+> 			date: -127  -> 未知内部错误（一般不发生）
+>
+> 交易有效性无法验证：code: 1011 -> message："Unknown Transaction Validity"， date: -10  -> 解析出错误的 account nonce
+>
+> 交易暂时被交易池禁止：code：1012 -> message: "Transaction is temporarily banned", date: null 
+>
+> 			出现这种情况一般需要调高交易的加速acc再重新发送
+>
+> 交易已经存在于交易池中：code：1013 -> message: "Transaction Already Imported", date: <交易hash>
+>
+> 当前交易的优先级过低：code: 1014 -> message: "Priority is too low: ({} vs {})", data: "The transaction has too low priority to replace another transaction already in the pool."
+>
+> 			出现这种情况一般需要调高交易的加速acc再重新发送
+>
+> 交易依赖循环(当前不会出现)：code: 1015 -> message: "Cycle Detected", data: null  
+>
+> 当前交易池已经达到上限，不接受交易：code: 1016 -> message: "Immediately Dropped", data: "The transaction couldn't enter the pool because of the limit"
+>
+
 ### author_submitExtrinsic
 
 提交一个16进制编码的交易到链上
@@ -232,60 +288,6 @@ ChainX对substrate的rpc做了定制，提供了ChainX特有的rpc接口用于�
 	...
 ]
 ```
-
-错误以以下格式返回：
-```jsonc
-{
-	"code": <错误码>,
-	"message": <错误信息>,
-	"data": <详细信息或者一个int类型的数字，标识错误>
-}
-```
-其中code与messge和data的关系如下：
-> 交易格式错误： code: 1001 -> message: "Extrinsic has invalid format."，data: null
->
-> Runtime内部验证错误(一般不会发生)：code:1002 -> message: <根据内部错误决定>，data：<根据内部错误决定>
->
-> 非法交易：code: 1010 -> message："Invalid Transaction"
-> 
-> 			date 是一个int类型的数字，用于区分不同的错误类型：
-> 			
-> 			date: 0  -> 签名验证错误
-> 			
-> 			date: 1  -> account nonce 小于当前链上记录的nonce
-> 			
-> 			date: 2  -> account nonce 超过当前链上记录的nonce
-> 			
-> 			date: 3  -> 发送用户的资金不够（小于手续费的检查）
-> 			
-> 			date: -1  -> 当前不允许调用这个方法
-> 			
-> 			date: -2  -> 当前的发送者已经被禁止发送交易
-> 			
-> 			date: -10  -> 解析出错误的 account nonce
-> 			
-> 			date: -20  -> 未解析出发送者
-> 			
-> 			date: -30  -> 加速 acc 不能为0，或者未设置
-> 			
-> 			date: -127  -> 未知内部错误（一般不发生）
-> 
-> 交易有效性无法验证：code: 1011 -> message："Unknown Transaction Validity"， date: -10  -> 解析出错误的 account nonce
-> 
-> 交易暂时被交易池禁止：code：1012 -> message: "Transaction is temporarily banned", date: null 
-> 
-> 			出现这种情况一般需要调高交易的加速acc再重新发送
-> 
-> 交易已经存在于交易池中：code：1013 -> message: "Transaction Already Imported", date: <交易hash>
-> 
-> 当前交易的优先级过低：code: 1014 -> message: "Priority is too low: ({} vs {})", data: "The transaction has too low priority to replace another transaction already in the pool."
-> 
-> 			出现这种情况一般需要调高交易的加速acc再重新发送
-> 
-> 交易依赖循环(当前不会出现)：code: 1015 -> message: "Cycle Detected", data: null  
->  
-> 当前交易池已经达到上限，不接受交易：code: 1016 -> message: "Immediately Dropped", data: "The transaction couldn't enter the pool because of the limit"
-> 
 
 ### author_submitAndWatchExtrinsic
 
