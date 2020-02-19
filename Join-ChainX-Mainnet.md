@@ -172,6 +172,8 @@ $ curl https://gist.githubusercontent.com/liuchengxu/3b3ed4ce027e39fc89b5a5a6c28
     "block-construction-execution": "NativeElseWasm",
     "importing-execution": "NativeElseWasm",
     "pruning": "archive",  // 目前强烈建议加上该配置，以存档模式启动
+    "db-cache": 1024,  // 设置节点数据库的缓存，单位MB，即这里为1GB，可根据自己机器配置情况调整
+    "state-cache-size": 2147483648, // 设置节点状态树缓存，单位B，即这里为2GB (2GB = 2 * 1024 * 1024)，可根据自己机器配置情况调整
     "bootnodes": [
         // 填写引导节点，ChainX已经内置了一些种子节点，一般无需填写
     ]
@@ -273,6 +275,8 @@ Repeat again:
   "syncing-execution": "NativeElseWasm",
   "block-construction-execution": "NativeElseWasm",
   "pruning": "archive",  // 目前强烈建议加上该配置，以存档模式启动
+  "db-cache": 1024,  // 设置节点数据库的缓存，单位MB，即这里为1GB
+  "state-cache-size": 2147483648, // 设置节点状态树缓存，单位B，即这里为2GB (2GB = 2 * 1024 * 1024)
   "bootnodes": [],
   "name": "Your-Node-Name",             // 在节点浏览器中显示的节点名
   "validator-name": "Your-Validator-Name", // 注册节点时使用的名称

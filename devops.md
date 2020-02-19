@@ -12,6 +12,7 @@
 * [7. 数据运行中出错](#7-数据运行中出错)
 * [8. 本机数据备份](#8-本机数据备份)
 * [9. 信托节点自建比特币全节点的参考](#9-信托自建比特币全节点的参考)
+* [10. 节点数据库与状态缓存](#10-节点数据库与状态缓存)
 <!-- /TOC -->
 
 
@@ -513,3 +514,21 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
       ```bash
       $ bitcoin-cli -rpcport=8332 -rpcuser=btc -rpcpassword=btc2018 importaddress 比特币地址 "" true
       ```
+
+## 10. 节点数据库与状态缓存
+
+当前ChainX所产生的数据量已经比较大，对于状态的索引及底层rocksdb数据库的查询均会耗费大量cpu资源，因此**强烈建议**节点在内存允许的情况下在配置中添加数据库与状态的缓存。例如推荐的配置如下：
+
+```bash
+{
+    "db-cache": 1024,
+    "state-cache-size": 2147483648,
+}
+```
+
+其中：
+
+* `db-cache`对应与rocksdb的缓存，单位是`MB`，例如该推荐中即为开启rocksdb的内存缓存1G
+* `state-cache-size`对应与状态树的缓存，单位是`B`，例如改推荐中即为开启状态缓存2G（2G = 2\*1024\*1024）
+
+**节点可以根据自己的内存状态自行调整，一般尽量分配`state-cache-size`是`db-cache`的两倍**
