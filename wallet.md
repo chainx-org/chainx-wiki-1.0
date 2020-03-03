@@ -1,100 +1,40 @@
 # ChainX 钱包
 
-ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布，而改为浏览器插件加网页钱包的形式。因此目前我们将该网页加插件形式的钱包称为**新钱包**，之前的桌面钱包称为**老钱包**
+ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布，而改为浏览器插件或igner加网页钱包的形式。因此目前我们将该网页加插件或signer形式的钱包称为**新钱包**，之前的桌面钱包称为**老钱包**。
 
-**当前新钱包还处于开发迭代中，未正式发布，因此还存在很多问题。如有问题，请提交到[ChainX钱包的issue](https://github.com/chainx-org/chainx-wallet/issues)中进行反馈**
-
-新钱包将会提供ChainX的智能合约功能，而老钱包将仅仅处于正常维护，不再添加新功能。若使用老钱包，但是需要进行智能合约的开发，我们**仅为开发者提供智能合约开发部分的独立部署组件**，见下文[合约开发独立部署组件](#合约开发独立部署组件)
-
-建议当前ChainX的新钱包仅用于测试网。添加 ChainX 秘书长（WeChat ID：ChainX-PCX），备注『开发群』进群申请测试币
+**当前新钱包正式对外开放测试，可能会存在一些问题。如有问题，请提交issue到[chainx-wallet-bug-bounty](https://github.com/chainx-org/chainx-wallet-bug-bounty/issues)中进行反馈，对于有价值的issue，您将获得PCX奖励**
 
 ## 新钱包
 
-**ChainX新钱包为网页钱包+插件（Chrome插件）的形式。**
+**ChainX新钱包为网页钱包+Signer或插件（Chrome和Edge插件）的形式。**
 
-钱包地址为：[https://dapps.chainx.org.cn/](https://dapps.chainx.org.cn/)
+钱包地址：[https://dapps.chainx.org](https://dapps.chainx.org)  
+备用地址：[https://dapps.chainx.org.cn](https://dapps.chainx.org.cn)
+
+**目前新版钱包只支持[Chrome](https://www.google.com/chrome/)和[Edge](https://www.microsoft.com/en-us/edge)浏览器，使用其他浏览器可能会遇到样式及插件无法安装的问题。**
+
+### 安装ChainX signer
+
+下载地址： https://github.com/chainx-org/chainx-signer/releases
 
 ### 安装插件
 
-点击 [Chainx Extension](https://chrome.google.com/webstore/detail/chainx-extension/dffjlgnecfafjfmkknpipapcbgajflge) 安装插件。
+如果您使用Chrome浏览器，请前往[Chrome web store](https://chrome.google.com/webstore/detail/chainx-extension/dffjlgnecfafjfmkknpipapcbgajflge)下载；如果是Edge浏览器，请前往[Edge Addons](https://microsoftedge.microsoft.com/addons/detail/pglmaogdhpmengmblgdjgnnabbafegkk)下载。
 
-> 如果因为网络无法安装插件，可以在我们的[插件发布仓库](https://github.com/chainx-org/chainx-extension-release)下载插件压缩包，并通过 Chrome 的 Load unpacked 来加载插件。
-
-### 插件注入说明
-
-插件安装完成之后，会在 `window` 对象中注入 `chainxProvider` 对象。
-
-该对象包含的方法和相关说明如下：
-
-|  函数名 | 函数说明  |
-|  ----  | ----  |
-| enable | 获取当前插件的钱包账户 |
-| signExtrinsic | 签名 |
-| signAndSendExtrinsic | 签名并发送 |
-| listenAccountChange | 监听账户变化 |
-| listenNodeChange | 监听节点变化 |
-| listenNetworkChange | 监听网络变化 |
-| getCurrentNode | 获取当前网络节点 |
-| getSettings | 获取插件设置 |
-
-函数调用示例：
-
-``` javascript
-chainxProvider.enable().then(console.log)
-
-{
-  address: "5Fe4i2nqi1yPaMowBmjYKb7eRmRYgSE4QAgpxJq1kaGdvQL8" // 账户地址
-  name: "Alice"                                               // 帐号名称
-}
-```
-
-``` javascript
-signExtrinsic(
-  address: string, // 发送交易的账户地址
-  module: string,  // 交易模块如：xAssets
-  method: string,  // 交易方法如：transfer
-  args: Array      // method 需要的 参数
-)
-
-signAndSendExtrinsic 同 signExtrinsic
-```
-
-``` javascript
-chainxProvider.getCurrentNode().then(console.log)
-
-{
-  isTestNet: true                           // 当前节点是否为测试网
-  name: "testnet.w1.org.cn"									// 当前节点名称
-  url: "wss://testnet.w1.chainx.org.cn/ws"       // 点前节点 url
-}
-```
-
-``` javascript
-chainxProvider.getSettings().then(console.log)
-
-{
-  isTestNet: true  // 点前是否为测试网络
-  version: 1.0.4	 // 插件版本
-}
-```
 
 安装完成之后
 
-1. 将网络切换至测试网
-
-   1.	ChainX当前对于测试网默认提供了`wss://testnet.w1.org.cn/ws` 的节点配置
-   2.	如使用`ChainX Dev`模式或者在本地跑了测试网的同步节点，可以添加localhost：`ws://localhost:<websocket的端口>`
-   3.	若需要连接自己配置的测试网节点，**需要为自己的测试网节点的websocket配置域名及ssh**
-
-2. 新建或者导入账户
+1. 新建或者导入账户
 
    流程如下：
 
    <img src="images/contract-frontend/image-20191114175210101.png" alt="image-20191114175210101" style="zoom:50%;" />
 
-3.	在导入钱包界面若选择”导入钱包“，在助记词页面右上角有直接导入私钥的选项。
+2.	在导入钱包界面若选择”导入钱包“，在助记词页面右上角有直接导入私钥的选项。
 
 ### 体验钱包
+
+请在钱包页面右上角打开账户列表，在安装完ChainX signer或插件的前提下，选择连接Signer或插件。钱包会从Signer或插件中获取当前账户，页面会显示当前地址的最新资产信息。
 
 #### 其他功能部分
 
