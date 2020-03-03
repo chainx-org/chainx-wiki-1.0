@@ -1,6 +1,6 @@
 # ChainX 钱包
 
-ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布，而改为浏览器插件或igner加网页钱包的形式。因此目前我们将该网页加插件或signer形式的钱包称为**新钱包**，之前的桌面钱包称为**老钱包**。
+ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布，而改为浏览器插件或Signer加网页钱包的形式。因此目前我们将该网页加插件或signer形式的钱包称为**新钱包**，之前的桌面钱包称为**老钱包**。
 
 **当前新钱包正式对外开放测试，可能会存在一些问题。如有问题，请提交issue到[chainx-wallet-bug-bounty](https://github.com/chainx-org/chainx-wallet-bug-bounty/issues)中进行反馈，对于有价值的issue，您将获得PCX奖励**
 
