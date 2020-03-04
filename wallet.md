@@ -11,7 +11,7 @@ ChainX的钱包经过迭代后，在将来不再以桌面钱包的形式发布�
 钱包地址：[https://dapps.chainx.org](https://dapps.chainx.org)  
 备用地址：[https://dapps.chainx.org.cn](https://dapps.chainx.org.cn)
 
-**目前新版钱包只支持[Chrome](https://www.google.com/chrome/)和[Edge](https://www.microsoft.com/en-us/edge)浏览器，使用其他浏览器可能会遇到样式及插件无法安装的问题。**
+**目前新版钱包只支持[Chrome](https://www.google.cn/chrome/)和[Edge](https://www.microsoft.com/en-us/edge)浏览器，使用其他浏览器可能会遇到样式及插件无法安装的问题。**
 
 ### 安装ChainX signer
 
