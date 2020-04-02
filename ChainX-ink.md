@@ -9,6 +9,7 @@
 - `DefaultXrmlTypes` 将关联类型 `Balance` 从 `u128` 改为 `u64`.
 - 适配关联类型 `Call` 以支持 PCX 转账和将跨链资产划转过去的 XRC20 Token 转回 ChainX 跨链资产, 合约开发者可以基于 PCX 和 ChainX 的跨链资产设计自己的 Dapp。
 
+    ```
     #[ink::contract(version = "0.1.0", env = DefaultXrmlTypes)]
     ...
     ```
