@@ -10,7 +10,7 @@ Notes for ChainX testnet:
 
 **The current ChainX testnet is ChainX Testnet Taoism** , which is the testnet-taosim. The smart contract is avaliable since this version.
 
-Please download the pre-release version ChainX Testnet Taoism v1.0.7. download link
+Please download the pre-release version ChainX Testnet Taoism v1.1.0. download link https://github.com/chainx-org/ChainX/releases/tag/v1.1.0-alpha
 
 Testnet infrastructures:
 
