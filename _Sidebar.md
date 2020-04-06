@@ -35,3 +35,6 @@
 
 * [ChainX Dev 模式](ChainX-Dev)
 
+### 版本变更
+
+* [Change log](ChangeLog)

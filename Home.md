@@ -27,3 +27,7 @@
 ## Wallet
 
 * [ChainX 钱包](wallet)
+
+## Change log
+
+* [Change log](ChangeLog)
