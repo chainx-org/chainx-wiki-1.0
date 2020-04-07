@@ -22,7 +22,7 @@
 #### 2. ChainX 智能合约
 
 1. **在本次升级中会包含ChainX智能合约的所有功能，但是不会立即开启该功能。该功能将会等到Polkadot正式上线后开启。**
-2. ChainX智能合约提供了相关的新RPC接口：详细见：[https://github.com/chainx-org/ChainX/wiki/%E5%90%88%E7%BA%A6%E9%83%A8%E5%88%86](https://github.com/chainx-org/ChainX/wiki/合约部分)
+2. ChainX智能合约提供了相关的新RPC接口：详细见：[合约相关rpc](https://github.com/chainx-org/ChainX/wiki/RPC#%E5%90%88%E7%BA%A6%E9%83%A8%E5%88%86)
 3. ChainX智能合约开发文档见:
     - https://github.com/chainx-org/ChainX/wiki/%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6
     - https://github.com/chainx-org/ChainX/wiki/ChainX-ink
