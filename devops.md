@@ -13,7 +13,7 @@
 * [8. 本机数据备份](#8-本机数据备份)
 * [9. 信托节点自建比特币全节点的参考](#9-信托自建比特币全节点的参考)
 * [10. 节点数据库与状态缓存](#10-节点数据库与状态缓存)
-<!-- /TOC -->
+* [11. 合理停止或重启节点（针对V1.1.0以后版本）](#11-合理停止或重启节点（针对V1.1.0以后版本）)<!-- /TOC -->
 
 
 ## 1. 推荐机器配置
@@ -532,3 +532,47 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 * `state-cache-size`对应与状态树的缓存，单位是`B`，例如改推荐中即为开启状态缓存2G（2G = 2\*1024\*1024）
 
 **节点可以根据自己的内存状态自行调整，一般尽量分配`state-cache-size`是`db-cache`的两倍**
+
+## 11. 合理停止或重启节点（针对V1.1.0以后版本）
+
+由于自ChainX `V1.1.0`版本开始，为了支持合约模块正常运行采用了比`v1.0.6`往后的新版本的Substrate（依旧是Substrate 1.0，并非2.0）。但是**由于该Substrate版本在处理操作系统的中断信号不够完善**，因此会出现当需要停止或重启节点时，给运行中的节点发送正常的中止信号后（`kill <pid>`），节点进程依旧存活，没有停止的现象。
+
+此时实际上在Substrate内部已经捕获了`kill -2`信号，但是同步区块的模块没有中止，因此进程依旧存活，会等到同步区块处理完队列中所有的区块后才会停止。
+
+因此若正常发送`kill <pid>`中断信号后，节点仍未停止的情况下，可以再使用`kill -9 <pid>` 使节点强制停止。
+
+例如以下`stop.sh`脚本：
+
+```bash
+dir_path=<you path>
+ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' |  xargs kill 
+sleep 1
+count=`ps -ef | grep $dir_path/chainx | grep -v grep | wc -l`
+if [ $count == 1 ];then
+    echo "not killed, use kill -9"
+    ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' | xargs kill -9
+fi
+```
+
+若在`v1.0.6`之前部署了定时重启节点的开发者，此时需要将`kill`节点的部分换成以上脚本过程。
+
+例如以下`restart.sh`脚本
+
+```bash
+dir_path=<you path>
+ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' |  xargs kill 
+sleep 1
+count=`ps -ef | grep $dir_path/chainx | grep -v grep | wc -l`
+if [ $count == 1 ];then
+    echo "not killed, use kill -9"
+    ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' | xargs kill -9
+fi
+echo "restart..."
+sleep 6
+cd $dir_path
+# change `bash ./start.sh` to your start script
+bash ./start.sh
+```
+
+
+
