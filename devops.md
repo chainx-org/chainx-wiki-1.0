@@ -544,11 +544,12 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 例如以下`stop.sh`脚本：
 
 ```bash
+#!/bin/bash
 dir_path=<you path>
 ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' |  xargs kill 
 sleep 1
 count=`ps -ef | grep $dir_path/chainx | grep -v grep | wc -l`
-if [ $count == 1 ];then
+if [ $count = 1 ];then
     echo "not killed, use kill -9"
     ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' | xargs kill -9
 fi
@@ -559,11 +560,12 @@ fi
 例如以下`restart.sh`脚本
 
 ```bash
+#!/bin/bash
 dir_path=<you path>
 ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' |  xargs kill 
 sleep 1
 count=`ps -ef | grep $dir_path/chainx | grep -v grep | wc -l`
-if [ $count == 1 ];then
+if [ $count = 1 ];then
     echo "not killed, use kill -9"
     ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' | xargs kill -9
 fi
