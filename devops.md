@@ -546,12 +546,13 @@ Thread 'main-tokio-3' panicked at 'Externalities not allowed to fail within runt
 ```bash
 #!/bin/bash
 dir_path=<you path>
-ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' |  xargs kill 
+pgrep -f $dir_path/chainx | awk '{print $1}' | xargs kill
+
 sleep 1
-count=`ps -ef | grep $dir_path/chainx | grep -v grep | wc -l`
-if [ $count = 1 ];then
+count=$(pgrep -fc $dir_path/chainx)
+if [ "$count" = 1 ];then
     echo "not killed, use kill -9"
-    ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' | xargs kill -9
+    pgrep -f $dir_path/chainx | awk '{print $1}' | xargs kill -9
 fi
 ```
 
@@ -561,13 +562,17 @@ fi
 
 ```bash
 #!/bin/bash
+# print executive time
+date
+
 dir_path=<you path>
-ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' |  xargs kill 
+pgrep -f $dir_path/chainx | awk '{print $1}' | xargs kill
+
 sleep 1
-count=`ps -ef | grep $dir_path/chainx | grep -v grep | wc -l`
-if [ $count = 1 ];then
+count=$(pgrep -fc $dir_path/chainx)
+if [ "$count" = 1 ];then
     echo "not killed, use kill -9"
-    ps -ef | grep $dir_path/chainx | grep -v grep | awk '{print $2}' | xargs kill -9
+    pgrep -f $dir_path/chainx | awk '{print $1}' | xargs kill -9
 fi
 echo "restart..."
 sleep 6
