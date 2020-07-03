@@ -171,7 +171,7 @@ $ nohup ./chainx --config=config.json > error.log 2>&1 &
       "/ip4/47.110.14.60/tcp/20222/p2p/QmR2Jdd4V93yzTDyX5gKQ7PE4M2KsbK3vjC8RvXCnzqHU6",
       ```
 
-   2. **或**通过过 [https://telemetry.polkadot.io/#/ChainX ](https://telemetry.polkadot.io/#/ChainX )，点击右边设置按钮，打开最下面一栏的`NetworkState`，然后回到主界面，此时每一个节点的最右边会出现网络链接的按钮。选择一个目前块高度正常的节点点开会跳转到一个新页面，是一个`json`数据。（推荐）
+   2. **或**通过过 [https://telemetry.polkadot.io/#/ChainX ](https://telemetry.polkadot.io/#/ChainX )，或者[https://stats.chainx.org/](https://stats.chainx.org/)点击右边设置按钮，打开最下面一栏的`NetworkState`，然后回到主界面，此时每一个节点的最右边会出现网络链接的按钮。选择一个目前块高度正常的节点点开会跳转到一个新页面，是一个`json`数据。（推荐）
 
       - 其中
 
