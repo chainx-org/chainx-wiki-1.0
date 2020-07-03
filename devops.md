@@ -158,7 +158,7 @@ $ nohup ./chainx --config=config.json > error.log 2>&1 &
 }
 ```
 
-## 6. 增节点的Bootnodes
+## 6. 增加节点的Bootnodes
 
 ### 6.1 增加节点的种子以保证正常运行的稳定
 
