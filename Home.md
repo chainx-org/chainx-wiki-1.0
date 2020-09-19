@@ -11,6 +11,7 @@
 ## Bridges
 
 - [Bitcoin 转接桥](Bitcoin-转接桥)
+- [Bitcoin 转接桥业务逻辑](Bitcoin-bridge-business)
 - [Bitcoin 多签信托](https://github.com/chainx-org/ChainX/wiki/Bitcoin%E5%A4%9A%E7%AD%BE%E4%BF%A1%E6%89%98)
 - [SDOT 转接桥](SDOT-转接桥)
 

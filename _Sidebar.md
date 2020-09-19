@@ -10,6 +10,7 @@
 - [多签模块](多签模块)
 - [SDOT 转接桥](SDOT-转接桥)
 - [Bitcoin 转接桥](Bitcoin-转接桥)
+- [Bitcoin 转接桥业务逻辑](Bitcoin-bridge-business)
 - [信托](信托)
 - [Bitcoin信托操作指南](Bitcoin信托相关操作)
 - [手续费模型](手续费模型)
