@@ -53,7 +53,7 @@ ChainX在Runtime环境内实现了一个完全的比特币轻节点验证逻辑�
 
 ## 多签管理及信托
 
-**在ChainX链中，持有多签私钥的角色称为“信托(trustee)”。**信托主要负责管理资产安全及处理比特币提现申请。
+**在ChainX链中，持有多签私钥的角色称为“信托(trustee)”**。信托主要负责管理资产安全及处理比特币提现申请。
 
 信托在ChainX链上需要处理的主要流程为处理提现，执行流程如下：
 
@@ -118,11 +118,12 @@ ChainX在Runtime环境内实现了一个完全的比特币轻节点验证逻辑�
 
    例如：
 
-   > 假设有一笔交易tx1 为：
-   >
-   > input1(**address1**) |---------|
-   >
-   > input2(address2)  |---------| output1 (信托地址) **value 100000**
+   假设有一笔交易tx1 为：
+
+   ```
+   input1(address1) |---------|
+   input2(address2) |---------| output1 (信托地址) value 100000
+   ```
 
    则这笔交易执行后将会在链上记录为：
 
@@ -132,10 +133,10 @@ ChainX在Runtime环境内实现了一个完全的比特币轻节点验证逻辑�
 
    当将来比特币转接桥收到了另一笔充值交易为：
 
-   > input1(**address1**) |--------|
-   >
-   > ​								|--------| output1(信托地址) value 99999
-   >
-   > ​								|--------| output(OP_RETURN) => **ChainX address: 5Xxxxxxxxx**
+   ```
+   input1(address1) |--------|
+   				 |--------| output1(信托地址) value 99999
+   				 |--------| output(OP_RETURN) => ChainX address: 5Xxxxxxxxx
+   ```
 
    此时将会给ChainX地址5Xxxxxxxxx 发放 `100000 + 99999 = 199999` 的X-BTC，并移除与这个地址相关的未认领充值交易。
