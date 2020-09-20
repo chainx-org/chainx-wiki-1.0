@@ -83,4 +83,44 @@ ChainX对于Dev模式默认提供了4个验证人：
 然后种子信息即为：
 
 ```bash
---bootnodes=/ip4
+--bootnodes=/ip4/<Alice节点对外ip>/tcp/<Alice节点p2p端口>/p2p/QmTB5QBb4SqEecEksXEB6a35yNgvtTyjYDG3LV43yEEibv
+```
+
+也就是`/p2p`后面的部分与Alice种子相同。
+
+启动其他节点的方式：
+
+启动Bob验证者
+
+```bash
+./chainx --chain=dev --key=//Bob --validator-name=Bob --validator -d <目录>  --log=runtime=debug --default-log --bootnodes=<Alice的种子>
+```
+
+相对应的，启动Charlie和Dave需要把 `--key`，`--validator-name`改成相应的名字。
+
+## 调试合约
+
+**ChainX的dev默认配置允许合约代码中含有`println`，而ChainX的`Testnet`及`Mainnet`都不允许合约中含有`println`。**
+
+因此开发者可以使用ChainX的dev模式本地对合约进行调试，而在部署到公开测试网`Testnet Taoism`及主网时要把合约代码中的所有`println`移除。
+
+调试合约时，一定要以Native模式启动节点，并且把日志的Runtime部分设置成debug以下的级别
+
+```bash
+./chainx --dev --default-log -d <指定数据目录> --log=runtime=debug --no-telemetry --block-construction-execution=native --other-execution=native
+```
+
+也就是其中的 `--block-construction-execution` 和 ` --other-execution`都要指定为`Native`或者`NativeElseWasm`，并且把日志的Runtime的debug级别打开。
+
+其中：
+
+* `--block-construction-execution`代表着交易执行时运行的模式
+* `--other-execution`代表着rpc调用时运行的模式
+
+以这种模式启动的节点，在合约中含有`println`并被交易或者rpc调用时，在日志中会出现以：
+
+```bash
+2019-11-01 15:04:23.781 Debug [runtime|xrml_xcontracts] [ext_println]|......
+```
+
+形式的日志，因此若需要查看合约的`println`的结果，只需要`grep`关键字`ext_println`即可。
